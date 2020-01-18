@@ -130,6 +130,8 @@ function createMenu (mainWindow) {
               mainWindow.webContents.isDevToolsOpened()
                 ? mainWindow.webContents.closeDevTools()
                 : mainWindow.webContents.openDevTools()
+            } else {
+              mainWindow.webContents.openDevTools()
             }
           }
         }
