@@ -31,7 +31,7 @@
 
 <script>
   import SystemInformation from './LandingPage/SystemInformation'
-
+  import db from '../../datastore/index'
   export default {
     name: 'landing-page',
     components: { SystemInformation },
@@ -41,6 +41,7 @@
       }
     }
   }
+  console.log(db.test + ' from src/renderer/components/LandingPage.vue')
 </script>
 
 <style>
