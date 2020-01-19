@@ -11,8 +11,14 @@ export default new Router({
       component: require('@/components/LandingPage').default
     },
     {
-      path: '*',
-      redirect: '/'
+      path: '/inserter',
+      name: 'insert-page',
+      component: require('@/components/Inserter').default
+    },
+    {
+      path: '/selector',
+      name: 'select-page',
+      component: require('@/components/Selector').default
     }
   ]
 })

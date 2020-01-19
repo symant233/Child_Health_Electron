@@ -19,9 +19,9 @@ if (process.env.NODE_ENV !== 'development') {
 }
 
 const adapter = new FileSync(STORE_PATH) // 初始化lowdb读写的json文件名以及存储路径
+const db = Datastore(adapter) // lowdb接管该文件
 console.log('DataBase@ ' + STORE_PATH)
 
-const db = Datastore(adapter) // lowdb接管该文件
 db.defaults({ users: [], stored: STORE_PATH, author: pkg.author, version: pkg.version, counts: 0 })
   .write() // 一定要显式调用write方法将数据存入JSON
 
@@ -33,8 +33,8 @@ if (!db.has('users').value()) {
     detail: `数据库致命错误!\n当前版本: ${pkg.version}\n联系作者: ${pkg.author}`
   })
 }
-
-db.test = '# Test message from db #'
-db.STORE = STORE_PATH
+if (pkg.version > db.get('version').value()) {
+  db.set('version', pkg.version).write()
+} // 更新数据库里的版本号
 
 export default db // 暴露出去

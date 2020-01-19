@@ -1,8 +1,9 @@
 /* eslint-disable no-unused-vars */
 'use strict'
 
-import { app, BrowserWindow, Menu, dialog } from 'electron'
+import { app, BrowserWindow, Menu, dialog, shell } from 'electron'
 import pkg from '../../package.json'
+import db from '../datastore/index'
 
 /**
  * Set `__static` path to static files in production
@@ -47,12 +48,54 @@ function createMenu (mainWindow) {
   const template = [
     // { role: 'fileMenu' }
     {
-      label: 'File',
+      label: 'Data',
       submenu: [
         {
-          label: 'Backup',
-          accelerator: 'Ctrl+O',
-          click () {}
+          label: 'Folder',
+          submenu: [
+            {
+              label: 'Open Data Folder',
+              click () { shell.showItemInFolder(db.get('stored').value()) }
+            },
+            {
+              label: 'Open Backup Folder',
+              click () {
+                var bp = db.get('backup').value()
+                if (bp) { shell.showItemInFolder(bp) } else {
+                  dialog.showMessageBox({
+                    type: 'info',
+                    // title: 'Warning',
+                    message: 'Setting not complete',
+                    detail: 'Backup folder not found.\n\n>>>Please setup backup path first.'
+                  })
+                }
+              }
+            }
+          ]
+        },
+        {
+          label: 'Backups',
+          submenu: [
+            {
+              label: 'Run Backup',
+              accelerator: 'Ctrl+O',
+              click () {}
+            },
+            { type: 'separator' },
+            {
+              label: 'Set Backup Path',
+              click () {}
+            },
+            {
+              label: 'Set Backup Series',
+              click () {
+                dialog.showMessageBox({
+                  type: 'info',
+                  message: 'Coming soon...'
+                })
+              }
+            }
+          ]
         },
         {
           label: 'Settings',
@@ -147,7 +190,7 @@ function createMenu (mainWindow) {
 
 app.on('ready', function () {
   var win = createWindow()
-  mainWindow.webContents.closeDevTools()
+  // mainWindow.webContents.closeDevTools()
   createMenu(win)
 })
 

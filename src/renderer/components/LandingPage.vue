@@ -11,18 +11,18 @@
 
       <div class="right-side">
         <div class="doc">
-          <div class="title">Getting Started</div>
+          <div class="title alt">Getting Started</div>
           <p>
             electron-vue comes packed with detailed documentation that covers everything from
             internal configurations, using the project structure, building your application,
-            and so much more.
+            and so much more. Project current version: {{ prj_version }}
           </p>
-          <button @click="open('https://simulatedgreg.gitbooks.io/electron-vue/content/')">Read the Docs</button><br><br>
+          <button class="alt" @click="open()">Read the Docs</button><br><br>
         </div>
         <div class="doc">
-          <div class="title alt">Other Documentation</div>
-          <button class="alt" @click="open('https://electron.atom.io/docs/')">Electron</button>
-          <button class="alt" @click="open('https://vuejs.org/v2/guide/')">Vue.js</button>
+          <div class="title">Main Options [DEV]</div>
+          <a href='#/inserter'><button>Inserter</button></a>
+          <a href='#/selector'><button>Selector</button></a>
         </div>
       </div>
     </main>
@@ -39,9 +39,12 @@
       open (link) {
         this.$electron.shell.openExternal(link)
       }
+    },
+    data () {
+      return { prj_version: db.get('version').value() }
     }
   }
-  console.log(db.test + ' from src/renderer/components/LandingPage.vue')
+  console.log('LandingPage.vue @db version: ' + db.get('version').value())
 </script>
 
 <style>
@@ -112,7 +115,7 @@
     font-size: .8em;
     cursor: pointer;
     outline: none;
-    padding: 0.75em 2em;
+    padding: 0.5em 1.5em;
     border-radius: 2em;
     display: inline-block;
     color: #fff;
@@ -120,6 +123,7 @@
     transition: all 0.15s ease;
     box-sizing: border-box;
     border: 1px solid #4fc08d;
+    margin-right: 5px;
   }
 
   .doc button.alt {
