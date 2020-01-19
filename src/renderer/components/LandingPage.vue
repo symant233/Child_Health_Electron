@@ -4,7 +4,7 @@
     <main>
       <div class="left-side">
         <span class="title">
-          Welcome to your new project!
+          Welcome back!
         </span>
         <system-information></system-information>
       </div>
@@ -15,12 +15,13 @@
           <p>
             electron-vue comes packed with detailed documentation that covers everything from
             internal configurations, using the project structure, building your application,
-            and so much more. Project current version: {{ prj_version }}
+            and so much more. Project current version: <b>{{ prj_version }}</b>
           </p>
           <button class="alt" @click="open()">Read the Docs</button><br><br>
         </div>
         <div class="doc">
           <div class="title">Main Options [DEV]</div>
+          <p>System function entrance:</p>
           <a href='#/inserter'><button>Inserter</button></a>
           <a href='#/selector'><button>Selector</button></a>
         </div>
@@ -47,7 +48,7 @@
   console.log('LandingPage.vue @db version: ' + db.get('version').value())
 </script>
 
-<style>
+<style scoped>
   @import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro');
 
   * {
@@ -98,7 +99,7 @@
     color: #2c3e50;
     font-size: 20px;
     font-weight: bold;
-    margin-bottom: 6px;
+    margin-bottom: 10px;
   }
 
   .title.alt {

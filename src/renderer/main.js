@@ -10,7 +10,6 @@ const process = require('process')
 if (!process.env.IS_WEB) Vue.use(require('vue-electron'))
 Vue.http = Vue.prototype.$http = axios
 Vue.config.productionTip = false
-
 Vue.db = Vue.prototype.$db = db
 
 new Vue({

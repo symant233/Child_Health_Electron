@@ -3,5 +3,6 @@
   "stored": "C:\\Users\\symant\\Documents\\GitHub\\Child_Health_Electron\\src\\datastore\\data.json",
   "author": "symant233 <symant233@gmail.com>",
   "version": "0.0.3",
-  "counts": 0
+  "counts": 0,
+  "backup": "C:\\Users\\symant\\Desktop\\child_health_electron\\locales\\data.json"
 }

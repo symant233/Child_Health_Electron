@@ -2,6 +2,8 @@
 'use strict'
 
 import { app, BrowserWindow, Menu, dialog, shell } from 'electron'
+import fs from 'fs'
+import path from 'path'
 import pkg from '../../package.json'
 import db from '../datastore/index'
 
@@ -18,6 +20,32 @@ const winURL = process.env.NODE_ENV === 'development'
   ? `http://localhost:9080`
   : `file://${__dirname}/index.html`
 // const winURL = `file://${__dirname}/index.ejs`
+
+function backupnow () {
+  var stored = db.get('stored').value()
+  var backup = db.get('backup').value()
+  if (!backup) {
+    backupNotFound()
+  } else {
+    fs.copyFileSync(stored, backup)
+    console.log('Run backup... @ ' + backup)
+    dialog.showMessageBox({
+      type: 'none',
+      title: 'Backup',
+      message: 'Backup Finished',
+      detail: '@' + backup
+    })
+  }
+}
+
+function backupNotFound () {
+  dialog.showMessageBox({
+    type: 'info',
+    // title: 'Warning',
+    message: 'Setting not complete',
+    detail: 'Backup folder not found.\n\n>>>Please setup backup path first.'
+  })
+}
 
 function createWindow () {
   /**
@@ -62,12 +90,7 @@ function createMenu (mainWindow) {
               click () {
                 var bp = db.get('backup').value()
                 if (bp) { shell.showItemInFolder(bp) } else {
-                  dialog.showMessageBox({
-                    type: 'info',
-                    // title: 'Warning',
-                    message: 'Setting not complete',
-                    detail: 'Backup folder not found.\n\n>>>Please setup backup path first.'
-                  })
+                  backupNotFound()
                 }
               }
             }
@@ -79,12 +102,26 @@ function createMenu (mainWindow) {
             {
               label: 'Run Backup',
               accelerator: 'Ctrl+O',
-              click () {}
+              click () { backupnow() }
             },
             { type: 'separator' },
             {
               label: 'Set Backup Path',
-              click () {}
+              click () {
+                // eslint-disable-next-line camelcase
+                dialog.showOpenDialog(mainWindow, {
+                  properties: ['openDirectory']
+                }).then(result => {
+                  if (!result.canceled) {
+                    var bpdir = result.filePaths[0]
+                    bpdir = path.join(bpdir, 'data.json')
+                    db.set('backup', bpdir).write()
+                    console.log('Backup Dir Set @ ' + bpdir)
+                  }
+                }).catch(err => {
+                  console.log(err)
+                })
+              }
             },
             {
               label: 'Set Backup Series',
@@ -130,7 +167,7 @@ function createMenu (mainWindow) {
         { role: 'toggledevtools' },
         { type: 'separator' },
         { role: 'resetzoom' },
-        { role: 'zoomin' },
+        { role: 'zoomin', accelerator: 'Ctrl+=' },
         { role: 'zoomout' }
       ]
     },
