@@ -17,7 +17,7 @@
             internal configurations, using the project structure, building your application,
             and so much more. Project current version: <b>{{ prj_version }}</b>
           </p>
-          <button class="alt" @click="open()">Read the Docs</button><br><br>
+          <button class="alt" @click="test()">developer test</button><br><br>
         </div>
         <div class="doc">
           <div class="title">Main Options [DEV]</div>
@@ -37,9 +37,7 @@
     name: 'landing-page',
     components: { SystemInformation },
     methods: {
-      open (link) {
-        this.$electron.shell.openExternal(link)
-      }
+      test () {}
     },
     data () {
       return { prj_version: db.get('version').value() }
@@ -49,8 +47,6 @@
 </script>
 
 <style scoped>
-  @import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro');
-
   * {
     box-sizing: border-box;
     margin: 0;

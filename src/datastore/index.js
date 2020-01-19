@@ -22,8 +22,15 @@ const adapter = new FileSync(STORE_PATH) // 初始化lowdb读写的json文件名
 const db = Datastore(adapter) // lowdb接管该文件
 console.log('DataBase@ ' + STORE_PATH)
 
-db.defaults({ users: [], stored: STORE_PATH, author: pkg.author, version: pkg.version, counts: 0 })
-  .write() // 一定要显式调用write方法将数据存入JSON
+db.defaults({
+  users: [],
+  stored: STORE_PATH,
+  backup: '',
+  author: pkg.author,
+  version: pkg.version,
+  increase: 0
+}).write() // 一定要显式调用write方法将数据存入JSON
+// count: db.get('users').size().value()
 
 if (!db.has('users').value()) {
   remote.dialog().showMessageBox({

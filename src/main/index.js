@@ -55,15 +55,15 @@ function createWindow () {
     height: 563,
     useContentSize: true,
     width: 1000,
+    minWidth: 343,
     title: 'Child Health Care [Electron]',
-    resizable: false,
+    resizable: true,
     webPreferences: {
       nodeIntegration: true // add this
     }
   })
 
   mainWindow.loadURL(winURL)
-
   mainWindow.on('closed', () => {
     mainWindow = null
   })
@@ -74,7 +74,6 @@ function createWindow () {
 function createMenu (mainWindow) {
   // if (process.env.NODE_ENV !== 'development') {
   const template = [
-    // { role: 'fileMenu' }
     {
       label: 'Data',
       submenu: [
@@ -108,7 +107,6 @@ function createMenu (mainWindow) {
             {
               label: 'Set Backup Path',
               click () {
-                // eslint-disable-next-line camelcase
                 dialog.showOpenDialog(mainWindow, {
                   properties: ['openDirectory']
                 }).then(result => {
@@ -128,7 +126,9 @@ function createMenu (mainWindow) {
               click () {
                 dialog.showMessageBox({
                   type: 'info',
-                  message: 'Coming soon...'
+                  message: 'Coming soon...',
+                  accelerator: 'Ctrl+P',
+                  click () {}
                 })
               }
             }
@@ -136,52 +136,57 @@ function createMenu (mainWindow) {
         },
         {
           label: 'Settings',
-          accelerator: 'Ctrl+P',
+          accelerator: 'Ctrl+`',
           click () {}
         },
         { type: 'separator' },
         { role: 'Quit' }
       ]
     },
-    // { role: 'editMenu' }
-    {
-      label: 'Edit',
-      submenu: [
-        { role: 'undo' },
-        { role: 'redo' },
-        { type: 'separator' },
-        { role: 'cut' },
-        { role: 'copy' },
-        { role: 'paste' },
-        { role: 'delete' },
-        { type: 'separator' },
-        { role: 'selectAll' }
-      ]
-    },
-    // { role: 'viewMenu' }
+    { role: 'editMenu' },
     {
       label: 'View',
       submenu: [
         { role: 'reload' },
         { role: 'forcereload' },
-        { role: 'toggledevtools' },
+        // { role: 'toggledevtools' },
         { type: 'separator' },
         { role: 'resetzoom' },
         { role: 'zoomin', accelerator: 'Ctrl+=' },
         { role: 'zoomout' }
       ]
     },
-    // { role: 'windowMenu' }
     {
       label: 'Window',
       submenu: [
+        {
+          label: 'Go Back',
+          accelerator: 'Alt+Left',
+          click () {
+            mainWindow.webContents.goBack()
+          }
+        },
+        {
+          label: 'Go Forward',
+          accelerator: 'Alt+Right',
+          click () {
+            mainWindow.webContents.goForward()
+          }
+        },
+        { type: 'separator' },
         { role: 'minimize' },
-        { role: 'zoom' },
-        { role: 'close' }
+        {
+          label: 'Default Size',
+          accelerator: 'Ctrl+9',
+          click () {
+            mainWindow.setSize(1013, 620)
+            // plus titlebar and menubar
+          }
+        }
       ]
     },
     {
-      role: 'help',
+      label: 'Help',
       submenu: [
         {
           label: 'About',
@@ -195,7 +200,7 @@ function createMenu (mainWindow) {
           }
         },
         {
-          label: 'Releses',
+          label: 'Releses [Link]',
           click: async () => {
             const { shell } = require('electron')
             await shell.openExternal('https://github.com/symant233/Child_Health_Electron/releases')
@@ -213,6 +218,21 @@ function createMenu (mainWindow) {
             } else {
               mainWindow.webContents.openDevTools()
             }
+          }
+        },
+        {
+          label: 'Printer',
+          accelerator: 'Ctrl+P',
+          click () {
+            mainWindow.webContents.print()
+          }
+        },
+        {
+          label: 'Print To PDF',
+          accelerator: 'Ctrl+Shift+P',
+          click () {
+            // https://electronjs.org/docs/api/web-contents#contentsprinttopdfoptions
+            mainWindow.webContents.printToPDF()
           }
         }
       ]

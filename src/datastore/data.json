@@ -1,8 +1,59 @@
 {
-  "users": [],
+  "users": [
+    {
+      "uid": 1,
+      "name": "a",
+      "baby": "",
+      "birth": "2020-01-19",
+      "fixed": "",
+      "tele": "a2",
+      "note": "",
+      "danger": false
+    },
+    {
+      "uid": 4,
+      "name": "aaaa",
+      "baby": "aaaaa",
+      "birth": "2017-06-08",
+      "fixed": "2020-01-19",
+      "tele": "111",
+      "note": "aaaa",
+      "danger": true
+    },
+    {
+      "uid": 5,
+      "name": "test",
+      "baby": "",
+      "birth": "2020-01-19",
+      "fixed": "",
+      "tele": "123",
+      "note": "",
+      "danger": false
+    },
+    {
+      "uid": 6,
+      "name": "aaaj",
+      "baby": "aaaj",
+      "birth": "2019-01-01",
+      "fixed": "",
+      "tele": "1234",
+      "note": "",
+      "danger": true
+    },
+    {
+      "uid": 7,
+      "name": "border",
+      "baby": "radius",
+      "birth": "2020-01-19",
+      "fixed": "",
+      "tele": "123",
+      "note": "",
+      "danger": false
+    }
+  ],
   "stored": "C:\\Users\\symant\\Documents\\GitHub\\Child_Health_Electron\\src\\datastore\\data.json",
+  "backup": "",
   "author": "symant233 <symant233@gmail.com>",
-  "version": "0.0.3",
-  "counts": 0,
-  "backup": "C:\\Users\\symant\\Desktop\\child_health_electron\\locales\\data.json"
+  "version": "0.0.5",
+  "increase": 7
 }
