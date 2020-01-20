@@ -28,7 +28,7 @@ db.defaults({
   backup: '',
   author: pkg.author,
   version: pkg.version,
-  increase: 0
+  increase: 10000
 }).write() // 一定要显式调用write方法将数据存入JSON
 // count: db.get('users').size().value()
 

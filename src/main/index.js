@@ -22,8 +22,8 @@ const winURL = process.env.NODE_ENV === 'development'
 // const winURL = `file://${__dirname}/index.ejs`
 
 function backupnow () {
-  var stored = db.get('stored').value()
-  var backup = db.get('backup').value()
+  var stored = db.read().get('stored').value()
+  var backup = db.read().get('backup').value()
   if (!backup) {
     backupNotFound()
   } else {
@@ -82,12 +82,12 @@ function createMenu (mainWindow) {
           submenu: [
             {
               label: 'Open Data Folder',
-              click () { shell.showItemInFolder(db.get('stored').value()) }
+              click () { shell.showItemInFolder(db.read().get('stored').value()) }
             },
             {
               label: 'Open Backup Folder',
               click () {
-                var bp = db.get('backup').value()
+                var bp = db.read().get('backup').value()
                 if (bp) { shell.showItemInFolder(bp) } else {
                   backupNotFound()
                 }
@@ -113,7 +113,7 @@ function createMenu (mainWindow) {
                   if (!result.canceled) {
                     var bpdir = result.filePaths[0]
                     bpdir = path.join(bpdir, 'data.json')
-                    db.set('backup', bpdir).write()
+                    db.read().set('backup', bpdir).write()
                     console.log('Backup Dir Set @ ' + bpdir)
                   }
                 }).catch(err => {
@@ -148,7 +148,7 @@ function createMenu (mainWindow) {
       label: 'View',
       submenu: [
         { role: 'reload' },
-        { role: 'forcereload' },
+        // { role: 'forcereload' },
         // { role: 'toggledevtools' },
         { type: 'separator' },
         { role: 'resetzoom' },
@@ -208,6 +208,40 @@ function createMenu (mainWindow) {
         },
         { type: 'separator' },
         {
+          label: 'Printer',
+          accelerator: 'Ctrl+P',
+          click () {
+            mainWindow.webContents.print({ landscape: true })
+          }
+        },
+        {
+          label: 'Print To PDF',
+          accelerator: 'Ctrl+Shift+P',
+          click () {
+            dialog.showOpenDialog(mainWindow, {
+              properties: ['openDirectory']
+            }).then(result => {
+              if (!result.canceled) {
+                var printDir = result.filePaths[0]
+                var name = 'WebContent@' + new Date().toISOString().slice(0, 10) + '.pdf'
+                printDir = path.join(printDir, name)
+                // https://electronjs.org/docs/api/web-contents#contentsprinttopdfoptions
+                mainWindow.webContents.printToPDF({ landscape: true }).then(data => {
+                  fs.writeFileSync(printDir, data, (error) => {
+                    if (error) throw error
+                    console.log('Write PDF successfully.')
+                  })
+                }).catch(error => {
+                  console.log(error)
+                })
+              }
+            }).catch(err => {
+              console.log(err)
+            })
+          }
+        },
+        { type: 'separator' },
+        {
           label: 'DevTools',
           accelerator: 'F12',
           click () {
@@ -218,21 +252,6 @@ function createMenu (mainWindow) {
             } else {
               mainWindow.webContents.openDevTools()
             }
-          }
-        },
-        {
-          label: 'Printer',
-          accelerator: 'Ctrl+P',
-          click () {
-            mainWindow.webContents.print()
-          }
-        },
-        {
-          label: 'Print To PDF',
-          accelerator: 'Ctrl+Shift+P',
-          click () {
-            // https://electronjs.org/docs/api/web-contents#contentsprinttopdfoptions
-            mainWindow.webContents.printToPDF()
           }
         }
       ]

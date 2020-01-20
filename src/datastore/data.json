@@ -1,8 +1,8 @@
 {
   "users": [
     {
-      "uid": 1,
-      "name": "a",
+      "uid": 10001,
+      "name": "acd",
       "baby": "",
       "birth": "2020-01-19",
       "fixed": "",
@@ -11,7 +11,7 @@
       "danger": false
     },
     {
-      "uid": 4,
+      "uid": 10004,
       "name": "aaaa",
       "baby": "aaaaa",
       "birth": "2017-06-08",
@@ -21,7 +21,7 @@
       "danger": true
     },
     {
-      "uid": 5,
+      "uid": 10005,
       "name": "test",
       "baby": "",
       "birth": "2020-01-19",
@@ -31,7 +31,7 @@
       "danger": false
     },
     {
-      "uid": 6,
+      "uid": 10006,
       "name": "aaaj",
       "baby": "aaaj",
       "birth": "2019-01-01",
@@ -41,19 +41,19 @@
       "danger": true
     },
     {
-      "uid": 7,
+      "uid": 10007,
       "name": "border",
       "baby": "radius",
       "birth": "2020-01-19",
       "fixed": "",
       "tele": "123",
-      "note": "",
+      "note": "changed 2",
       "danger": false
     },
     {
-      "uid": 8,
+      "uid": 10008,
       "name": "测试员",
-      "baby": "测试宝宝",
+      "baby": "宝宝名",
       "birth": "2018-07-18",
       "fixed": "2018-08-28",
       "tele": "13012345678",
@@ -61,7 +61,7 @@
       "danger": true
     },
     {
-      "uid": 9,
+      "uid": 10009,
       "name": "liu",
       "baby": "aaa",
       "birth": "2008-09-09",
@@ -71,7 +71,7 @@
       "danger": false
     },
     {
-      "uid": 10,
+      "uid": 10010,
       "name": "test",
       "baby": "t",
       "birth": "2020-01-20",
@@ -81,7 +81,7 @@
       "danger": false
     },
     {
-      "uid": 11,
+      "uid": 10011,
       "name": "addon",
       "baby": "",
       "birth": "2015-01-03",
@@ -91,19 +91,19 @@
       "danger": false
     },
     {
-      "uid": 12,
+      "uid": 10012,
       "name": "danger",
       "baby": "",
       "birth": "2019-09-05",
       "fixed": "",
       "tele": "test",
       "note": "danger test",
-      "danger": "true"
+      "danger": true
     }
   ],
   "stored": "C:\\Users\\symant\\Documents\\GitHub\\Child_Health_Electron\\src\\datastore\\data.json",
-  "backup": "",
+  "backup": "C:\\Users\\symant\\Desktop\\child_health_electron\\swiftshader\\data.json",
   "author": "symant233 <symant233@gmail.com>",
   "version": "0.0.5",
-  "increase": 12
+  "increase": 10016
 }

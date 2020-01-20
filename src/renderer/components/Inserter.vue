@@ -5,7 +5,16 @@
       <div class="hero-body" id="hero-body">
         <div class="columns">
           <div class="column is-half">
-            <h3 class="title">Inserter:</h3>
+            <label class="label">更新操作</label>
+            <div class="field has-addons">
+              <div class="control">
+                <input class="input" type="number" placeholder="⚡Uid" v-model="uid">
+              </div>
+              <div class="control">
+                <a class="button is-info" @click="load()">加载</a>
+              </div>
+            </div>
+            
             <div class="field">
               <label class="label">产妇姓名</label>
               <div class="control">
@@ -20,7 +29,18 @@
                 <input class="input" type="text" name="baby" id="baby" placeholder="👶Baby" v-model="baby">
               </div>
             </div>
+            <div class="field">
+              <label class="label">联系电话:</label>
+              <div class="control">
+                <input class="input is-info" type="tel" name="tele" id="tele" placeholder="📞Telephone" v-model="tele">
+              </div>
+              <p class="help is-danger" id='req-tele' style="display: none;">* 该项不能为空</p>
+            </div>
 
+          </div>
+          <!-- column separator -->
+          <div class="column is-half">
+            <!-- <h3 class="title">&nbsp;</h3> -->
             <div class="field">
               <label class="label">出生日期</label>
               <div class="control">
@@ -28,24 +48,11 @@
               </div>
               <p class="help is-danger" id='req-birth' style="display: none;">* 该项不能为空</p>
             </div>
-
             <div class="field">
               <label class="label">纠正胎龄</label>
               <div class="control">
                 <input class="input" type="date" name="fixed" id="fixed" v-model="fixed">
               </div>
-            </div>
-
-          </div>
-          <!-- column separator -->
-          <div class="column is-half">
-            <h3 class="title">&nbsp;</h3>
-            <div class="field">
-              <label class="label">联系电话:</label>
-              <div class="control">
-                <input class="input is-info" type="tel" name="tele" id="tele" placeholder="📞Telephone" v-model="tele">
-              </div>
-              <p class="help is-danger" id='req-tele' style="display: none;">* 该项不能为空</p>
             </div>
 
             <div class="field">
@@ -71,7 +78,7 @@
 
             <div class="field is-grouped">
               <div class="control">
-                <button class="button is-primary" @click="insert()?reset():false">提交</button>
+                <button class="button is-primary" @click="submitButton()">提交</button>
               </div>
               <div class="control">
                 <button class="button is-link is-warning" @click="reset()">清除</button>
@@ -79,7 +86,6 @@
             </div>
           </div>
         </div>
-        
         
       </div>
       <!-- Hero footer: will stick at the bottom -->
@@ -94,7 +100,7 @@
           </div>
           <div class="container">
             <ul>
-              <li><a href="#/">Home</a></li>
+              <!-- <li><a href="#/">Home</a></li> -->
               <li class="is-active"><a href='#/inserter'>Inserter</a></li>
               <li><a href='#/selector'>Selector</a></li>
             </ul>
@@ -111,6 +117,7 @@
     name: 'insert-page',
     data () {
       return {
+        uid: '',
         name: '',
         baby: '',
         birth: '',
@@ -121,7 +128,25 @@
       }
     },
     methods: {
+      submitButton () {
+        if (!this.uid) {
+          if (this.insert()) {
+            this.statusBar(true)
+            this.reset()
+          } else {
+            this.statusBar(false)
+          }
+        } else {
+          if (this.update()) {
+            this.statusBar(true)
+            this.reset()
+          } else {
+            this.statusBar(false)
+          }
+        }
+      },
       reset () {
+        this.uid = ''
         this.name = ''
         this.baby = ''
         this.birth = ''
@@ -129,42 +154,53 @@
         this.tele = ''
         this.note = ''
         this.danger = 'false'
+        this.inputRequired(false)
+      },
+      statusBar (bool) {
+        if (bool === true) {
+          document.getElementById('status').children[0].style.display = 'flex'
+          setTimeout(function () { document.getElementById('status').children[0].style.display = 'none' }, 1500)
+        } else {
+          document.getElementById('status').children[1].style.display = 'flex'
+          setTimeout(function () { document.getElementById('status').children[1].style.display = 'none' }, 1500)
+        }
+      },
+      checkReq (name, birth, tele) {
+        console.log('DB@ checking validation')
+        if (name === '' || birth === '' || tele === '') {
+          this.inputRequired(true)
+        } else {
+          this.inputRequired(false)
+          console.log('DB@ checking validation true')
+          return true
+        }
+        return false
+      },
+      inputRequired (judge) {
+        var input = ['name', 'birth', 'tele']
+        var pp = ['req-name', 'req-birth', 'req-tele']
+        if (judge) {
+          for (var i in input) {
+            document.getElementById(input[i]).classList.remove('is-info')
+            document.getElementById(input[i]).classList.add('is-danger')
+          }
+          for (var p in pp) {
+            document.getElementById(pp[p]).style.display = 'flex'
+          }
+        } else {
+          for (var k in input) {
+            document.getElementById(input[k]).classList.remove('is-danger')
+            document.getElementById(input[k]).classList.add('is-info')
+          }
+          for (var j in pp) {
+            document.getElementById(pp[j]).style.display = 'none'
+          }
+        }
       },
       insert () {
-        function inputRequired (judge, input, pp) {
-          if (judge) {
-            for (var i in input) {
-              document.getElementById(input[i]).classList.remove('is-info')
-              document.getElementById(input[i]).classList.add('is-danger')
-            }
-            for (var p in pp) {
-              document.getElementById(pp[p]).style.display = 'flex'
-            }
-          } else {
-            for (var k in input) {
-              document.getElementById(input[k]).classList.remove('is-danger')
-              document.getElementById(input[k]).classList.add('is-info')
-            }
-            for (var j in pp) {
-              document.getElementById(pp[j]).style.display = 'none'
-            }
-          }
-        }
-        function checkReq (name, birth, tele) {
-          console.log('DB@ checking validation')
-          var input = ['name', 'birth', 'tele']
-          var pp = ['req-name', 'req-birth', 'req-tele']
-          if (name === '' || birth === '' || tele === '') {
-            inputRequired(true, input, pp)
-          } else {
-            inputRequired(false, input, pp)
-            console.log('DB@ checking validation true')
-            return true
-          }
-          return false
-        }
-        if (checkReq(this.name, this.birth, this.tele)) {
-          var increase = db.read().get('increase').value() + 1
+        db.read()
+        if (this.checkReq(this.name, this.birth, this.tele)) {
+          var increase = db.get('increase').value() + 1
           db.get('users').push({
             uid: increase,
             name: this.name,
@@ -173,21 +209,52 @@
             fixed: this.fixed,
             tele: this.tele,
             note: this.note,
-            danger: this.danger
+            danger: (this.danger === 'true') ? true : false
           }).write()
           db.update('increase', n => n + 1).write()
           console.log('DB@ inserted new data')
-          document.getElementById('status').children[0].style.display = 'flex'
-          setTimeout(function () { document.getElementById('status').children[0].style.display = 'none' }, 1500)
+          this.statusBar(true)
           return true
         }
-        document.getElementById('status').children[1].style.display = 'flex'
-        setTimeout(function () { document.getElementById('status').children[1].style.display = 'none' }, 1500)
+        this.statusBar(false)
         return false
       },
-      open (link) {
-        this.$electron.shell.openExternal(link)
+      load () {
+        var uid = parseInt(this.uid)
+        var res = db.get('users').find({ uid: uid }).value()
+        if (res) {
+          this.name = res.name
+          this.baby = res.baby
+          this.birth = res.birth
+          this.fixed = res.fixed
+          this.tele = res.tele
+          this.note = res.note
+          this.danger = (res.danger === 'true') ? true : false
+          this.statusBar(true)
+        } else {
+          this.statusBar(false)
+        }
+      },
+      update () {
+        if (this.uid) {
+          var uid = parseInt(this.uid)
+          var changed = {
+            uid: uid,
+            name: this.name,
+            baby: this.baby,
+            birth: this.birth,
+            fixed: this.fixed,
+            tele: this.tele,
+            note: this.note,
+            danger: (this.danger === 'true') ? true : false
+          }
+          db.get('users').find({uid: uid}).assign(changed).write()
+          console.log('DB@ updated uid: ' + this.uid)
+          return true
+        }
+        return false      
       }
+
     }
   }
 </script>
@@ -206,11 +273,11 @@
   bottom: 0px;
 }
 
-/* nav .container button {
+nav button {
   border-radius: unset;
   height: 41px;
   margin: 0px;
-} */
+}
 
 .tabs.is-boxed a {
     border-radius: 0px;
