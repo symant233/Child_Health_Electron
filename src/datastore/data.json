@@ -49,11 +49,61 @@
       "tele": "123",
       "note": "",
       "danger": false
+    },
+    {
+      "uid": 8,
+      "name": "测试员",
+      "baby": "测试宝宝",
+      "birth": "2018-07-18",
+      "fixed": "2018-08-28",
+      "tele": "13012345678",
+      "note": "高危儿是指在胎儿期、分娩时、新生儿期受到各种高危因素的危害，已发生或可能发生危重疾病的新生儿。绝大多数高危儿能完全健康地生长发育，部分高危儿视疾病危重程度以后可能有运动障碍、智力低下、语言障碍、癫痫、多动、学习困难、自闭、行为异常等后遗症发生。",
+      "danger": true
+    },
+    {
+      "uid": 9,
+      "name": "liu",
+      "baby": "aaa",
+      "birth": "2008-09-09",
+      "fixed": "",
+      "tele": "238123418",
+      "note": "",
+      "danger": false
+    },
+    {
+      "uid": 10,
+      "name": "test",
+      "baby": "t",
+      "birth": "2020-01-20",
+      "fixed": "",
+      "tele": "1111111111",
+      "note": "",
+      "danger": false
+    },
+    {
+      "uid": 11,
+      "name": "addon",
+      "baby": "",
+      "birth": "2015-01-03",
+      "fixed": "",
+      "tele": "9yue",
+      "note": "",
+      "danger": false
+    },
+    {
+      "uid": 12,
+      "name": "danger",
+      "baby": "",
+      "birth": "2019-09-05",
+      "fixed": "",
+      "tele": "test",
+      "note": "danger test",
+      "danger": "true"
     }
   ],
   "stored": "C:\\Users\\symant\\Documents\\GitHub\\Child_Health_Electron\\src\\datastore\\data.json",
   "backup": "",
   "author": "symant233 <symant233@gmail.com>",
   "version": "0.0.5",
-  "increase": 7
+  "increase": 12
 }

@@ -9,7 +9,7 @@
             <div class="field">
               <label class="label">产妇姓名</label>
               <div class="control">
-                <input class="input is-info" type="text" name="name" id="name" placeholder="👩Name">
+                <input class="input is-info" type="text" name="name" id="name" placeholder="👩Name" v-model="name">
               </div>
               <p class="help is-danger" id='req-name' style="display: none;">* 该项不能为空</p>
             </div>
@@ -17,14 +17,14 @@
             <div class="field">
               <label class="label">宝宝姓名</label>
               <div class="control">
-                <input class="input" type="text" name="baby" id="baby" placeholder="👶Baby">
+                <input class="input" type="text" name="baby" id="baby" placeholder="👶Baby" v-model="baby">
               </div>
             </div>
 
             <div class="field">
               <label class="label">出生日期</label>
               <div class="control">
-                <input class="input is-info" type="date" name="birth" id="birth">
+                <input class="input is-info" type="date" name="birth" id="birth" v-model="birth">
               </div>
               <p class="help is-danger" id='req-birth' style="display: none;">* 该项不能为空</p>
             </div>
@@ -32,7 +32,7 @@
             <div class="field">
               <label class="label">纠正胎龄</label>
               <div class="control">
-                <input class="input" type="date" name="fixed" id="fixed">
+                <input class="input" type="date" name="fixed" id="fixed" v-model="fixed">
               </div>
             </div>
 
@@ -43,7 +43,7 @@
             <div class="field">
               <label class="label">联系电话:</label>
               <div class="control">
-                <input class="input is-info" type="tel" name="tele" id="tele" placeholder="📞Telephone">
+                <input class="input is-info" type="tel" name="tele" id="tele" placeholder="📞Telephone" v-model="tele">
               </div>
               <p class="help is-danger" id='req-tele' style="display: none;">* 该项不能为空</p>
             </div>
@@ -51,7 +51,7 @@
             <div class="field">
               <label class="label">备注:</label>
               <div class="control">
-                <textarea class="textarea" name="note" id="note" placeholder="🖋Textarea"></textarea>
+                <textarea class="textarea" name="note" id="note" placeholder="🖋Textarea" v-model="note"></textarea>
               </div>
             </div>
 
@@ -59,11 +59,11 @@
               <div class="control">
                 <span><b>高危儿:&nbsp;&nbsp;</b></span>
                 <label class="radio">
-                  <input type="radio" name="danger" value="true" id="danger">
+                  <input type="radio" name="danger" value="true" id="danger" v-model="danger">
                   Yes
                 </label>
                 <label class="radio">
-                  <input type="radio" name="danger" value="false" checked>
+                  <input type="radio" name="danger" value="false" checked v-model="danger">
                   No
                 </label>
               </div>
@@ -109,15 +109,26 @@
   import db from '../../datastore/index'
   export default {
     name: 'insert-page',
+    data () {
+      return {
+        name: '',
+        baby: '',
+        birth: '',
+        fixed: '',
+        tele: '',
+        note: '',
+        danger: 'false'
+      }
+    },
     methods: {
       reset () {
-        document.getElementById('name').value = ''
-        document.getElementById('baby').value = ''
-        document.getElementById('birth').value = ''
-        document.getElementById('fixed').value = ''
-        document.getElementById('tele').value = ''
-        document.getElementById('note').value = ''
-        document.getElementById('danger').checked = false
+        this.name = ''
+        this.baby = ''
+        this.birth = ''
+        this.fixed = ''
+        this.tele = ''
+        this.note = ''
+        this.danger = 'false'
       },
       insert () {
         function inputRequired (judge, input, pp) {
@@ -152,24 +163,17 @@
           }
           return false
         }
-        var name = document.getElementById('name').value
-        var baby = document.getElementById('baby').value
-        var birth = document.getElementById('birth').value
-        var fixed = document.getElementById('fixed').value
-        var tele = document.getElementById('tele').value
-        var note = document.getElementById('note').value
-        var danger = document.getElementById('danger').checked
-        if (checkReq(name, birth, tele)) {
+        if (checkReq(this.name, this.birth, this.tele)) {
           var increase = db.read().get('increase').value() + 1
           db.get('users').push({
             uid: increase,
-            name: name,
-            baby: baby,
-            birth: birth,
-            fixed: fixed,
-            tele: tele,
-            note: note,
-            danger: danger
+            name: this.name,
+            baby: this.baby,
+            birth: this.birth,
+            fixed: this.fixed,
+            tele: this.tele,
+            note: this.note,
+            danger: this.danger
           }).write()
           db.update('increase', n => n + 1).write()
           console.log('DB@ inserted new data')
@@ -177,6 +181,8 @@
           setTimeout(function () { document.getElementById('status').children[0].style.display = 'none' }, 1500)
           return true
         }
+        document.getElementById('status').children[1].style.display = 'flex'
+        setTimeout(function () { document.getElementById('status').children[1].style.display = 'none' }, 1500)
         return false
       },
       open (link) {
@@ -196,7 +202,15 @@
   display: none;
   height: 41px;
   margin: 0px;
+  position: fixed;
+  bottom: 0px;
 }
+
+/* nav .container button {
+  border-radius: unset;
+  height: 41px;
+  margin: 0px;
+} */
 
 .tabs.is-boxed a {
     border-radius: 0px;
