@@ -26,5 +26,8 @@ var change = {
   note: 'changed',
   danger: false
 }
-var test = db.get('users').find({uid: 10007}).assign(change).write()
+// var test = db.get('users').find({uid: 10007}).assign(change).write()
+
+var test = db.set('search', 'baby').write()
+
 console.log(test)

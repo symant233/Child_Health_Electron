@@ -23,6 +23,11 @@ export default new Router({
       path: '/selector',
       name: 'select-page',
       component: require('@/components/Selector').default
+    },
+    {
+      path: '/tele',
+      name: 'tele-page',
+      component: require('@/components/Telephone').default
     }
   ]
 })

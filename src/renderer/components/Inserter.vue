@@ -100,7 +100,7 @@
           </div>
           <div class="container">
             <ul>
-              <!-- <li><a href="#/">Home</a></li> -->
+              <li><a href="#/tele">🌟</a></li>
               <li class="is-active"><a href='#/inserter'>Inserter</a></li>
               <li><a href='#/selector'>Selector</a></li>
             </ul>

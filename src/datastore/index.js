@@ -24,11 +24,14 @@ console.log('DataBase@ ' + STORE_PATH)
 
 db.defaults({
   users: [],
+  pre: 2,
   stored: STORE_PATH,
   backup: '',
   author: pkg.author,
   version: pkg.version,
-  increase: 10000
+  increase: 10000,
+  language: 'Chinese',
+  search: 'baby'
 }).write() // 一定要显式调用write方法将数据存入JSON
 // count: db.get('users').size().value()
 

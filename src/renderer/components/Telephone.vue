@@ -40,7 +40,7 @@
             <th>{{ user.tele }}</th>
             <td><abbr :title="user.note">{{ user.note }}</abbr></td>
             <td>{{ user.danger ? '⭕' : '' }}</td>
-            <td>{{ user.fixed ? getAge(user.fixed).parse : getAge(user.birth).parse }}</td>
+            <td>{{ user.age }}</td>
           </tr>
         </tbody>
       </table>
@@ -51,25 +51,18 @@
         <div class="container is-left">
           <!-- left side navbar -->
           <button class="button is-light" style="width: 100px; padding-top: 6px;" onclick="window.location.reload()">
-            <abbr title="点击刷新">Counts: {{ count }}</abbr>
+            <abbr title="点击刷新">Counts: {{ this.users.length }}</abbr>
           </button>
 
-          <div class="field has-addons" style="display: inline-flex; margin-bottom: 0px; padding-top: 2px;">
-            <p class="control">
-              <span class="select">
-                <select v-model="selectForm.options">
-                  <option v-for="(option, index) in optionList" :key="index" :value="option.id">{{ option.value }}</option>
-                </select>
-              </span>
-            </p>
-            <p class="control">
-              <input class="input" type="text" placeholder="Text input" v-model="selectForm.input">
-            </p>
-            <p class="control">
-              <a class="button is-info" @click="search()" style="border-bottom-right-radius: 4px;border-top-right-radius: 4px;" id="button-search">
-                🔍
-              </a>
-            </p>
+          <div style="padding-top: 10px; display: inline-flex;">
+            <label class="radio">
+              <input type="radio" name="prefix" value="5" v-model="prefix" @click="setPrefix(5)">
+              5天
+            </label>
+            <label class="radio">
+              <input type="radio" name="prefix" value="2" v-model="prefix" @click="setPrefix(2)">
+              2天
+            </label>
           </div>
 
           <div class="buttons" id='status'>
@@ -77,11 +70,12 @@
             <button class="button is-danger" id="status-err"> ❌ Failed...</button>
           </div>
         </div>
+
         <div class="container">
           <ul>
-            <li><a href="#/tele">🌟</a></li>
+            <li class="is-active is-danger"><a href="#/tele" id="nav-selector">🌟</a></li>
             <li><a href='#/inserter'>Inserter</a></li>
-            <li class="is-active is-primary"><a href='#/selector' id="nav-selector">Selector</a></li>
+            <li><a href='#/selector'>Selector</a></li>
           </ul>
         </div>
       </nav>
@@ -92,23 +86,14 @@
 <script>
   import db from '../../datastore/index'
   export default {
-    name: 'select-page',
+    name: 'tele-page',
     data () {
       return {
         questionDeleteBoolean: false, // show model
         deleteUid: 0,
-        test: 'Test message from src/renderer/components/Selector.vue',
         today: new Date().toISOString().slice(0, 10),
-        users: db.get('users').value(),
-        count: db.get('users').size().value(),
-        selectForm: { options: 'baby', input: '' },
-        optionList: [
-          { id: 'uid', value: '序号' },
-          { id: 'name', value: '产妇' },
-          { id: 'baby', value: '宝宝' },
-          { id: 'birth', value: '生日' },
-          { id: 'danger', value: '高危' }
-        ]
+        prefix: db.get('pre').value(),
+        users: this.getTele()
       }
     },
     methods: {
@@ -128,8 +113,9 @@
           this.questionDeleteBoolean = false
         }
       },
-      getAge (birth) {
+      getAge (birth, cn) {
         birth = Date.parse(birth.replace('/-/g', '/'))
+        var pre = db.get('pre').value()
         if (birth) {
           var day = 0
           var month = 0
@@ -137,7 +123,7 @@
           var oneDay = 1000 * 60 * 60 * 24
           var now = new Date()
           var birthday = new Date(birth)
-          var age = parseInt((now - birthday) / oneDay)
+          var age = parseInt((now - birthday) / oneDay) + pre
           day = age % 30
           age = age - day
           if (age > 0) {
@@ -148,37 +134,45 @@
               year = (age - month) / 12
             }
           }
-          var parse = year + '/' + month + '/' + day
+          if (cn) {
+            var parse = year + '岁' + month + '月'
+          } else {
+            var parse = year + '/' + month + '/' + day
+          }
           return { year: year, month: month, day: day, parse: parse }
         }
       },
-      search () {
-        var id = this.selectForm.options
-        var input = this.selectForm.input
-        console.log('Search: ' + id + ': ' + input)
-        if (id === 'uid') {
-          this.users = this.users.filter(function (user) {
-            return user.uid === parseInt(input)
-          })
-        } else if (id === 'danger') {
-          this.users = this.users.filter(function (user) {
-            return user.danger === true
-          })
-        } else if (id === 'name') {
-          this.users = this.users.filter(function (user) {
-            return user.name.match(input)
-          })
-        } else if (id === 'baby') {
-          this.users = this.users.filter(function (user) {
-            return user.baby.match(input)
-          })
-        } else if (id === 'birth') {
-          this.users = this.users.filter(function (user) {
-            return user.birth.match(input)
-          })
+      getTele () {
+        const users = db.get('users').value()
+        const pre = db.get('pre').value()
+        var usersNew = []
+        const checkList = [
+          '0/1/0', '0/3/0', '0/6/0', '0/9/0',
+          '1/0/0', '1/6/0', '2/0/0', '2/6/0',
+          '3/0/0', '3/6/0', '4/0/0', '4/6/0',
+          '5/0/0', '5/6/0', '6/0/0'
+        ]
+        for (var index in users) {
+          var user = users[index]
+          if (user.fixed) {
+            var age = this.getAge(user.fixed).parse
+            var cn = this.getAge(user.fixed, true).parse
+          } else {
+            var age = this.getAge(user.birth).parse
+            var cn = this.getAge(user.birth, true).parse
+          }
+          for (var index in checkList) {
+            var item = checkList[index]
+            user.age = cn
+            if (age === item) {
+              usersNew.push(user)
+            }
+          }
         }
-        this.count = this.users.length
-        db.set('search', id).write()
+        return usersNew
+      },
+      setPrefix (pre) {
+        db.set('pre', pre).write()
       }
     }
   }
@@ -189,8 +183,8 @@
   background-color: #209cee;
 }
 #nav-selector {
-  background: #00d1b2;
-  border-color: #00d1b2;
+  background: #f14668;
+  border-color: #f14668;
 }
 tbody tr td {
     text-overflow: ellipsis;
