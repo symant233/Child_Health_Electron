@@ -43,20 +43,13 @@
       ]
     },
     "mac": {
-      "icon": "build/icons/icon.icns",
-      "category": "public.app-category.utilities"
+      "icon": "build/icons/icon.icns"
     },
     "win": {
-      "icon": "build/icons/icon.ico",
-      "target": "nsis"
+      "icon": "build/icons/icon.ico"
     },
     "linux": {
-      "icon": "build/icons",
-      "category": "Utility",
-      "target": [
-        "deb",
-        "AppImage"
-      ]
+      "icon": "build/icons"
     },
     "nsis": {
       "oneClick": false,
