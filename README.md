@@ -69,8 +69,8 @@ Data:
         Open Data Folder: 打开当前数据库的位置
         Open Backup Folder: 打开备份的位置
     Backups:
-        Run Backup: 立即备份
-        Set Backup Path: 选择备份的路径
+        Run Backup: 立即备份 (每次关闭程序会自动备份)
+        Set Backup Path: 选择备份的路径 (备份前需要设置)
         Set Backup Series: 设置备份序列
     Languages:
         English: 设置菜单栏语言为英文

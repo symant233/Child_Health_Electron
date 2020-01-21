@@ -21,20 +21,24 @@ const winURL = process.env.NODE_ENV === 'development'
   : `file://${__dirname}/index.html`
 // const winURL = `file://${__dirname}/index.ejs`
 
-function backupnow () {
+function backupnow (bool) {
   var stored = db.read().get('stored').value()
   var backup = db.read().get('backup').value()
   if (!backup) {
-    backupNotFound()
+    if (!bool) { // 如果没提供bool或bool为false
+      backupNotFound()
+    }
   } else {
     fs.copyFileSync(stored, backup)
     console.log('Run backup... @ ' + backup)
-    dialog.showMessageBox({
-      type: 'none',
-      title: 'Backup',
-      message: 'Backup Finished',
-      detail: '@' + backup
-    })
+    if (!bool) { // 如果没提供bool或bool为false
+      dialog.showMessageBox({
+        type: 'none',
+        title: 'Backup',
+        message: 'Backup Finished',
+        detail: '@' + backup
+      })
+    }
   }
 }
 
@@ -517,6 +521,7 @@ app.on('ready', function () {
 })
 
 app.on('window-all-closed', () => {
+  backupnow(true)
   if (process.platform !== 'darwin') {
     app.quit()
   }
