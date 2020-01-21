@@ -11,7 +11,7 @@ platform:
 cache:
   - node_modules
   - '%APPDATA%\npm-cache'
-  - '%USERPROFILE%\.electron'
+  - '%USERPROFILE%\AppData\Local\electron-builder\Cache'
   - '%USERPROFILE%\AppData\Local\Yarn\cache'
 
 init:
@@ -27,3 +27,14 @@ build_script:
   - npm run build
 
 test: off
+
+deploy:
+  description: 'Release description'
+  provider: GitHub
+  draft: true
+  prerelease: false
+  auth_token:
+    secure: oUQp5QByqF9WrGmoL/YHsCw03mBs8coDAWAeqe+PDCnYnWzbLABVhq+agItQK+t+
+  on:
+    branch: master                 # release from master branch only
+    APPVEYOR_REPO_TAG: true        # deploy on tag push only
