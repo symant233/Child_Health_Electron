@@ -7,12 +7,13 @@ branches:
 image: Visual Studio 2017
 platform:
   - x64
+  - x86
 
 cache:
   - node_modules
   - '%APPDATA%\npm-cache'
   - '%USERPROFILE%\AppData\Local\electron-builder\Cache'
-  - '%USERPROFILE%\AppData\Local\Yarn\cache'
+  # - '%USERPROFILE%\AppData\Local\Yarn\cache'
 
 init:
   - git config --global core.autocrlf input
@@ -33,6 +34,8 @@ deploy:
   provider: GitHub
   draft: true
   prerelease: false
+  artifact: 
+  - path: build/
   auth_token:
     secure: oUQp5QByqF9WrGmoL/YHsCw03mBs8coDAWAeqe+PDCnYnWzbLABVhq+agItQK+t+
   on:
