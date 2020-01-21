@@ -1,6 +1,6 @@
 {
   "name": "child_health_electron",
-  "version": "1.0.3",
+  "version": "1.0.5",
   "author": "symant233 <symant233@gmail.com>",
   "description": "A child health care system writen in electron.",
   "license": "GNU General Public License v3.0",
@@ -43,13 +43,20 @@
       ]
     },
     "mac": {
-      "icon": "build/icons/icon.icns"
+      "icon": "build/icons/icon.icns",
+      "category": "public.app-category.utilities"
     },
     "win": {
-      "icon": "build/icons/icon.ico"
+      "icon": "build/icons/icon.ico",
+      "target": "nsis"
     },
     "linux": {
-      "icon": "build/icons"
+      "icon": "build/icons",
+      "category": "Utility",
+      "target": [
+        "deb",
+        "AppImage"
+      ]
     },
     "nsis": {
       "oneClick": false,
