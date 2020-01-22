@@ -34,7 +34,7 @@ deploy:
   provider: GitHub
   draft: true
   prerelease: false
-  artifacts: build/
+  artifacts: /child_health_electron Setup .*\.exe/
   auth_token:
     secure: oUQp5QByqF9WrGmoL/YHsCw03mBs8coDAWAeqe+PDCnYnWzbLABVhq+agItQK+t+
   on:
