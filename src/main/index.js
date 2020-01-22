@@ -514,9 +514,21 @@ function createMenu (mainWindow) {
   mainWindow.setMenu(menu)
 }
 
+function firstTimeRun () {
+  if (!db.get('backup').value()) {
+    dialog.showMessageBox({
+      type: 'info',
+      message: '未设置备份路径',
+      detail: '立即设置 ==> 菜单栏: 数据库->备份选项->设置备份路径\n打开后选择一个安全的文件夹, 以后退出程序会自动备份数据库.'
+    })
+    return true
+  }
+  return false
+}
+
 app.on('ready', function () {
   var win = createWindow()
-  // mainWindow.webContents.closeDevTools()
+  firstTimeRun()
   createMenu(win)
 })
 
