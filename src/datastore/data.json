@@ -9,7 +9,7 @@
       "tele": "a2",
       "note": "",
       "danger": false,
-      "age": "10岁1月"
+      "age": "10岁2月"
     },
     {
       "uid": 10004,
@@ -42,7 +42,7 @@
       "tele": "1234",
       "note": "",
       "danger": true,
-      "age": "1岁0月"
+      "age": "1岁1月"
     },
     {
       "uid": 10007,
@@ -119,7 +119,7 @@
       "tele": "123456789",
       "note": "out test!",
       "danger": false,
-      "age": "1岁11月"
+      "age": "2岁0月"
     },
     {
       "uid": 10018,
@@ -131,13 +131,35 @@
       "note": "out test!",
       "danger": true,
       "age": "2岁0月"
+    },
+    {
+      "uid": 10020,
+      "name": "test",
+      "baby": "test",
+      "birth": "2020-01-08",
+      "fixed": "",
+      "tele": "test",
+      "note": "",
+      "danger": false,
+      "age": "0岁0月"
+    },
+    {
+      "uid": 10021,
+      "name": "test2",
+      "baby": "",
+      "birth": "2020-01-15",
+      "fixed": "",
+      "tele": "test2",
+      "note": "",
+      "danger": false,
+      "age": "0岁0月"
     }
   ],
   "stored": "C:\\Users\\symant\\Documents\\GitHub\\Child_Health_Electron\\src\\datastore\\data.json",
   "backup": "C:\\Users\\symant\\Desktop\\data.json",
   "author": "symant233 <symant233@gmail.com>",
-  "version": "1.0.6",
-  "increase": 10019,
+  "version": "1.0.8",
+  "increase": 10021,
   "language": "English",
   "pre": 5,
   "search": "baby"

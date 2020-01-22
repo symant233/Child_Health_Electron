@@ -113,6 +113,7 @@
 
 <script>
   import db from '../../datastore/index'
+  const {dialog} = require('electron').remote
   export default {
     name: 'insert-page',
     data () {
@@ -160,9 +161,11 @@
         if (bool === true) {
           document.getElementById('status').children[0].style.display = 'flex'
           setTimeout(function () { document.getElementById('status').children[0].style.display = 'none' }, 1500)
+          return true
         } else {
           document.getElementById('status').children[1].style.display = 'flex'
           setTimeout(function () { document.getElementById('status').children[1].style.display = 'none' }, 1500)
+          return false
         }
       },
       checkReq (name, birth, tele) {
@@ -200,6 +203,16 @@
       insert () {
         db.read()
         if (this.checkReq(this.name, this.birth, this.tele)) {
+          // 必要属性已输入
+          if (db.get('users').find({ baby: this.baby, birth: this.birth }).value()) {
+            // 相同的出生日期同名宝宝
+            dialog.showMessageBox({
+              type: 'error',
+              message: '插入失败',
+              detail: this.birth + '出生日期已有宝宝' + this.baby
+            })
+            return this.statusBar(false)
+          }
           var increase = db.get('increase').value() + 1
           db.get('users').push({
             uid: increase,
@@ -213,11 +226,9 @@
           }).write()
           db.update('increase', n => n + 1).write()
           console.log('DB@ inserted new data')
-          this.statusBar(true)
-          return true
+          return this.statusBar(true)
         }
-        this.statusBar(false)
-        return false
+        return this.statusBar(false)
       },
       load () {
         var uid = parseInt(this.uid)
@@ -247,6 +258,14 @@
             tele: this.tele,
             note: this.note,
             danger: (this.danger === 'true') ? true : false
+          }
+          if (!db.get('users').find({uid: uid}).value()) {
+            dialog.showMessageBox({
+              type: 'error',
+              message: '未找到对应UID',
+              detail: '如果进行插入操作, 请勿输入Uid.\n\n如果进行更新操作, 输入用户Uid后点击蓝色加载按钮后更改.'
+            })
+            return this.statusBar(false)
           }
           db.get('users').find({uid: uid}).assign(changed).write()
           console.log('DB@ updated uid: ' + this.uid)
