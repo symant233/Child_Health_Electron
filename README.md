@@ -3,7 +3,7 @@
 [![GitHub repo size](https://img.shields.io/github/repo-size/symant233/Child_Health_Electron)](https://github.com/symant233/Child_Health_Electron/archive/master.zip) [![GitHub](https://img.shields.io/github/license/symant233/Child_Health_Electron)](https://github.com/symant233/Child_Health_Electron/blob/master/LICENSE) [![Build status](https://ci.appveyor.com/api/projects/status/fvth00ua9t2nt1pf?svg=true)](https://ci.appveyor.com/project/symant233/child-health-electron)
 
 
-> 使用Electron和Vue.js构建的一款儿童保健数据库管理桌面应用.
+> 使用`Electron`和`Vue.js`构建的一款儿童保健数据库管理桌面应用.
 
 ## 主要功能
  - 对数据库进行 插入/删除/更新/选择 操作
@@ -103,7 +103,7 @@ cd Child_Health_Electron
 npm install
 
 # serve with hot reload at localhost:9080
-npm run dev
+# npm run dev
 
 # build electron application for production
 npm run build

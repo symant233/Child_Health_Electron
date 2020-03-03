@@ -93,7 +93,7 @@
         deleteUid: 0,
         today: new Date().toISOString().slice(0, 10),
         prefix: db.get('pre').value(),
-        users: this.getTele()
+        users: this.getTele().reverse()
       }
     },
     methods: {

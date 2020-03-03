@@ -99,7 +99,7 @@
         deleteUid: 0,
         test: 'Test message from src/renderer/components/Selector.vue',
         today: new Date().toISOString().slice(0, 10),
-        users: db.get('users').value(),
+        users: db.get('users').value().reverse(),
         count: db.get('users').size().value(),
         selectForm: { options: 'baby', input: '' },
         optionList: [
@@ -156,26 +156,34 @@
         var id = this.selectForm.options
         var input = this.selectForm.input
         console.log('Search: ' + id + ': ' + input)
-        if (id === 'uid') {
-          this.users = this.users.filter(function (user) {
-            return user.uid === parseInt(input)
-          })
-        } else if (id === 'danger') {
-          this.users = this.users.filter(function (user) {
-            return user.danger === true
-          })
-        } else if (id === 'name') {
-          this.users = this.users.filter(function (user) {
-            return user.name.match(input)
-          })
-        } else if (id === 'baby') {
-          this.users = this.users.filter(function (user) {
-            return user.baby.match(input)
-          })
-        } else if (id === 'birth') {
-          this.users = this.users.filter(function (user) {
-            return user.birth.match(input)
-          })
+        switch (id) {
+          case 'uid':
+            this.users = this.users.filter(function (user) {
+              return user.uid === parseInt(input)
+            });
+            break;
+          case 'danger':
+            this.users = this.users.filter(function (user) {
+              return user.danger === true
+            });
+            break;
+          case 'name':
+            this.users = this.users.filter(function (user) {
+              return user.name.match(input)
+            });
+            break;
+          case 'baby':
+            this.users = this.users.filter(function (user) {
+              return user.baby.match(input)
+            });
+            break;
+          case 'birth':
+            this.users = this.users.filter(function (user) {
+              return user.birth.match(input)
+            });
+            break;
+          default:
+            break;
         }
         this.count = this.users.length
         db.set('search', id).write()
