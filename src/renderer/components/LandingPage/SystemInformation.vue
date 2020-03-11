@@ -26,23 +26,28 @@
         <div class="name">Platform:</div>
         <div class="value">{{ platform }}</div>
       </div>
+      <editable :obj="{ uid: 1, key: 'name', value: msg }"></editable>
     </div>
   </div>
 </template>
 
 <script>
-  export default {
-    data () {
-      return {
-        electron: process.versions.electron,
-        name: this.$route.name,
-        node: process.versions.node,
-        path: this.$route.path,
-        platform: require('os').platform(),
-        vue: require('vue/package.json').version
-      }
+import Editable from '../Common/Editable.vue'
+export default {
+  name: 'system-information',
+  components: { Editable },
+  data () {
+    return {
+      electron: process.versions.electron,
+      name: this.$route.name,
+      node: process.versions.node,
+      path: this.$route.path,
+      platform: require('os').platform(),
+      vue: require('vue/package.json').version,
+      msg: 'MESSAGE'
     }
   }
+}
 </script>
 
 <style scoped>

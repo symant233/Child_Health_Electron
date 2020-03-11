@@ -5,14 +5,14 @@ Vue.use(Router)
 
 export default new Router({
   routes: [
-    // {
-    //   path: '/',
-    //   name: 'landing-page',
-    //   component: require('@/components/LandingPage').default
-    // },
     {
       path: '/',
       redirect: '/inserter'
+    },
+    {
+      path: '/landing',
+      name: 'landing-page',
+      component: require('@/components/LandingPage').default
     },
     {
       path: '/inserter',
@@ -28,6 +28,11 @@ export default new Router({
       path: '/tele',
       name: 'tele-page',
       component: require('@/components/Telephone').default
+    },
+    {
+      path: '/detail',
+      name: 'entry-detail',
+      component: require('@/components/Detail').default
     }
   ]
 })

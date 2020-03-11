@@ -5,17 +5,16 @@ import { remote, app } from 'electron'
 import pkg from '../../package.json'
 
 const APP = process.type === 'renderer' ? remote.app : app
-var STORE_PATH = APP.getAppPath()
 
-// STORE_PATH == "C:\\****\\child_health_electron\\resources\\app.asar"
-const RESOURCE_DIR = path.dirname(STORE_PATH)
-
+let STORE_PATH
 if (process.env.NODE_ENV !== 'development') {
-  STORE_PATH = path.join(RESOURCE_DIR, 'data.json')
-  // PRO: child_health_electron\resources\data.json
+  var userData = APP.getPath('userData')
+  STORE_PATH = path.join(userData, 'data.json')
+  // production: %APPDATA%\child_health_electron\data.json
 } else {
-  STORE_PATH = path.join(RESOURCE_DIR, '../src/datastore/data.json')
-  // DEV: Child_Health_Electron\src\datastore\data.json
+  var dist = path.dirname(APP.getAppPath())
+  STORE_PATH = path.join(dist, '../src/datastore/data.json')
+  // development: Child_Health_Electron\src\datastore\data.json
 }
 
 const adapter = new FileSync(STORE_PATH) // 初始化lowdb读写的json文件名以及存储路径
@@ -34,6 +33,10 @@ db.defaults({
   search: 'baby'
 }).write() // 一定要显式调用write方法将数据存入JSON
 // count: db.get('users').size().value()
+
+if (db.get('stored').value() !== STORE_PATH) {
+  db.set('stored', STORE_PATH).write()
+} // 如果数据迁移
 
 if (!db.has('users').value()) {
   remote.dialog().showMessageBox({

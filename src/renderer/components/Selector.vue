@@ -33,13 +33,13 @@
         <tbody>
           <tr v-for="user in users" :key="user.uid" :id="'table-uid-' + user.uid">
             <td @click="questionDelete($event)">{{ user.uid }}</td>
-            <th>{{ user.name }}</th>
-            <td>{{ user.baby }}</td>
-            <th>{{ user.birth }}</th>
-            <td>{{ user.fixed }}</td>
-            <th>{{ user.tele }}</th>
+            <th><editable :obj="{ uid: user.uid, key: 'name', value: user.name}"></editable></th>
+            <td><editable :obj="{ uid: user.uid, key: 'baby', value: user.baby}"></editable></td>
+            <th><editable :obj="{ uid: user.uid, key: 'birth', value: user.birth}"></editable></th>
+            <td><editable :obj="{ uid: user.uid, key: 'fixed', value: user.fixed}"></editable></td>
+            <th><editable :obj="{ uid: user.uid, key: 'tele', value: user.tele}"></editable></th>
             <td><abbr :title="user.note">{{ user.note }}</abbr></td>
-            <td>{{ user.danger ? '⭕' : '' }}</td>
+            <td>{{ user.danger ? '⭕' : ' ' }}</td>
             <td>{{ user.fixed ? getAge(user.fixed).parse : getAge(user.birth).parse }}</td>
           </tr>
         </tbody>
@@ -91,15 +91,17 @@
 
 <script>
   import db from '../../datastore/index'
+  import Editable from './Common/Editable.vue'
   export default {
     name: 'select-page',
+    components: { Editable },
     data () {
       return {
         questionDeleteBoolean: false, // show model
         deleteUid: 0,
         test: 'Test message from src/renderer/components/Selector.vue',
         today: new Date().toISOString().slice(0, 10),
-        users: db.get('users').value().reverse(),
+        users: db.get('users').value().sort((a, b) => { return b.uid - a.uid }),
         count: db.get('users').size().value(),
         selectForm: { options: 'baby', input: '' },
         optionList: [
@@ -160,30 +162,30 @@
           case 'uid':
             this.users = this.users.filter(function (user) {
               return user.uid === parseInt(input)
-            });
-            break;
+            })
+            break
           case 'danger':
             this.users = this.users.filter(function (user) {
               return user.danger === true
-            });
-            break;
+            })
+            break
           case 'name':
             this.users = this.users.filter(function (user) {
               return user.name.match(input)
-            });
-            break;
+            })
+            break
           case 'baby':
             this.users = this.users.filter(function (user) {
               return user.baby.match(input)
-            });
-            break;
+            })
+            break
           case 'birth':
             this.users = this.users.filter(function (user) {
               return user.birth.match(input)
-            });
-            break;
+            })
+            break
           default:
-            break;
+            break
         }
         this.count = this.users.length
         db.set('search', id).write()
