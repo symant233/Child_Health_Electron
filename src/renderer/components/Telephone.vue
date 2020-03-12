@@ -124,6 +124,7 @@
           var now = new Date()
           var birthday = new Date(birth)
           var age = parseInt((now - birthday) / oneDay) + pre
+
           year = parseInt(age / 365.25)
           age = age - year * 365.25
           if (age > 0) {
@@ -131,6 +132,7 @@
             age = age - month * 30.4375
             day = parseInt(age)
           }
+          
           if (cn) {
             var parse = year + '岁' + month + '月'
           } else {
@@ -170,6 +172,7 @@
       },
       setPrefix (pre) {
         db.set('pre', pre).write()
+        window.location.reload()
       }
     }
   }

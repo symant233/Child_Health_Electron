@@ -1,7 +1,7 @@
 <template>
   <div id="wrapper">
     <section class="hero is-white is-fullheight">
-      <div class="hero-head" id="hero-head">
+      <div class="hero-head" id="hero-head-detail">
         <div class="columns content is-medium">
           <div class="column">
             <a :href="'\/#\/selector#table-uid-' + this.uid">＜</a>
@@ -12,52 +12,65 @@
             </span>
             健康体检表&nbsp;&nbsp;
           </div>
-          <div class="column has-text-right">
-            {{ new Date().toISOString().slice(0, 10) }}
-          </div>
+          <div class="column has-text-right">{{ today }}</div>
         </div>
         
       </div>
-      <div class="hero-body" id="hero-body">
+      <div class="hero-body" id="hero-body-detail">
+        <!-- head table columns start-->
         <div class="columns">
           <div class="column is-half">
             <table class="table is-striped is-fullwidth is-hoverable is-bordered">
               <thead>
                 <tr>
-                  <th style="width: 90px;"></th>
+                  <th style="width: 90px; min-width: 89px;"></th>
                   <th colspan="3" class="has-text-centered">宝宝信息</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
                   <td>姓名</td>
-                  <td>{{ user.baby }}</td>
-                  <td style="width: 90px;">性别</td>
-                  <td></td> <!-- gender -->
+                  <td width="50%">
+                    <editable :obj="{ uid: user.uid, key: 'baby', value: user.baby }"></editable>
+                  </td>
+                  <td style="width: 57px; min-width: 57px;">性别</td>
+                  <td width="50%"><div v-if="user.male">{{ user.male ? '男': '女' }}</div></td> <!-- gender -->
                 </tr>
                 <tr>
                   <td>出生日期</td>
-                  <td>{{ user.birth }}</td>
+                  <td style="min-width: 108px;">
+                    <editable :obj="{ uid: user.uid, key: 'birth', value: user.birth }"></editable>
+                  </td>
                   <td>年龄</td>
                   <td>{{ user.fixed ? getAge(user.fixed).parse : getAge(user.birth).parse }}</td>
                 </tr>
                 <tr>
                   <td>纠正胎龄</td>
-                  <td>{{ user.fixed }}</td>
-                  <td>高危儿</td>
+                  <td>
+                    <editable :obj="{ uid: user.uid, key: 'fixed', value: user.fixed }"></editable>
+                  </td>
+                  <td>高危</td>
                   <td>{{ user.danger ? '⭕' : '否' }}</td>
                 </tr>
                 <tr>
                   <td>出生体重</td>
-                  <td></td>
-                  <td>孕周</td>
-                  <td></td>
+                  <td>
+                    <editable :obj="{ uid: user.uid, key: 'weight', value: user.weight }"></editable>
+                  </td>
+                  <td>G</td>
+                  <td>
+                    <editable :obj="{ uid: user.uid, key: 'G', value: user.G }"></editable>
+                  </td>
                 </tr>
                 <tr>
-                  <td>G</td>
-                  <td></td>
+                  <td>孕周</td>
+                  <td>
+                    <editable :obj="{ uid: user.uid, key: 'week', value: user.week }"></editable>
+                  </td>
                   <td>P</td>
-                  <td></td>
+                  <td>
+                    <editable :obj="{ uid: user.uid, key: 'P', value: user.P }"></editable>
+                  </td>
                 </tr>
               </tbody>
             </table>
@@ -67,36 +80,52 @@
             <table class="table is-striped is-fullwidth is-hoverable is-bordered">
               <thead>
                 <tr>
-                  <th style="width: 90px;"></th>
-                  <th class="has-text-centered">母亲</th>
-                  <th class="has-text-centered">父亲</th>
+                  <th style="width: 57px; min-width: 57px;"></th>
+                  <th class="has-text-centered" width="50%">母亲</th>
+                  <th class="has-text-centered" width="50%">父亲</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
                   <td>姓名</td>
-                  <td>{{ user.name }}</td>
-                  <td></td>
+                  <td>
+                    <editable :obj="{ uid: user.uid, key: 'name', value: user.name }"></editable>
+                  </td>
+                  <td>
+                    <edit-parent :obj="{ uid: uid, key: 'name', value: detail.father.name, mother: false }"></edit-parent>
+                  </td>
                 </tr>
                 <tr>
                   <td>年龄</td>
-                  <td></td>
-                  <td></td>
+                  <td><edit-parent :obj="{ uid: uid, key: 'age', value: detail.mother.age, mother: true }"></edit-parent></td>
+                  <td><edit-parent :obj="{ uid: uid, key: 'age', value: detail.father.age, mother: false }"></edit-parent></td>
                 </tr>
                 <tr>
                   <td>职业</td>
-                  <td></td>
-                  <td></td>
+                  <td>
+                    <edit-parent :obj="{ uid: uid, key: 'job', value: detail.mother.job, mother: true }"></edit-parent>
+                  </td>
+                  <td>
+                    <edit-parent :obj="{ uid: uid, key: 'job', value: detail.father.job, mother: false }"></edit-parent>
+                  </td>
                 </tr>
                 <tr>
                   <td>电话</td>
-                  <td>{{ user.tele }}</td>
-                  <td></td>
+                  <td>
+                    <editable :obj="{ uid: user.uid, key: 'tele', value: user.tele }"></editable>
+                  </td>
+                  <td>
+                    <edit-parent :obj="{ uid: uid, key: 'tele', value: detail.father.tele, mother: false }"></edit-parent>
+                  </td>
                 </tr>
                 <tr>
                   <td>住址</td>
-                  <td></td>
-                  <td></td>
+                  <td>
+                    <edit-parent :obj="{ uid: uid, key: 'home', value: detail.mother.home, mother: true }"></edit-parent>
+                  </td>
+                  <td>
+                    <edit-parent :obj="{ uid: uid, key: 'home', value: detail.father.home, mother: false }"></edit-parent>
+                  </td>
                 </tr>
               </tbody>
             </table>
@@ -110,7 +139,62 @@
           </div>
         </article>
 
-
+        <div class="add">
+          <input class="num-input" type="number" v-model="addDetail.weight" name="weight" value="" placeholder="体重(斤)" />
+          <input class="num-input" type="number" v-model="addDetail.height" name="height" value="" placeholder="身高(厘米)" />
+          <input class="num-input" type="number" v-model="addDetail.head" name="head" value="" placeholder="头围(厘米)" />
+          <input type="text" v-model="addDetail.result" name="result" value="" placeholder="检查结果" />
+          <button @click="newDetail">新增</button>
+        </div>
+        <!-- detail table start -->
+        <table class="table is-striped is-fullwidth is-hoverable is-bordered">
+          <thead>
+            <tr>
+              <th style="min-width: 57px; width: 57px;">序号</th>
+              <th style="min-width: 57px; width: 57px;">年龄</th>
+              <th style="min-width: 57px; width: 57px;">体重</th>
+              <th style="min-width: 57px; width: 57px;">身高</th>
+              <th style="min-width: 57px; width: 57px;">头围</th>
+              <th class="has-text-centered">检查结果</th>
+              <th style="min-width: 108px; width: 108px;">时间</th>
+              <th style="min-width: 63px; width: 63px;">操作</th>
+          </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(report, index) in detail.reports" :key="index">
+              <td class="has-text-centered">{{ index+1 }}</td>
+              <td>{{ report.age }}</td>
+              <td>{{ report.weight }}</td>
+              <td>{{ report.height }}</td>
+              <td>{{ report.head }}</td>
+              <td>{{ report.result }}</td>
+              <td>{{ report.time }}</td>
+              <td>
+                <span @click="deleteDetail(report.id, index)" class="del">删</span>
+                <span @click="edit(report)" class="edit">改</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <!-- detail table end -->
+        <div id="mask" v-if="editing">
+          <div class="mask">
+            <div class="title">
+              编辑
+              <span @click="editing=false">
+                X
+              </span>
+            </div>
+            <div class="content">
+              <input class="num-input" type="number" v-model="editDetail.weight" name="weight" value="" placeholder="体重" />
+              <input class="num-input" type="number" v-model="editDetail.height" name="height" value="" placeholder="身高" />
+              <input class="num-input" type="number" v-model="editDetail.head" name="head" value="" placeholder="头围" />
+              <input type="number" v-model="editDetail.result" name="result" value="" placeholder="检查结果" />
+              <button @click="update" class="edit">更新</button>
+              <button @click="editing=false; editDetail={};">取消</button>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   </div>
@@ -119,13 +203,32 @@
 <script>
   import db from '../../datastore/'
   import Editable from './Common/Editable.vue'
+  import EditParent from './Common/EditParent.vue'
   export default {
     name: 'enrty-detail',
-    components: { Editable },
+    components: { Editable, EditParent },
     data () {
       return {
+        today: new Date().toISOString().slice(0, 10),
         uid: parseInt(this.$route.params.uid),
-        user: db.get('users').find({uid: parseInt(this.$route.params.uid)}).value()
+        user: db.get('users').find({uid: parseInt(this.$route.params.uid)}).value(),
+        detail: db.get('details').find({uid: parseInt(this.$route.params.uid)}).value(),
+        addDetail: {},
+        editDetail: {},
+        editing: false
+      }
+    },
+    beforeCreate: function () {
+      var uid = parseInt(this.$route.params.uid)
+      var res = db.get('details').find({uid: uid}).value()
+      if (!res) {
+        var data = {
+          uid: uid,
+          mother: {},
+          father: {},
+          reports: []
+        }
+        db.get('details').push(data).write()
       }
     },
     methods: {
@@ -147,29 +250,48 @@
             age = age - month * 30.4375
             day = parseInt(age)
           }
-          
+
           var parse = year + '/' + month + '/' + day
           return { year: year, month: month, day: day, parse: parse }
         }
+      },
+      newDetail () {
+        var newData = {
+          id: Date.now(),
+          age: this.user.fixed ? this.getAge(this.user.fixed).parse : this.getAge(this.user.birth).parse,
+          ...this.addDetail,
+          time: this.today
+        }
+        db.get('details').find({uid: this.uid}).get('reports').push(newData).write()
+        this.addDetail = {}
+      },
+      deleteDetail (id, i) {
+        this.detail.reports.splice(i, 1)
+        db.get('details').find({uid: this.uid}).get('reports').remove({id: id}).write()
+      },
+      edit (report) {
+        this.editDetail = report
+        this.editing = true
+      },
+      update () {
+        var id = this.editDetail.id
+        if (id) {
+          db.get('details').get('reports').find({id: id}).assign(this.editDetail).write()
+        }
+        this.editDetail = {}
       }
     }
   }
 </script>
 
-<style>
-#hero-body {
+<style scoped>
+#hero-body-detail {
   display: block;
   padding-top: 0rem;
 }
 
-#hero-head {
+#hero-head-detail {
   padding: 10px 39px;
-}
-
-nav button {
-  border-radius: unset;
-  height: 41px;
-  margin: 0px;
 }
 
 .tabs.is-boxed a {
@@ -180,4 +302,71 @@ nav.tabs {
   background: #f5f5f5;
 }
 
+.num-input {
+  width: 88px;
+}
+
+.del {
+  color: red;
+}
+
+.edit {
+  color: #008cd5;
+}
+
+.add {
+  border: 1px solid #eee;
+  margin: 10px 0;
+  padding: 15px;
+}
+
+input {
+  border: 1px solid #ccc;
+  padding: 5px;
+  border-radius: 3px;
+  margin-right: 15px;
+}
+
+#mask {
+  background: rgba(0, 0, 0, .5);
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  z-index: 4;
+  top: 0;
+  left: 0;
+}
+
+.mask {
+  width: 300px;
+  height: 250px;
+  background: rgba(255, 255, 255, 1);
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  z-index: 47;
+  border-radius: 5px;
+}
+
+.title {
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+.title span {
+  float: right;
+  cursor: pointer;
+}
+
+.content {
+  padding: 10px;
+}
+
+.content input {
+  width: 270px;
+  margin-bottom: 15px;
+}
 </style>

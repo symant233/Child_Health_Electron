@@ -33,11 +33,11 @@
         <tbody>
           <tr v-for="user in users" :key="user.uid" :id="'table-uid-' + user.uid">
             <td @click="questionDelete($event)">{{ user.uid }}</td>
-            <th><editable :obj="{ uid: user.uid, key: 'name', value: user.name}"></editable></th>
-            <td><editable :obj="{ uid: user.uid, key: 'baby', value: user.baby}"></editable></td>
-            <th><editable :obj="{ uid: user.uid, key: 'birth', value: user.birth}"></editable></th>
-            <td><editable :obj="{ uid: user.uid, key: 'fixed', value: user.fixed}"></editable></td>
-            <th><editable :obj="{ uid: user.uid, key: 'tele', value: user.tele}"></editable></th>
+            <th><editable :obj="{ uid: user.uid, key: 'name', value: user.name }"></editable></th>
+            <td><editable :obj="{ uid: user.uid, key: 'baby', value: user.baby }"></editable></td>
+            <th><editable :obj="{ uid: user.uid, key: 'birth', value: user.birth }"></editable></th>
+            <td><editable :obj="{ uid: user.uid, key: 'fixed', value: user.fixed }"></editable></td>
+            <th><editable :obj="{ uid: user.uid, key: 'tele', value: user.tele }"></editable></th>
             <td><abbr :title="user.note">{{ user.note }}</abbr></td>
             <td>{{ user.danger ? '⭕' : ' ' }}</td>
             <td>{{ user.fixed ? getAge(user.fixed).parse : getAge(user.birth).parse }}</td>
@@ -123,6 +123,7 @@
         var uid = this.deleteUid
         if (e === true) {
           var r = db.get('users').remove({ uid: parseInt(uid) }).write()
+          var d = db.get('details').remove({ uid: parseInt(uid) }).write()
           console.log('DB@ ' + r[0] + ' removed!')
           this.questionDeleteBoolean = false
         } else {
@@ -148,7 +149,7 @@
             age = age - month * 30.4375
             day = parseInt(age)
           }
-          
+
           var parse = year + '/' + month + '/' + day
           return { year: year, month: month, day: day, parse: parse }
         }

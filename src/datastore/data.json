@@ -9,7 +9,7 @@
       "tele": "test2",
       "note": "",
       "danger": false,
-      "age": "0岁0月"
+      "age": "0岁1月"
     },
     {
       "uid": 10020,
@@ -20,7 +20,7 @@
       "tele": "test",
       "note": "",
       "danger": false,
-      "age": "0岁0月"
+      "age": "0岁2月"
     },
     {
       "uid": 10018,
@@ -31,7 +31,7 @@
       "tele": "123456789",
       "note": "out test!",
       "danger": true,
-      "age": "2岁0月"
+      "age": "2岁1月"
     },
     {
       "uid": 10017,
@@ -42,7 +42,7 @@
       "tele": "123456789",
       "note": "out test!",
       "danger": false,
-      "age": "2岁0月"
+      "age": "2岁1月"
     },
     {
       "uid": 10012,
@@ -53,7 +53,7 @@
       "tele": "test",
       "note": "danger test",
       "danger": true,
-      "age": "0岁4月"
+      "age": "0岁6月"
     },
     {
       "uid": 10011,
@@ -64,7 +64,7 @@
       "tele": "9yue",
       "note": "",
       "danger": false,
-      "age": "5岁1月"
+      "age": "5岁2月"
     },
     {
       "uid": 10010,
@@ -75,7 +75,7 @@
       "tele": "11111111113",
       "note": "",
       "danger": false,
-      "age": "0岁0月"
+      "age": "0岁1月"
     },
     {
       "uid": 10009,
@@ -97,7 +97,11 @@
       "tele": "13012345678",
       "note": "高危儿是指在胎儿期、分娩时、新生儿期受到各种高危因素的危害，已发生或可能发生危重疾病的新生儿。绝大多数高危儿能完全健康地生长发育，部分高危儿视疾病危重程度以后可能有运动障碍、智力低下、语言障碍、癫痫、多动、学习困难、自闭、行为异常等后遗症发生。",
       "danger": true,
-      "age": "1岁5月"
+      "age": "1岁6月",
+      "weight": "32",
+      "G": "2",
+      "P": "2",
+      "week": "99"
     },
     {
       "uid": 10007,
@@ -108,7 +112,7 @@
       "tele": "123",
       "note": "changed",
       "danger": false,
-      "age": "0岁0月"
+      "age": "0岁1月"
     },
     {
       "uid": 10006,
@@ -119,7 +123,7 @@
       "tele": "1234",
       "note": "",
       "danger": true,
-      "age": "1岁1月"
+      "age": "1岁2月"
     },
     {
       "uid": 10005,
@@ -130,7 +134,7 @@
       "tele": "123",
       "note": "",
       "danger": false,
-      "age": "0岁0月"
+      "age": "0岁1月"
     },
     {
       "uid": 10004,
@@ -141,7 +145,7 @@
       "tele": "111",
       "note": "aaaa",
       "danger": true,
-      "age": "0岁0月"
+      "age": "0岁1月"
     },
     {
       "uid": 10001,
@@ -152,7 +156,7 @@
       "tele": "a2",
       "note": "",
       "danger": false,
-      "age": "10岁2月"
+      "age": "10岁1月"
     }
   ],
   "stored": "C:\\Users\\symant\\Documents\\GitHub\\Child_Health_Electron\\src\\datastore\\data.json",
@@ -162,5 +166,42 @@
   "increase": 10021,
   "language": "Chinese",
   "pre": 5,
-  "search": "baby"
+  "search": "baby",
+  "details": [
+    {
+      "uid": 10008,
+      "mother": {
+        "age": "56",
+        "job": "78",
+        "home": "90"
+      },
+      "father": {
+        "name": "kkk",
+        "age": "12",
+        "job": "23",
+        "tele": "34",
+        "home": "45"
+      },
+      "reports": [
+        {
+          "id": 1584002707087,
+          "age": "1/6/14",
+          "weight": "35",
+          "height": "45",
+          "head": "55",
+          "result": "bad very bad",
+          "time": "2020-03-12"
+        },
+        {
+          "id": 1584003009933,
+          "age": "1/6/14",
+          "result": "a",
+          "head": "a",
+          "height": "a",
+          "weight": "a",
+          "time": "2020-03-12"
+        }
+      ]
+    }
+  ]
 }

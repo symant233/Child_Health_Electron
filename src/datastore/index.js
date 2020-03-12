@@ -23,6 +23,7 @@ console.log('DataBase@ ' + STORE_PATH)
 
 db.defaults({
   users: [],
+  details: [],
   pre: 2,
   stored: STORE_PATH,
   backup: '',

@@ -2,11 +2,10 @@
   <div>
     <div v-show="!editing">
       <label @dblclick="editing=true;">
-        {{ message ? message : 'null' }}
+        {{ message ? message : 'undefined' }}
       </label>
     </div>
     <input
-      class="editable-input"
       v-show="editing"
       v-model="message"
       v-on:blur="editing=false; doUpdate();"
@@ -19,8 +18,8 @@
 <script>
 import db from '../../../datastore/'
 export default {
-  name: 'editable',
-  props: ['obj'], // obj: { uid: Int, key: String, value: String }
+  name: 'editable-parent',
+  props: ['obj'], // obj: { uid: Int, key: String, value: String, mother: Boolen }
   data () {
     return {
       message: this.obj.value,
@@ -36,9 +35,14 @@ export default {
         this.last = this.message
         // db update
         var uid = parseInt(this.obj.uid)
-        var changed = { [this.obj.key]: this.message }
-        db.get('users').find({uid: uid}).assign(changed).write()
-        console.log('DB@ updated uid: ' + uid)
+        var prefix = this.obj.mother 
+          ? 'mother.'
+          : 'father.'
+        db.get('details')
+          .find({uid: uid})
+          .set(prefix + this.obj.key, this.message)
+          .write()
+        console.log('DB@ detail parents updated uid: ' + uid)
       } else {
         this.message = this.last
       }
@@ -47,9 +51,4 @@ export default {
 }
 </script>
 
-<style scoped>
-.editable-input {
-  width: 90px;
-}
-
-</style>
+<style></style>
