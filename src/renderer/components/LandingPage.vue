@@ -37,7 +37,7 @@
     name: 'landing-page',
     components: { SystemInformation },
     methods: {
-      test () {}
+      test () { window.location.href = '/#/detail/10008' }
     },
     data () {
       return { prj_version: db.get('version').value() }

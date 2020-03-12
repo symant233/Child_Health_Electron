@@ -124,15 +124,12 @@
           var now = new Date()
           var birthday = new Date(birth)
           var age = parseInt((now - birthday) / oneDay) + pre
-          day = age % 30
-          age = age - day
+          year = parseInt(age / 365.25)
+          age = age - year * 365.25
           if (age > 0) {
-            month = age / 30
-            age = month
-            if (month >= 12) {
-              month = age % 12
-              year = (age - month) / 12
-            }
+            month = parseInt(age / 30.4375)
+            age = age - month * 30.4375
+            day = parseInt(age)
           }
           if (cn) {
             var parse = year + '岁' + month + '月'

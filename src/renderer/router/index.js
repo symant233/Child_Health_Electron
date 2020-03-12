@@ -30,7 +30,7 @@ export default new Router({
       component: require('@/components/Telephone').default
     },
     {
-      path: '/detail',
+      path: '/detail/:uid',
       name: 'entry-detail',
       component: require('@/components/Detail').default
     }
