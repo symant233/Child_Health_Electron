@@ -60,7 +60,11 @@ Tips:
 
 <img src="images/Snipaste_2020-01-21_20-28-06.png">
 
-<img src="images/notice.jpg">
+### Update:
+
+现在可以看到更详细的体检信息, 上方两个表所有信息都能双击编辑, 下方体检条目则按右侧 `改` 按钮进行编辑.
+
+<img src="images/Snipaste_2020-03-12_17-31-48.png">
 
 ## 菜单栏
 ```

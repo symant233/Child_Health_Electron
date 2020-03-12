@@ -140,10 +140,13 @@
         </article>
 
         <div class="add">
-          <input class="num-input" type="number" v-model="addDetail.weight" name="weight" value="" placeholder="体重(斤)" />
+          <input class="num-input" type="number" v-model="addDetail.weight" name="weight" value="" placeholder="体重(公斤)" />
+          <select v-model="addDetail.signal">
+            <option v-for="(option, index) in optionList" :key="index" :value="option">{{ option }}</option>
+          </select>
           <input class="num-input" type="number" v-model="addDetail.height" name="height" value="" placeholder="身高(厘米)" />
           <input class="num-input" type="number" v-model="addDetail.head" name="head" value="" placeholder="头围(厘米)" />
-          <input type="text" v-model="addDetail.result" name="result" value="" placeholder="检查结果" />
+          <input style="width: 396px;" type="text" v-model="addDetail.result" name="result" value="" placeholder="检查结果" />
           <button @click="newDetail">新增</button>
         </div>
         <!-- detail table start -->
@@ -164,7 +167,7 @@
             <tr v-for="(report, index) in detail.reports" :key="index">
               <td class="has-text-centered">{{ index+1 }}</td>
               <td>{{ report.age }}</td>
-              <td>{{ report.weight }}</td>
+              <td>{{ report.weight }}&nbsp;{{ report.signal }}</td>
               <td>{{ report.height }}</td>
               <td>{{ report.head }}</td>
               <td>{{ report.result }}</td>
@@ -187,9 +190,12 @@
             </div>
             <div class="content">
               <input class="num-input" type="number" v-model="editDetail.weight" name="weight" value="" placeholder="体重" />
+              <select v-model="editDetail.signal">
+                <option v-for="(option, index) in optionList" :key="index" :value="option">{{ option }}</option>
+              </select>
               <input class="num-input" type="number" v-model="editDetail.height" name="height" value="" placeholder="身高" />
               <input class="num-input" type="number" v-model="editDetail.head" name="head" value="" placeholder="头围" />
-              <input type="number" v-model="editDetail.result" name="result" value="" placeholder="检查结果" />
+              <input style="width: 396px;" type="text" v-model="editDetail.result" name="result" value="" placeholder="检查结果" />
               <button @click="update" class="edit">更新</button>
               <button @click="editing=false; editDetail={};">取消</button>
             </div>
@@ -215,7 +221,8 @@
         detail: db.get('details').find({uid: parseInt(this.$route.params.uid)}).value(),
         addDetail: {},
         editDetail: {},
-        editing: false
+        editing: false,
+        optionList: ['⊥', '╧', '↑', '⇑', '⤊', '⊤', '╤', '↓', '⇓', '⤋']
       }
     },
     beforeCreate: function () {
@@ -262,6 +269,7 @@
           ...this.addDetail,
           time: this.today
         }
+        if (!this.addDetail.weight || !this.addDetail.height) return
         db.get('details').find({uid: this.uid}).get('reports').push(newData).write()
         this.addDetail = {}
       },
@@ -298,10 +306,6 @@
     border-radius: 0px;
 }
 
-nav.tabs {
-  background: #f5f5f5;
-}
-
 .num-input {
   width: 88px;
 }
@@ -315,9 +319,9 @@ nav.tabs {
 }
 
 .add {
-  border: 1px solid #eee;
-  margin: 10px 0;
-  padding: 15px;
+  /* border: 1px solid #eee;
+  margin: 10px 0; */
+  padding-bottom: 15px;
 }
 
 input {
@@ -325,6 +329,14 @@ input {
   padding: 5px;
   border-radius: 3px;
   margin-right: 15px;
+}
+
+select {
+  border: 1px solid #ccc;
+  padding: 5px;
+  border-radius: 3px;
+  margin-right: 15px;
+  margin-bottom: 15px;
 }
 
 #mask {
