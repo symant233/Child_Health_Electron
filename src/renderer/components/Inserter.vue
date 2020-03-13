@@ -36,6 +36,19 @@
               </div>
               <p class="help is-danger" id='req-tele' style="display: none;">* 该项不能为空</p>
             </div>
+            <div class="field">
+              <div class="control">
+                <span><b>性别:&nbsp;&nbsp;</b></span>
+                <label class="radio">
+                  <input type="radio" name="male" value="true" id="male" v-model="male">
+                  男
+                </label>
+                <label class="radio">
+                  <input type="radio" name="male" value="false" checked v-model="male">
+                  女
+                </label>
+              </div>
+            </div>
 
           </div>
           <!-- column separator -->
@@ -125,7 +138,8 @@
         fixed: '',
         tele: '',
         note: '',
-        danger: 'false'
+        danger: 'false',
+        male: null
       }
     },
     methods: {
@@ -155,6 +169,7 @@
         this.tele = ''
         this.note = ''
         this.danger = 'false'
+        this.male = null
         this.inputRequired(false)
       },
       statusBar (bool) {
@@ -218,6 +233,7 @@
             uid: increase,
             name: this.name,
             baby: this.baby,
+            male: (this.male === 'true') ? true : false,
             birth: this.birth,
             fixed: this.fixed,
             tele: this.tele,
@@ -236,6 +252,7 @@
         if (res) {
           this.name = res.name
           this.baby = res.baby
+          this.male = (res.male === 'true') ? true : false
           this.birth = res.birth
           this.fixed = res.fixed
           this.tele = res.tele
@@ -253,6 +270,7 @@
             uid: uid,
             name: this.name,
             baby: this.baby,
+            male: (this.male === 'true') ? true : false,
             birth: this.birth,
             fixed: this.fixed,
             tele: this.tele,

@@ -28,19 +28,24 @@
             <th class="has-text-centered">备注</th>
             <th style="width: 47px;"><abbr title="是否为高危儿童">危</abbr></th>
             <th><abbr title="年/月/日, 如有纠正胎龄则按其计算.">年龄</abbr></th>
+            <th>操作</th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="user in users" :key="user.uid" :id="'table-uid-' + user.uid">
-            <td @click="questionDelete($event)">{{ user.uid }}</td>
-            <th>{{ user.name }}</th>
-            <td>{{ user.baby }}</td>
-            <th>{{ user.birth }}</th>
-            <td>{{ user.fixed }}</td>
-            <th>{{ user.tele }}</th>
+            <td>{{ user.uid }}</td>
+            <th><editable :obj="{ uid: user.uid, key: 'name', value: user.name }"></editable></th>
+            <td><editable :obj="{ uid: user.uid, key: 'baby', value: user.baby }"></editable></td>
+            <th><editable :obj="{ uid: user.uid, key: 'birth', value: user.birth }"></editable></th>
+            <td><editable :obj="{ uid: user.uid, key: 'fixed', value: user.fixed }"></editable></td>
+            <th><editable :obj="{ uid: user.uid, key: 'tele', value: user.tele }"></editable></th>
             <td><abbr :title="user.note">{{ user.note }}</abbr></td>
-            <td>{{ user.danger ? '⭕' : '' }}</td>
-            <td>{{ user.age }}</td>
+            <td>{{ user.danger ? '⭕' : ' ' }}</td>
+            <td>{{ user.fixed ? getAge(user.fixed).parse : getAge(user.birth).parse }}</td>
+            <td>
+              <span @click="questionDelete($event)" class="del">删</span>
+              <span @click="detail(user.uid)" class="edit">详</span>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -85,8 +90,10 @@
 
 <script>
   import db from '../../datastore/index'
+  import Editable from './Common/Editable'
   export default {
     name: 'tele-page',
+    components: { Editable },
     data () {
       return {
         questionDeleteBoolean: false, // show model

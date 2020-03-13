@@ -1,10 +1,23 @@
 <template>
   <div id="wrapper">
     <section class="hero is-white is-fullheight">
+      <div class="modal is-active" id="about" v-if="questionDeleteBoolean">
+        <div class="modal-background" @click="this.questionDeleteBoolean = false"></div>
+        <div class="modal-content">
+            <article class="message is-danger" style="max-width: 300px; margin: auto;">
+                <div class="message-body">
+                    <h2 class="title">⚠是否删除?</h2>
+                    <a class="button is-warning" @click="deleteComfirm(true)">确认删除</a>
+                    <a class="button" @click="deleteComfirm(false)">取消</a>
+                </div>
+            </article>
+        </div>
+        <button class="modal-close is-large delete" aria-label="close" onclick="close_setting()"></button>
+      </div>
       <div class="hero-head" id="hero-head-detail">
         <div class="columns content is-medium">
           <div class="column">
-            <a :href="'\/#\/selector#table-uid-' + this.uid">＜</a>
+            <a @click="goBack">＜</a>
           </div>
           <div class="column is-half has-text-centered">
             <span style="text-decoration: underline;">
@@ -146,7 +159,7 @@
           </select>
           <input class="num-input" type="number" v-model="addDetail.height" name="height" value="" placeholder="身高(厘米)" />
           <input class="num-input" type="number" v-model="addDetail.head" name="head" value="" placeholder="头围(厘米)" />
-          <input style="width: 396px;" type="text" v-model="addDetail.result" name="result" value="" placeholder="检查结果" />
+          <input style="width: 496px;" type="text" v-model="addDetail.result" name="result" value="" placeholder="检查结果" />
           <button @click="newDetail">新增</button>
         </div>
         <!-- detail table start -->
@@ -170,7 +183,7 @@
               <td>{{ report.weight }}&nbsp;{{ report.signal }}</td>
               <td>{{ report.height }}</td>
               <td>{{ report.head }}</td>
-              <td>{{ report.result }}</td>
+              <td class="result">{{ report.result }}</td>
               <td>{{ report.time }}</td>
               <td>
                 <span @click="deleteDetail(report.id, index)" class="del">删</span>
@@ -180,26 +193,33 @@
           </tbody>
         </table>
         <!-- detail table end -->
-        <div id="mask" v-if="editing">
-          <div class="mask">
-            <div class="title">
-              编辑
-              <span @click="editing=false">
-                X
-              </span>
+        <div class="modal is-active" id="about" v-if="editing">
+            <div class="modal-background" @click="editing=false"></div>
+            <div class="modal-content">
+                <article class="message is-info" style="max-width: 600px; margin: auto;">
+                    <div class="message-body">
+                        <div class="title">
+                          编辑
+                          <span @click="editing=false">
+                            X
+                          </span>
+                        </div>
+                        <div class="content">
+                          体重:&nbsp;<input class="num-input" type="number" v-model="editDetail.weight" name="weight" value="" placeholder="体重" />
+                          <select v-model="editDetail.signal">
+                            <option v-for="(option, index) in optionList" :key="index" :value="option">{{ option }}</option>
+                          </select>
+                          身高:&nbsp;<input class="num-input" type="number" v-model="editDetail.height" name="height" value="" placeholder="身高" />
+                          头围:&nbsp;<input class="num-input" type="number" v-model="editDetail.head" name="head" value="" placeholder="头围" />
+                          结果:&nbsp;
+                          <textarea class="textarea" v-model="editDetail.result" name="result" value="" placeholder="检查结果" />
+                          <br />
+                          <button @click="update" class="button is-primary">更新</button>
+                          <button @click="editing=false; editDetail={};" class="button">取消</button>
+                        </div>
+                    </div>
+                </article>
             </div>
-            <div class="content">
-              <input class="num-input" type="number" v-model="editDetail.weight" name="weight" value="" placeholder="体重" />
-              <select v-model="editDetail.signal">
-                <option v-for="(option, index) in optionList" :key="index" :value="option">{{ option }}</option>
-              </select>
-              <input class="num-input" type="number" v-model="editDetail.height" name="height" value="" placeholder="身高" />
-              <input class="num-input" type="number" v-model="editDetail.head" name="head" value="" placeholder="头围" />
-              <input style="width: 396px;" type="text" v-model="editDetail.result" name="result" value="" placeholder="检查结果" />
-              <button @click="update" class="edit">更新</button>
-              <button @click="editing=false; editDetail={};">取消</button>
-            </div>
-          </div>
         </div>
       </div>
     </section>
@@ -215,6 +235,8 @@
     components: { Editable, EditParent },
     data () {
       return {
+        questionDeleteBoolean: false, // show model
+        deleteInfo: {},
         today: new Date().toISOString().slice(0, 10),
         uid: parseInt(this.$route.params.uid),
         user: db.get('users').find({uid: parseInt(this.$route.params.uid)}).value(),
@@ -239,6 +261,9 @@
       }
     },
     methods: {
+      goBack () {
+        window.history.go(-1)
+      },
       getAge (birth) {
         birth = Date.parse(birth.replace('/-/g', '/'))
         if (birth) {
@@ -274,8 +299,8 @@
         this.addDetail = {}
       },
       deleteDetail (id, i) {
-        this.detail.reports.splice(i, 1)
-        db.get('details').find({uid: this.uid}).get('reports').remove({id: id}).write()
+        this.deleteInfo = { id: id, index: i }
+        this.questionDeleteBoolean = true
       },
       edit (report) {
         this.editDetail = report
@@ -286,7 +311,21 @@
         if (id) {
           db.get('details').get('reports').find({id: id}).assign(this.editDetail).write()
         }
-        this.editDetail = {}
+        this.editing = false
+      },
+      deleteComfirm (e) {
+        var id = this.deleteInfo.id
+        var i = this.deleteInfo.index
+        if (e === true) {
+          this.detail.reports.splice(i, 1)
+          db.get('details')
+            .find({uid: this.uid})
+            .get('reports')
+            .remove({id: id})
+            .write()
+          console.log('DB@ uid: ' + this.uid + ' id: ' + id + ' removed!')
+        }
+        this.questionDeleteBoolean = false
       }
     }
   }
@@ -307,6 +346,10 @@
 }
 
 .num-input {
+  width: 88px;
+}
+
+.content input.num-input {
   width: 88px;
 }
 
@@ -363,11 +406,6 @@ select {
   border-radius: 5px;
 }
 
-.title {
-  padding: 10px;
-  border-bottom: 1px solid #eee;
-}
-
 .title span {
   float: right;
   cursor: pointer;
@@ -381,4 +419,9 @@ select {
   width: 270px;
   margin-bottom: 15px;
 }
+
+.result {
+  word-break: break-all;
+}
+
 </style>

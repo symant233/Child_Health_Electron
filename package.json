@@ -1,6 +1,6 @@
 {
   "name": "child_health_electron",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "author": "symant233 <symant233@gmail.com>",
   "description": "A child health care system writen in electron.",
   "license": "GNU General Public License v3.0",
@@ -67,6 +67,7 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "echarts": "^4.6.0",
     "lowdb": "^1.0.0",
     "vue": "^2.5.16",
     "vue-electron": "^1.0.6",
