@@ -3,13 +3,15 @@
     {
       "uid": 10021,
       "name": "test2",
-      "baby": "",
+      "baby": "aaa",
       "birth": "2020-01-15",
       "fixed": "",
-      "tele": "test2",
+      "tele": "111111111111111",
       "note": "",
       "danger": false,
-      "age": "0岁1月"
+      "age": "0岁2月",
+      "G": "2",
+      "P": "2"
     },
     {
       "uid": 10018,
@@ -151,7 +153,7 @@
   "stored": "C:\\Users\\symant\\Documents\\GitHub\\Child_Health_Electron\\src\\datastore\\data.json",
   "backup": "C:\\Users\\symant\\Desktop\\data.json",
   "author": "symant233 <symant233@gmail.com>",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "increase": 10021,
   "language": "Chinese",
   "pre": 5,
@@ -176,11 +178,23 @@
           "id": 1584088793271,
           "age": "1/6/15",
           "weight": "24",
-          "signal": "╧",
+          "signalW": "╧",
           "height": "23",
           "head": "23",
           "result": "testa",
           "time": "2020-03-13"
+        },
+        {
+          "id": 1584457165523,
+          "age": "1/6/19",
+          "weight": "12",
+          "signalW": "⤋",
+          "height": "12",
+          "signalH": "⤋",
+          "head": "31",
+          "signalC": "╧",
+          "result": "22222222222222222222222222222222222222222222222222222222222222222222222",
+          "time": "2020-03-17"
         }
       ]
     },
@@ -192,6 +206,35 @@
     },
     {
       "uid": 10007,
+      "mother": {},
+      "father": {},
+      "reports": []
+    },
+    {
+      "uid": 10021,
+      "mother": {},
+      "father": {},
+      "reports": [
+        {
+          "id": 1584093470326,
+          "age": "0/1/27",
+          "weight": "2",
+          "signal": "╧",
+          "height": "3",
+          "head": "3",
+          "result": "3333",
+          "time": "2020-03-13"
+        }
+      ]
+    },
+    {
+      "uid": 10012,
+      "mother": {},
+      "father": {},
+      "reports": []
+    },
+    {
+      "uid": 10011,
       "mother": {},
       "father": {},
       "reports": []

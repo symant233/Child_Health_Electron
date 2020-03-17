@@ -154,12 +154,18 @@
 
         <div class="add">
           <input class="num-input" type="number" v-model="addDetail.weight" name="weight" value="" placeholder="体重(公斤)" />
-          <select v-model="addDetail.signal">
+          <select v-model="addDetail.signalW">
             <option v-for="(option, index) in optionList" :key="index" :value="option">{{ option }}</option>
           </select>
           <input class="num-input" type="number" v-model="addDetail.height" name="height" value="" placeholder="身高(厘米)" />
+          <select v-model="addDetail.signalH">
+            <option v-for="(option, index) in optionList" :key="index" :value="option">{{ option }}</option>
+          </select>
           <input class="num-input" type="number" v-model="addDetail.head" name="head" value="" placeholder="头围(厘米)" />
-          <input style="width: 496px;" type="text" v-model="addDetail.result" name="result" value="" placeholder="检查结果" />
+          <select v-model="addDetail.signalC">
+            <option v-for="(option, index) in optionList" :key="index" :value="option">{{ option }}</option>
+          </select>
+          <input style="width: 400px;" type="text" v-model="addDetail.result" name="result" value="" placeholder="检查结果" />
           <button @click="newDetail">新增</button>
         </div>
         <!-- detail table start -->
@@ -180,9 +186,9 @@
             <tr v-for="(report, index) in detail.reports" :key="index">
               <td class="has-text-centered">{{ index+1 }}</td>
               <td>{{ report.age }}</td>
-              <td>{{ report.weight }}&nbsp;{{ report.signal }}</td>
-              <td>{{ report.height }}</td>
-              <td>{{ report.head }}</td>
+              <td>{{ report.weight }}&nbsp;{{ report.signalW }}</td>
+              <td>{{ report.height }}&nbsp;{{ report.signalH }}</td>
+              <td>{{ report.head }}&nbsp;{{ report.signalC }}</td>
               <td class="result">{{ report.result }}</td>
               <td>{{ report.time }}</td>
               <td>
@@ -206,11 +212,17 @@
                         </div>
                         <div class="content">
                           体重:&nbsp;<input class="num-input" type="number" v-model="editDetail.weight" name="weight" value="" placeholder="体重" />
-                          <select v-model="editDetail.signal">
+                          <select v-model="editDetail.signalW">
                             <option v-for="(option, index) in optionList" :key="index" :value="option">{{ option }}</option>
                           </select>
                           身高:&nbsp;<input class="num-input" type="number" v-model="editDetail.height" name="height" value="" placeholder="身高" />
-                          头围:&nbsp;<input class="num-input" type="number" v-model="editDetail.head" name="head" value="" placeholder="头围" />
+                          <select v-model="editDetail.signalH">
+                            <option v-for="(option, index) in optionList" :key="index" :value="option">{{ option }}</option>
+                          </select>
+                          <br />头围:&nbsp;<input class="num-input" type="number" v-model="editDetail.head" name="head" value="" placeholder="头围" />
+                          <select v-model="editDetail.signalC">
+                            <option v-for="(option, index) in optionList" :key="index" :value="option">{{ option }}</option>
+                          </select>
                           结果:&nbsp;
                           <textarea class="textarea" v-model="editDetail.result" name="result" value="" placeholder="检查结果" />
                           <br />
@@ -222,7 +234,16 @@
             </div>
         </div>
       </div>
+      
     </section>
+    <div class="columns">
+      <div class="column is-half">
+        <div id="chart" style="width: 530px;height:500px;"></div>
+      </div>
+      <div class="column is-half">
+        <div id="chart2" style="width: 530px;height:500px;"></div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -230,6 +251,9 @@
   import db from '../../datastore/'
   import Editable from './Common/Editable.vue'
   import EditParent from './Common/EditParent.vue'
+  import echarts from 'echarts'
+  import fs from 'fs'
+  import path from 'path'
   export default {
     name: 'enrty-detail',
     components: { Editable, EditParent },
@@ -248,6 +272,7 @@
       }
     },
     beforeCreate: function () {
+      // initialize database
       var uid = parseInt(this.$route.params.uid)
       var res = db.get('details').find({uid: uid}).value()
       if (!res) {
@@ -422,6 +447,10 @@ select {
 
 .result {
   word-break: break-all;
+}
+
+@media print {
+  section {page-break-after: auto;}
 }
 
 </style>
