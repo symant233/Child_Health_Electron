@@ -295,10 +295,33 @@
         name: '宝宝',
         type: 'line',
         color: '#fbb8a1',
-        data: [3, 4, 5, 6, null, 8, 9],
+        data: Array(49).fill(null),
         connectNulls: true,
         smooth: true
       }]
+      var data2 = [{
+        name: '宝宝',
+        type: 'line',
+        color: '#fbb8a1',
+        data: Array(49).fill(null),
+        connectNulls: true,
+        smooth: true
+      }]
+      let y, m, d, month
+      var reports = this.detail.reports
+      reports.forEach(r => {
+        var tmp = r.age.split('/')
+        console.log(tmp)
+        y = parseInt(tmp[0])
+        m = parseInt(tmp[1])
+        d = parseInt(tmp[2])
+        month = y * 12 + m
+        if (d > 15) month = month + 1
+        console.log(month)
+        data[0].data[month] = r.weight
+        data2[0].data[month] = r.height
+      })
+
       if (this.user.male === true) {
         seq.forEach(i => {
           data.push({
@@ -377,14 +400,6 @@
       }
       myChart.setOption(option)
 
-      var data2 = [{
-        name: '宝宝',
-        type: 'line',
-        color: '#fbb8a1',
-        data: [3, 4, 5, 6, null, 8, 9],
-        connectNulls: true,
-        smooth: true
-      }]
       if (this.user.male === true) {
         seq.forEach(i => {
           data2.push({
