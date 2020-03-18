@@ -6,7 +6,7 @@
       "baby": "aaa",
       "birth": "2020-01-15",
       "fixed": "",
-      "tele": "111111111111111",
+      "tele": "11111111111",
       "note": "",
       "danger": false,
       "age": "0岁2月",
@@ -43,8 +43,9 @@
       "fixed": "",
       "tele": "test",
       "note": "danger test",
-      "danger": true,
-      "age": "0岁6月"
+      "danger": false,
+      "age": "0岁6月",
+      "male": true
     },
     {
       "uid": 10011,
@@ -66,7 +67,7 @@
       "tele": "11111111113",
       "note": "",
       "danger": false,
-      "age": "0岁1月"
+      "age": "0岁2月"
     },
     {
       "uid": 10009,
@@ -87,12 +88,13 @@
       "fixed": "2018-08-28",
       "tele": "13012345678",
       "note": "高危儿是指在胎儿期、分娩时、新生儿期受到各种高危因素的危害，已发生或可能发生危重疾病的新生儿。绝大多数高危儿能完全健康地生长发育，部分高危儿视疾病危重程度以后可能有运动障碍、智力低下、语言障碍、癫痫、多动、学习困难、自闭、行为异常等后遗症发生。",
-      "danger": true,
+      "danger": false,
       "age": "1岁6月",
       "weight": "10",
       "G": "2",
       "P": "2",
-      "week": "40"
+      "week": "40",
+      "male": false
     },
     {
       "uid": 10007,
@@ -103,7 +105,7 @@
       "tele": "123",
       "note": "changed",
       "danger": false,
-      "age": "0岁1月"
+      "age": "0岁2月"
     },
     {
       "uid": 10006,
@@ -125,7 +127,7 @@
       "tele": "123",
       "note": "",
       "danger": false,
-      "age": "0岁1月"
+      "age": "0岁2月"
     },
     {
       "uid": 10004,
@@ -136,7 +138,7 @@
       "tele": "111",
       "note": "aaaa",
       "danger": true,
-      "age": "0岁1月"
+      "age": "0岁2月"
     },
     {
       "uid": 10001,
@@ -147,7 +149,7 @@
       "tele": "a2",
       "note": "",
       "danger": false,
-      "age": "10岁1月"
+      "age": "10岁2月"
     }
   ],
   "stored": "C:\\Users\\symant\\Documents\\GitHub\\Child_Health_Electron\\src\\datastore\\data.json",
@@ -164,7 +166,7 @@
       "mother": {
         "age": "56",
         "job": "78",
-        "home": "⊥╧↑⇑⤊⊤╤↓⇓⤋"
+        "home": ""
       },
       "father": {
         "name": "kkk",
@@ -182,11 +184,13 @@
           "height": "23",
           "head": "23",
           "result": "testa",
-          "time": "2020-03-13"
+          "time": "2020-03-13",
+          "signalH": "↑",
+          "signalC": "⊤"
         },
         {
           "id": 1584457165523,
-          "age": "1/6/19",
+          "age": "1/6/20",
           "weight": "12",
           "signalW": "⤋",
           "height": "12",
@@ -235,6 +239,12 @@
     },
     {
       "uid": 10011,
+      "mother": {},
+      "father": {},
+      "reports": []
+    },
+    {
+      "uid": 10018,
       "mother": {},
       "father": {},
       "reports": []

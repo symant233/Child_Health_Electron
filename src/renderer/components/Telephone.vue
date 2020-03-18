@@ -65,6 +65,14 @@
               5天
             </label>
             <label class="radio">
+              <input type="radio" name="prefix" value="4" v-model="prefix" @click="setPrefix(4)">
+              4天
+            </label>
+            <label class="radio">
+              <input type="radio" name="prefix" value="3" v-model="prefix" @click="setPrefix(3)">
+              3天
+            </label>
+            <label class="radio">
               <input type="radio" name="prefix" value="2" v-model="prefix" @click="setPrefix(2)">
               2天
             </label>
