@@ -67,7 +67,7 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
-    "echarts": "^4.6.0",
+    "echarts": "^4.5.0-rc.2",
     "lowdb": "^1.0.0",
     "vue": "^2.5.16",
     "vue-electron": "^1.0.6",

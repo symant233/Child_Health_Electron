@@ -3,13 +3,15 @@
     {
       "uid": 10021,
       "name": "test2",
-      "baby": "",
+      "baby": "aaa",
       "birth": "2020-01-15",
       "fixed": "",
-      "tele": "test2",
+      "tele": "11111111111",
       "note": "",
       "danger": false,
-      "age": "0岁1月"
+      "age": "0岁2月",
+      "G": "2",
+      "P": "2"
     },
     {
       "uid": 10018,
@@ -41,8 +43,9 @@
       "fixed": "",
       "tele": "test",
       "note": "danger test",
-      "danger": true,
-      "age": "0岁6月"
+      "danger": false,
+      "age": "0岁6月",
+      "male": true
     },
     {
       "uid": 10011,
@@ -64,7 +67,7 @@
       "tele": "11111111113",
       "note": "",
       "danger": false,
-      "age": "0岁1月"
+      "age": "0岁2月"
     },
     {
       "uid": 10009,
@@ -85,12 +88,13 @@
       "fixed": "2018-08-28",
       "tele": "13012345678",
       "note": "高危儿是指在胎儿期、分娩时、新生儿期受到各种高危因素的危害，已发生或可能发生危重疾病的新生儿。绝大多数高危儿能完全健康地生长发育，部分高危儿视疾病危重程度以后可能有运动障碍、智力低下、语言障碍、癫痫、多动、学习困难、自闭、行为异常等后遗症发生。",
-      "danger": true,
+      "danger": false,
       "age": "1岁6月",
       "weight": "10",
       "G": "2",
       "P": "2",
-      "week": "40"
+      "week": "40",
+      "male": false
     },
     {
       "uid": 10007,
@@ -101,7 +105,7 @@
       "tele": "123",
       "note": "changed",
       "danger": false,
-      "age": "0岁1月"
+      "age": "0岁2月"
     },
     {
       "uid": 10006,
@@ -123,7 +127,7 @@
       "tele": "123",
       "note": "",
       "danger": false,
-      "age": "0岁1月"
+      "age": "0岁2月"
     },
     {
       "uid": 10004,
@@ -134,7 +138,7 @@
       "tele": "111",
       "note": "aaaa",
       "danger": true,
-      "age": "0岁1月"
+      "age": "0岁2月"
     },
     {
       "uid": 10001,
@@ -145,13 +149,13 @@
       "tele": "a2",
       "note": "",
       "danger": false,
-      "age": "10岁1月"
+      "age": "10岁2月"
     }
   ],
   "stored": "C:\\Users\\symant\\Documents\\GitHub\\Child_Health_Electron\\src\\datastore\\data.json",
   "backup": "C:\\Users\\symant\\Desktop\\data.json",
   "author": "symant233 <symant233@gmail.com>",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "increase": 10021,
   "language": "Chinese",
   "pre": 5,
@@ -162,7 +166,7 @@
       "mother": {
         "age": "56",
         "job": "78",
-        "home": "⊥╧↑⇑⤊⊤╤↓⇓⤋"
+        "home": ""
       },
       "father": {
         "name": "kkk",
@@ -176,11 +180,34 @@
           "id": 1584088793271,
           "age": "1/6/15",
           "weight": "24",
-          "signal": "╧",
+          "signalW": "╧",
           "height": "23",
           "head": "23",
           "result": "testa",
-          "time": "2020-03-13"
+          "time": "2020-03-13",
+          "signalH": "↑",
+          "signalC": "⊤"
+        },
+        {
+          "id": 1584457165523,
+          "age": "1/6/20",
+          "weight": "12",
+          "signalW": "⤋",
+          "height": "12",
+          "signalH": "⤋",
+          "head": "31",
+          "signalC": "╧",
+          "result": "22222222222222222222222222222222222222222222222222222222222222222222222",
+          "time": "2020-03-17"
+        },
+        {
+          "id": 1584509219910,
+          "age": "1/6/20",
+          "weight": "34",
+          "height": "44",
+          "head": "233",
+          "result": "23",
+          "time": "2020-03-18"
         }
       ]
     },
@@ -192,6 +219,41 @@
     },
     {
       "uid": 10007,
+      "mother": {},
+      "father": {},
+      "reports": []
+    },
+    {
+      "uid": 10021,
+      "mother": {},
+      "father": {},
+      "reports": [
+        {
+          "id": 1584093470326,
+          "age": "0/1/27",
+          "weight": "2",
+          "signal": "╧",
+          "height": "3",
+          "head": "3",
+          "result": "3333",
+          "time": "2020-03-13"
+        }
+      ]
+    },
+    {
+      "uid": 10012,
+      "mother": {},
+      "father": {},
+      "reports": []
+    },
+    {
+      "uid": 10011,
+      "mother": {},
+      "father": {},
+      "reports": []
+    },
+    {
+      "uid": 10018,
       "mother": {},
       "father": {},
       "reports": []

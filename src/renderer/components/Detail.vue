@@ -18,6 +18,7 @@
         <div class="columns content is-medium">
           <div class="column">
             <a @click="goBack">＜</a>
+            <a href="/#/selector">❎</a>
           </div>
           <div class="column is-half has-text-centered">
             <span style="text-decoration: underline;">
@@ -47,7 +48,7 @@
                     <editable :obj="{ uid: user.uid, key: 'baby', value: user.baby }"></editable>
                   </td>
                   <td style="width: 57px; min-width: 57px;">性别</td>
-                  <td width="50%"><div v-if="user.male">{{ user.male ? '男': '女' }}</div></td> <!-- gender -->
+                  <td width="50%"><div v-if="user.male !== undefined">{{ user.male ? '男': '女' }}</div></td> <!-- gender -->
                 </tr>
                 <tr>
                   <td>出生日期</td>
@@ -154,13 +155,19 @@
 
         <div class="add">
           <input class="num-input" type="number" v-model="addDetail.weight" name="weight" value="" placeholder="体重(公斤)" />
-          <select v-model="addDetail.signal">
+          <select v-model="addDetail.signalW">
             <option v-for="(option, index) in optionList" :key="index" :value="option">{{ option }}</option>
           </select>
           <input class="num-input" type="number" v-model="addDetail.height" name="height" value="" placeholder="身高(厘米)" />
+          <select v-model="addDetail.signalH">
+            <option v-for="(option, index) in optionList" :key="index" :value="option">{{ option }}</option>
+          </select>
           <input class="num-input" type="number" v-model="addDetail.head" name="head" value="" placeholder="头围(厘米)" />
-          <input style="width: 496px;" type="text" v-model="addDetail.result" name="result" value="" placeholder="检查结果" />
-          <button @click="newDetail">新增</button>
+          <select v-model="addDetail.signalC">
+            <option v-for="(option, index) in optionList" :key="index" :value="option">{{ option }}</option>
+          </select>
+          <input style="width: 400px;" type="text" v-model="addDetail.result" name="result" value="" placeholder="检查结果" />
+          <button @click="newDetail">+</button>
         </div>
         <!-- detail table start -->
         <table class="table is-striped is-fullwidth is-hoverable is-bordered">
@@ -180,9 +187,9 @@
             <tr v-for="(report, index) in detail.reports" :key="index">
               <td class="has-text-centered">{{ index+1 }}</td>
               <td>{{ report.age }}</td>
-              <td>{{ report.weight }}&nbsp;{{ report.signal }}</td>
-              <td>{{ report.height }}</td>
-              <td>{{ report.head }}</td>
+              <td>{{ report.weight }}&nbsp;{{ report.signalW }}</td>
+              <td>{{ report.height }}&nbsp;{{ report.signalH }}</td>
+              <td>{{ report.head }}&nbsp;{{ report.signalC }}</td>
               <td class="result">{{ report.result }}</td>
               <td>{{ report.time }}</td>
               <td>
@@ -205,12 +212,19 @@
                           </span>
                         </div>
                         <div class="content">
+                          年龄:&nbsp;<input class="num-input" type="text" v-model="editDetail.age" name="age" value="" placeholder="年龄" />
                           体重:&nbsp;<input class="num-input" type="number" v-model="editDetail.weight" name="weight" value="" placeholder="体重" />
-                          <select v-model="editDetail.signal">
+                          <select v-model="editDetail.signalW">
                             <option v-for="(option, index) in optionList" :key="index" :value="option">{{ option }}</option>
                           </select>
-                          身高:&nbsp;<input class="num-input" type="number" v-model="editDetail.height" name="height" value="" placeholder="身高" />
+                          <br />身高:&nbsp;<input class="num-input" type="number" v-model="editDetail.height" name="height" value="" placeholder="身高" />
+                          <select v-model="editDetail.signalH">
+                            <option v-for="(option, index) in optionList" :key="index" :value="option">{{ option }}</option>
+                          </select>
                           头围:&nbsp;<input class="num-input" type="number" v-model="editDetail.head" name="head" value="" placeholder="头围" />
+                          <select v-model="editDetail.signalC">
+                            <option v-for="(option, index) in optionList" :key="index" :value="option">{{ option }}</option>
+                          </select>
                           结果:&nbsp;
                           <textarea class="textarea" v-model="editDetail.result" name="result" value="" placeholder="检查结果" />
                           <br />
@@ -222,7 +236,13 @@
             </div>
         </div>
       </div>
+      
     </section>
+
+    <div class="charts">
+      <div id="chart" style="width: 640px; height: 500px; margin: auto;"></div>
+      <div id="chart2" style="width: 640px; height: 500px; margin: auto;"></div>
+    </div>
   </div>
 </template>
 
@@ -230,6 +250,9 @@
   import db from '../../datastore/'
   import Editable from './Common/Editable.vue'
   import EditParent from './Common/EditParent.vue'
+  import echarts from 'echarts'
+  import fs from 'fs'
+  import path from 'path'
   export default {
     name: 'enrty-detail',
     components: { Editable, EditParent },
@@ -248,6 +271,7 @@
       }
     },
     beforeCreate: function () {
+      // initialize database
       var uid = parseInt(this.$route.params.uid)
       var res = db.get('details').find({uid: uid}).value()
       if (!res) {
@@ -259,6 +283,199 @@
         }
         db.get('details').push(data).write()
       }
+    },
+    mounted: function () {
+      // render line chart
+      var myChart = echarts.init(document.getElementById('chart'))
+      var myChart2 = echarts.init(document.getElementById('chart2'))
+      var boy = JSON.parse(fs.readFileSync(path.join(__static, 'boy.json')))
+      var girl = JSON.parse(fs.readFileSync(path.join(__static, 'girl.json')))
+      const seq = ['-2', '-1', '0', '+1', '+2']
+      var data = [{
+        name: '宝宝',
+        type: 'line',
+        color: '#fbb8a1',
+        data: Array(49).fill(null),
+        connectNulls: true,
+        smooth: true
+      }]
+      var data2 = [{
+        name: '宝宝',
+        type: 'line',
+        color: '#fbb8a1',
+        data: Array(49).fill(null),
+        connectNulls: true,
+        smooth: true
+      }]
+      let y, m, d, month
+      var reports = this.detail.reports
+      reports.forEach(r => {
+        var tmp = r.age.split('/')
+        console.log(tmp)
+        y = parseInt(tmp[0])
+        m = parseInt(tmp[1])
+        d = parseInt(tmp[2])
+        month = y * 12 + m
+        if (d > 15) month = month + 1
+        console.log(month)
+        data[0].data[month] = r.weight
+        data2[0].data[month] = r.height
+      })
+
+      if (this.user.male === true) {
+        seq.forEach(i => {
+          data.push({
+            name: `男孩${i}SD`,
+            type: 'line',
+            color: '#6fbae1',
+            data: boy[`weight${i}`],
+            connectNulls: true,
+            smooth: true
+          })
+        })
+      } else if (this.user.male === false) {
+        seq.forEach(i => {
+          data.push({
+            name: `女孩${i}SD`,
+            type: 'line',
+            color: '#e58dc2',
+            data: girl[`weight${i}`],
+            connectNulls: true,
+            smooth: true
+          })
+        })
+      } else {
+        data.push({
+          name: `男孩0SD`,
+          type: 'line',
+          color: '#6fbae1',
+          data: boy[`weight0`],
+          connectNulls: true,
+          smooth: true
+        })
+        data.push({
+          name: `女孩0SD`,
+          type: 'line',
+          color: '#e58dc2',
+          data: girl[`weight0`],
+          connectNulls: true,
+          smooth: true
+        })
+      }
+      
+      const option = {
+        title: {
+          text: '体重(kg)-月龄'
+        },
+        tooltip: {
+          trigger: 'axis'
+        },
+        legend: {
+          data: ['男孩0SD', '女孩0SD', '宝宝']
+        },
+        color: ['#e58dc2', '#fbb8a1', '#90e5e7', '#6fbae1'],
+        grid: {
+          left: '3%',
+          right: '4%',
+          bottom: '3%',
+          containLabel: true
+        },
+        toolbox: {
+          feature: {
+            dataZoom: {},
+            restore: {},
+            dataView: {},
+            saveAsImage: {}
+          }
+        },
+        xAxis: {
+          type: 'category',
+          boundaryGap: false,
+          data: [...Array(49).keys()]
+        },
+        yAxis: {
+          type: 'value'
+        },
+        series: data
+      }
+      myChart.setOption(option)
+
+      if (this.user.male === true) {
+        seq.forEach(i => {
+          data2.push({
+            name: `男孩${i}SD`,
+            type: 'line',
+            color: '#6fbae1',
+            data: boy[`height${i}`],
+            connectNulls: true,
+            smooth: true
+          })
+        })
+      } else if (this.user.male === false) {
+        seq.forEach(i => {
+          data2.push({
+            name: `女孩${i}SD`,
+            type: 'line',
+            color: '#e58dc2',
+            data: girl[`height${i}`],
+            connectNulls: true,
+            smooth: true
+          })
+        })
+      } else {
+        data2.push({
+          name: `男孩0SD`,
+          type: 'line',
+          color: '#6fbae1',
+          data: boy[`height0`],
+          connectNulls: true,
+          smooth: true
+        })
+        data2.push({
+          name: `女孩0SD`,
+          type: 'line',
+          color: '#e58dc2',
+          data: girl[`height0`],
+          connectNulls: true,
+          smooth: true
+        })
+      }
+      const option2 = {
+        title: {
+          text: '身高(cm)-月龄'
+        },
+        tooltip: {
+          trigger: 'axis'
+        },
+        legend: {
+          data: ['男孩0SD', '女孩0SD', '宝宝']
+        },
+        color: ['#e58dc2', '#fbb8a1', '#90e5e7', '#6fbae1'],
+        grid: {
+          left: '3%',
+          right: '4%',
+          bottom: '3%',
+          containLabel: true
+        },
+        toolbox: {
+          feature: {
+            dataZoom: {},
+            restore: {},
+            dataView: {},
+            saveAsImage: {}
+          }
+        },
+        xAxis: {
+          type: 'category',
+          boundaryGap: false,
+          data: [...Array(49).keys()]
+        },
+        yAxis: {
+          type: 'value'
+        },
+        series: data2
+      }
+      myChart2.setOption(option2)
     },
     methods: {
       goBack () {
@@ -422,6 +639,10 @@ select {
 
 .result {
   word-break: break-all;
+}
+
+@media print {
+  section {page-break-after: auto;}
 }
 
 </style>

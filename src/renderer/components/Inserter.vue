@@ -252,7 +252,7 @@
         if (res) {
           this.name = res.name
           this.baby = res.baby
-          this.male = (res.male === 'true') ? true : false
+          this.male = (res.male === 'true') ? true : (res.male === 'false') ? false : null
           this.birth = res.birth
           this.fixed = res.fixed
           this.tele = res.tele
