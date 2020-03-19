@@ -1,6 +1,6 @@
 {
   "name": "child_health_electron",
-  "version": "1.0.9",
+  "version": "1.2.1",
   "author": "symant233 <symant233@gmail.com>",
   "description": "A child health care system writen in electron.",
   "license": "GNU General Public License v3.0",

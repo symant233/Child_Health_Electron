@@ -150,13 +150,24 @@
       "note": "",
       "danger": false,
       "age": "10岁2月"
+    },
+    {
+      "uid": 10022,
+      "name": "afaf",
+      "baby": "afaf",
+      "male": true,
+      "birth": "2020-03-19",
+      "fixed": "2020-03-18",
+      "tele": "1231312",
+      "note": "aaaaaaaaaaa",
+      "danger": false
     }
   ],
   "stored": "C:\\Users\\symant\\Documents\\GitHub\\Child_Health_Electron\\src\\datastore\\data.json",
   "backup": "C:\\Users\\symant\\Desktop\\data.json",
   "author": "symant233 <symant233@gmail.com>",
-  "version": "1.0.9",
-  "increase": 10021,
+  "version": "1.2.0",
+  "increase": 10022,
   "language": "Chinese",
   "pre": 5,
   "search": "baby",
@@ -254,6 +265,12 @@
     },
     {
       "uid": 10018,
+      "mother": {},
+      "father": {},
+      "reports": []
+    },
+    {
+      "uid": 10022,
       "mother": {},
       "father": {},
       "reports": []

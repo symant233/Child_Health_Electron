@@ -120,7 +120,7 @@
     },
     methods: {
       detail (uid) {
-        window.location.href = '/#/detail/' + uid
+        window.location.hash = '#/detail/' + uid
       },
       questionDelete (uid) {
         this.questionDeleteBoolean = true

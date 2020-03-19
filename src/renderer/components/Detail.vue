@@ -18,7 +18,7 @@
         <div class="columns content is-medium">
           <div class="column">
             <a @click="goBack">＜</a>
-            <a href="/#/selector">❎</a>
+            <a href="#/selector">❎</a>
           </div>
           <div class="column is-half has-text-centered">
             <span style="text-decoration: underline;">
@@ -290,7 +290,7 @@
       var myChart2 = echarts.init(document.getElementById('chart2'))
       var boy = JSON.parse(fs.readFileSync(path.join(__static, 'boy.json')))
       var girl = JSON.parse(fs.readFileSync(path.join(__static, 'girl.json')))
-      const seq = ['-2', '-1', '0', '+1', '+2']
+      const seq = ['+2', '+1', '0', '-1', '-2']
       var data = [{
         name: '宝宝',
         type: 'line',
@@ -311,13 +311,11 @@
       var reports = this.detail.reports
       reports.forEach(r => {
         var tmp = r.age.split('/')
-        console.log(tmp)
         y = parseInt(tmp[0])
         m = parseInt(tmp[1])
         d = parseInt(tmp[2])
         month = y * 12 + m
         if (d > 15) month = month + 1
-        console.log(month)
         data[0].data[month] = r.weight
         data2[0].data[month] = r.height
       })

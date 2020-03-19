@@ -146,17 +146,13 @@
       submitButton () {
         if (!this.uid) {
           if (this.insert()) {
-            this.statusBar(true)
+            window.location.hash = '#/detail/' + this.uid
             this.reset()
-          } else {
-            this.statusBar(false)
           }
         } else {
           if (this.update()) {
-            this.statusBar(true)
+            window.location.hash = '#/detail/' + this.uid
             this.reset()
-          } else {
-            this.statusBar(false)
           }
         }
       },
@@ -229,6 +225,7 @@
             return this.statusBar(false)
           }
           var increase = db.get('increase').value() + 1
+          this.uid = increase
           db.get('users').push({
             uid: increase,
             name: this.name,
@@ -287,9 +284,9 @@
           }
           db.get('users').find({uid: uid}).assign(changed).write()
           console.log('DB@ updated uid: ' + this.uid)
-          return true
+          return this.statusBar(true)
         }
-        return false      
+        return this.statusBar(false)
       }
 
     }
