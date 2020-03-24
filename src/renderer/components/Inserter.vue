@@ -14,20 +14,19 @@
                 <a class="button is-info" @click="load()">加载</a>
               </div>
             </div>
-            
-            <div class="field">
-              <label class="label">产妇姓名</label>
-              <div class="control">
-                <input class="input is-info" type="text" name="name" id="name" placeholder="👩Name" v-model="name">
-              </div>
-              <p class="help is-danger" id='req-name' style="display: none;">* 该项不能为空</p>
-            </div>
 
             <div class="field">
               <label class="label">宝宝姓名</label>
               <div class="control">
                 <input class="input" type="text" name="baby" id="baby" placeholder="👶Baby" v-model="baby">
               </div>
+            </div>
+            <div class="field">
+              <label class="label">产妇姓名</label>
+              <div class="control">
+                <input class="input is-info" type="text" name="name" id="name" placeholder="👩Name" v-model="name">
+              </div>
+              <p class="help is-danger" id='req-name' style="display: none;">* 该项不能为空</p>
             </div>
             <div class="field">
               <label class="label">联系电话:</label>
@@ -57,14 +56,14 @@
             <div class="field">
               <label class="label">出生日期</label>
               <div class="control">
-                <input class="input is-info" type="date" name="birth" id="birth" v-model="birth">
+                <input class="input is-info" type="date" name="birth" id="birth" v-model="birth" min="1990-01-01" max="2222-02-22">
               </div>
               <p class="help is-danger" id='req-birth' style="display: none;">* 该项不能为空</p>
             </div>
             <div class="field">
               <label class="label">纠正胎龄</label>
               <div class="control">
-                <input class="input" type="date" name="fixed" id="fixed" v-model="fixed">
+                <input class="input" type="date" name="fixed" id="fixed" v-model="fixed" min="1990-01-01" max="2222-02-02">
               </div>
             </div>
 
@@ -215,12 +214,13 @@
         db.read()
         if (this.checkReq(this.name, this.birth, this.tele)) {
           // 必要属性已输入
-          if (db.get('users').find({ baby: this.baby, birth: this.birth }).value()) {
+          const tmp = db.get('users').find({ baby: this.baby, birth: this.birth }).value()
+          if (tmp) {
             // 相同的出生日期同名宝宝
             dialog.showMessageBox({
               type: 'error',
               message: '插入失败',
-              detail: this.birth + '出生日期已有宝宝' + this.baby
+              detail: this.birth + '出生日期已有宝宝' + this.baby + '\nUID:' + tmp.uid
             })
             return this.statusBar(false)
           }

@@ -41,7 +41,7 @@
             <th><editable :obj="{ uid: user.uid, key: 'tele', value: user.tele }"></editable></th>
             <td><abbr :title="user.note">{{ user.note }}</abbr></td>
             <td>{{ user.danger ? '⭕' : ' ' }}</td>
-            <td>{{ user.fixed ? getAge(user.fixed).parse : getAge(user.birth).parse }}</td>
+            <td>{{ getAge(user.birth).parse }}</td>
             <td>
               <span @click="questionDelete($event)" class="del">删</span>
               <span @click="detail(user.uid)" class="edit">详</span>
@@ -168,13 +168,8 @@
         ]
         for (var index in users) {
           var user = users[index]
-          if (user.fixed) {
-            var age = this.getAge(user.fixed).parse
-            var cn = this.getAge(user.fixed, true).parse
-          } else {
-            var age = this.getAge(user.birth).parse
-            var cn = this.getAge(user.birth, true).parse
-          }
+          var age = this.getAge(user.birth).parse
+          var cn = this.getAge(user.birth, true).parse
           for (var index in checkList) {
             var item = checkList[index]
             user.age = cn

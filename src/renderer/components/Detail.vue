@@ -56,7 +56,7 @@
                     <editable :obj="{ uid: user.uid, key: 'birth', value: user.birth }"></editable>
                   </td>
                   <td>年龄</td>
-                  <td>{{ user.fixed ? getAge(user.fixed).parse : getAge(user.birth).parse }}</td>
+                  <td>{{ getAge(user.birth).parse }}</td>
                 </tr>
                 <tr>
                   <td>纠正胎龄</td>
@@ -505,7 +505,7 @@
       newDetail () {
         var newData = {
           id: Date.now(),
-          age: this.user.fixed ? this.getAge(this.user.fixed).parse : this.getAge(this.user.birth).parse,
+          age: this.getAge(this.user.birth).parse,
           ...this.addDetail,
           time: this.today
         }
