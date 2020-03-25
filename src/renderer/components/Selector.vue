@@ -41,7 +41,7 @@
             <th><editable :obj="{ uid: user.uid, key: 'tele', value: user.tele }"></editable></th>
             <td><abbr :title="user.note">{{ user.note }}</abbr></td>
             <td>{{ user.danger ? '⭕' : ' ' }}</td>
-            <td>{{ user.fixed ? getAge(user.fixed).parse : getAge(user.birth).parse }}</td>
+            <td>{{ getAge(user.birth).parse }}</td>
             <td>
               <span @click="questionDelete(user.uid)" class="del">删</span>
               <span @click="detail(user.uid)" class="edit">详</span>
