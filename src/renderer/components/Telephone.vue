@@ -26,6 +26,7 @@
             <th>纠正胎龄</th>
             <th>电话号码</th>
             <th class="has-text-centered">备注</th>
+            <th>性</th>
             <th style="width: 47px;"><abbr title="是否为高危儿童">危</abbr></th>
             <th><abbr title="年/月/日, 如有纠正胎龄则按其计算.">年龄</abbr></th>
             <th>操作</th>
@@ -40,6 +41,7 @@
             <td><editable :obj="{ uid: user.uid, key: 'fixed', value: user.fixed }"></editable></td>
             <th><editable :obj="{ uid: user.uid, key: 'tele', value: user.tele }"></editable></th>
             <td><abbr :title="user.note">{{ user.note }}</abbr></td>
+            <td><div v-if="user.male !== undefined">{{ (user.male === 'true') ? '男' : (user.male === 'false') ? '女' : '' }}</div></td>
             <td>{{ user.danger ? '⭕' : ' ' }}</td>
             <td>{{ getAge(user.birth).parse }}</td>
             <td>
