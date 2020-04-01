@@ -21,6 +21,7 @@
             <a href="#/selector">❎</a>
           </div>
           <div class="column is-half has-text-centered">
+            {{ user.uid }}&nbsp;&nbsp;
             <span style="text-decoration: underline;">
               {{ user.baby ? user.baby : '未命名' }}
             </span>
@@ -48,7 +49,7 @@
                     <editable :obj="{ uid: user.uid, key: 'baby', value: user.baby }"></editable>
                   </td>
                   <td style="width: 57px; min-width: 57px;">性别</td>
-                  <td width="50%"><div v-if="user.male !== undefined">{{ user.male ? '男': '女' }}</div></td> <!-- gender -->
+                  <td width="50%"><div v-if="user.male !== undefined">{{ (user.male === 'true') ? '男' : (user.male === 'false') ? '女' : '' }}</div></td> <!-- gender -->
                 </tr>
                 <tr>
                   <td>出生日期</td>
@@ -320,7 +321,7 @@
         data2[0].data[month] = r.height
       })
 
-      if (this.user.male === true) {
+      if (this.user.male === 'true') {
         seq.forEach(i => {
           data.push({
             name: `男孩${i}SD`,
@@ -331,7 +332,7 @@
             smooth: true
           })
         })
-      } else if (this.user.male === false) {
+      } else if (this.user.male === 'false') {
         seq.forEach(i => {
           data.push({
             name: `女孩${i}SD`,
@@ -398,7 +399,7 @@
       }
       myChart.setOption(option)
 
-      if (this.user.male === true) {
+      if (this.user.male === 'true') {
         seq.forEach(i => {
           data2.push({
             name: `男孩${i}SD`,
@@ -409,7 +410,7 @@
             smooth: true
           })
         })
-      } else if (this.user.male === false) {
+      } else if (this.user.male === 'false') {
         seq.forEach(i => {
           data2.push({
             name: `女孩${i}SD`,
