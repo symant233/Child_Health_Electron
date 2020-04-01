@@ -138,7 +138,7 @@
         tele: '',
         note: '',
         danger: 'false',
-        male: null
+        male: 'null'
       }
     },
     methods: {
@@ -164,7 +164,7 @@
         this.tele = ''
         this.note = ''
         this.danger = 'false'
-        this.male = null
+        this.male = 'null'
         this.inputRequired(false)
       },
       statusBar (bool) {
@@ -230,7 +230,7 @@
             uid: increase,
             name: this.name,
             baby: this.baby,
-            male: (this.male === 'true') ? true : false,
+            male: this.male,
             birth: this.birth,
             fixed: this.fixed,
             tele: this.tele,
@@ -249,12 +249,15 @@
         if (res) {
           this.name = res.name
           this.baby = res.baby
-          this.male = (res.male === 'true') ? true : (res.male === 'false') ? false : null
+          this.male = res.male
           this.birth = res.birth
           this.fixed = res.fixed
           this.tele = res.tele
           this.note = res.note
-          this.danger = (res.danger === 'true') ? true : false
+          this.danger = res.danger
+          if (typeof this.male === 'boolean') {
+            this.male = 'null'
+          } // 防止之前的bug导致的数据库放布尔值
           this.statusBar(true)
         } else {
           this.statusBar(false)
@@ -267,12 +270,26 @@
             uid: uid,
             name: this.name,
             baby: this.baby,
-            male: (this.male === 'true') ? true : false,
             birth: this.birth,
             fixed: this.fixed,
             tele: this.tele,
             note: this.note,
-            danger: (this.danger === 'true') ? true : false
+            male: this.male
+          }
+          switch (typeof this.danger) {
+            case 'string':
+              // 点过后该值为字符串
+              changed.danger = (this.danger === 'true')
+                ? true
+                : false
+              break
+            case 'boolean':
+              // 加载后未点击则仍为布尔值
+              changed.danger = this.danger
+              break
+            default:
+              changed.danger = null
+              break
           }
           if (!db.get('users').find({uid: uid}).value()) {
             dialog.showMessageBox({

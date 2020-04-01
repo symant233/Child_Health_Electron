@@ -492,7 +492,7 @@ function createMenu (mainWindow) {
           },
           { type: 'separator' },
           {
-            label: '开发者选项',
+            label: '开发者工具',
             accelerator: 'F12',
             click () {
               if (process.env.NODE_ENV !== 'development') {
