@@ -19,9 +19,9 @@
           <div class="column">
             <a @click="goBack">＜</a>
             <a href="#/selector">❎</a>
+            &nbsp;&nbsp;{{ user.uid }}
           </div>
           <div class="column is-half has-text-centered">
-            {{ user.uid }}&nbsp;&nbsp;
             <span style="text-decoration: underline;">
               {{ user.baby ? user.baby : '未命名' }}
             </span>

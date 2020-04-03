@@ -265,6 +265,7 @@
       },
       update () {
         if (this.uid) {
+          if (!this.checkReq(this.name, this.birth, this.tele)) return false
           var uid = parseInt(this.uid)
           var changed = {
             uid: uid,
