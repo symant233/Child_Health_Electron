@@ -56,9 +56,9 @@ function createWindow () {
    * Initial window options
    */
   mainWindow = new BrowserWindow({
-    height: 563,
+    height: 593,
     useContentSize: true,
-    width: 1033,
+    width: 1063,
     minWidth: 343,
     title: 'Child Health Care [Electron]',
     resizable: true,
@@ -211,7 +211,7 @@ function createMenu (mainWindow) {
             label: 'Default Size',
             accelerator: 'Ctrl+9',
             click () {
-              mainWindow.setSize(1046, 620)
+              mainWindow.setSize(1076, 650)
               // plus titlebar and menubar
             }
           }
@@ -429,7 +429,7 @@ function createMenu (mainWindow) {
             label: '还原默认窗口大小',
             accelerator: 'Ctrl+9',
             click () {
-              mainWindow.setSize(1046, 620)
+              mainWindow.setSize(1076, 650)
               // plus titlebar and menubar
             }
           }

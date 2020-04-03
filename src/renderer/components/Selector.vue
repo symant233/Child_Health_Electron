@@ -162,6 +162,7 @@
           var parse = year + '/' + month + '/' + day
           return { year: year, month: month, day: day, parse: parse }
         }
+        return { parse: 'error' }
       },
       search () {
         var id = this.selectForm.options
