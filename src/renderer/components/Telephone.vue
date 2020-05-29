@@ -114,6 +114,9 @@
       }
     },
     methods: {
+      detail (uid) {
+        window.location.hash = '#/detail/' + uid
+      },
       questionDelete (e) {
         var uid = e.currentTarget.innerText
         this.questionDeleteBoolean = true
@@ -236,6 +239,14 @@ nav.tabs {
   #search {
     margin-left: 120px;
   }
+}
+
+.del {
+  color: red;
+}
+
+.edit {
+  color: green;
 }
 
 </style>
