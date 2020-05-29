@@ -9,7 +9,8 @@
       "fixed": "",
       "tele": "w",
       "note": "",
-      "danger": true
+      "danger": true,
+      "age": "0岁2月"
     },
     {
       "uid": 10025,
@@ -20,7 +21,8 @@
       "fixed": "",
       "tele": "24",
       "note": "",
-      "danger": true
+      "danger": true,
+      "age": "0岁2月"
     },
     {
       "uid": 10024,
@@ -31,7 +33,8 @@
       "fixed": "",
       "tele": "awet",
       "note": "",
-      "danger": true
+      "danger": true,
+      "age": "0岁2月"
     },
     {
       "uid": 10023,
@@ -42,7 +45,8 @@
       "fixed": "",
       "tele": "v",
       "note": "",
-      "danger": false
+      "danger": false,
+      "age": "0岁2月"
     },
     {
       "uid": 10022,
@@ -53,7 +57,8 @@
       "fixed": "2020-03-18",
       "tele": "1231312",
       "note": "aaaaaaaaaaa",
-      "danger": true
+      "danger": true,
+      "age": "0岁2月"
     },
     {
       "uid": 10021,
@@ -64,7 +69,7 @@
       "tele": "11111111111",
       "note": "",
       "danger": false,
-      "age": "0岁2月",
+      "age": "0岁4月",
       "G": "2",
       "P": "2"
     },
@@ -77,7 +82,7 @@
       "tele": "123456783",
       "note": "out test!",
       "danger": true,
-      "age": "2岁1月"
+      "age": "2岁3月"
     },
     {
       "uid": 10017,
@@ -88,7 +93,7 @@
       "tele": "123456789",
       "note": "out test!",
       "danger": false,
-      "age": "2岁1月"
+      "age": "2岁3月"
     },
     {
       "uid": 10012,
@@ -99,7 +104,7 @@
       "tele": "test",
       "note": "danger test",
       "danger": false,
-      "age": "0岁6月",
+      "age": "0岁8月",
       "male": true
     },
     {
@@ -111,7 +116,7 @@
       "tele": "9yue",
       "note": "",
       "danger": false,
-      "age": "5岁2月"
+      "age": "5岁4月"
     },
     {
       "uid": 10010,
@@ -122,7 +127,7 @@
       "tele": "11111111113",
       "note": "",
       "danger": false,
-      "age": "0岁2月"
+      "age": "0岁4月"
     },
     {
       "uid": 10009,
@@ -133,7 +138,7 @@
       "tele": "238123418",
       "note": "",
       "danger": false,
-      "age": "11岁6月"
+      "age": "11岁8月"
     },
     {
       "uid": 10008,
@@ -144,7 +149,7 @@
       "tele": "13012345678",
       "note": "高危儿是指在胎儿期、分娩时、新生儿期受到各种高危因素的危害，已发生或可能发生危重疾病的新生儿。绝大多数高危儿能完全健康地生长发育，部分高危儿视疾病危重程度以后可能有运动障碍、智力低下、语言障碍、癫痫、多动、学习困难、自闭、行为异常等后遗症发生。",
       "danger": true,
-      "age": "1岁6月",
+      "age": "1岁10月",
       "weight": "10",
       "G": "2",
       "P": "2",
@@ -160,7 +165,7 @@
       "tele": "123",
       "note": "changed",
       "danger": false,
-      "age": "0岁2月"
+      "age": "0岁4月"
     },
     {
       "uid": 10006,
@@ -171,7 +176,7 @@
       "tele": "1234",
       "note": "",
       "danger": true,
-      "age": "1岁2月"
+      "age": "1岁5月"
     },
     {
       "uid": 10005,
@@ -182,7 +187,7 @@
       "tele": "123",
       "note": "",
       "danger": false,
-      "age": "0岁2月"
+      "age": "0岁4月"
     },
     {
       "uid": 10004,
@@ -193,7 +198,7 @@
       "tele": "111",
       "note": "aaaa",
       "danger": true,
-      "age": "0岁2月"
+      "age": "2岁11月"
     },
     {
       "uid": 10001,
@@ -204,7 +209,7 @@
       "tele": "a2",
       "note": "",
       "danger": false,
-      "age": "10岁2月"
+      "age": "10岁4月"
     }
   ],
   "stored": "C:\\Users\\symant\\Documents\\GitHub\\Child_Health_Electron\\src\\datastore\\data.json",
@@ -214,7 +219,7 @@
   "increase": 10026,
   "language": "Chinese",
   "pre": 5,
-  "search": "baby",
+  "search": "tele",
   "details": [
     {
       "uid": 10008,
@@ -339,6 +344,12 @@
     },
     {
       "uid": 10026,
+      "mother": {},
+      "father": {},
+      "reports": []
+    },
+    {
+      "uid": 10004,
       "mother": {},
       "father": {},
       "reports": []

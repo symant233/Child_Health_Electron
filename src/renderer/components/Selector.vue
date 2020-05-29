@@ -116,7 +116,8 @@
           { id: 'name', value: '产妇' },
           { id: 'baby', value: '宝宝' },
           { id: 'birth', value: '生日' },
-          { id: 'danger', value: '高危' }
+          { id: 'danger', value: '高危' },
+          { id: 'tele', value: '电话' }
         ]
       }
     },
@@ -192,6 +193,11 @@
           case 'birth':
             this.users = this.users.filter(function (user) {
               return user.birth.match(input)
+            })
+            break
+          case 'tele':
+            this.users = this.users.filter(function (user) {
+              return user.tele.match(input)
             })
             break
           default:
