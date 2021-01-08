@@ -174,7 +174,7 @@
         <table class="table is-striped is-fullwidth is-hoverable is-bordered">
           <thead>
             <tr>
-              <th style="min-width: 57px; width: 57px;">序号</th>
+              <!-- <th style="min-width: 57px; width: 57px;">序号</th> -->
               <th style="min-width: 57px; width: 57px;">年龄</th>
               <th style="min-width: 57px; width: 57px;">体重</th>
               <th style="min-width: 57px; width: 57px;">身高</th>
@@ -186,7 +186,7 @@
           </thead>
           <tbody>
             <tr v-for="(report, index) in detail.reports" :key="index">
-              <td class="has-text-centered">{{ index+1 }}</td>
+              <!-- <td class="has-text-centered">{{ index+1 }}</td> -->
               <td>{{ report.age }}</td>
               <td>{{ report.weight }}&nbsp;{{ report.signalW }}</td>
               <td>{{ report.height }}&nbsp;{{ report.signalH }}</td>
@@ -275,7 +275,8 @@
       // initialize database
       var uid = parseInt(this.$route.params.uid)
       var res = db.get('details').find({uid: uid}).value()
-      if (!res) {
+      // 无详情则进行初始化
+      if (!res) { 
         var data = {
           uid: uid,
           mother: {},
@@ -286,6 +287,8 @@
       }
     },
     mounted: function () {
+      // sort reports by age
+      this.detail.reports.sort(this.sortFilter)
       // render line chart
       var myChart = echarts.init(document.getElementById('chart'))
       var myChart2 = echarts.init(document.getElementById('chart2'))
@@ -542,6 +545,20 @@
           console.log('DB@ uid: ' + this.uid + ' id: ' + id + ' removed!')
         }
         this.questionDeleteBoolean = false
+      },
+      sortFilter (a, b) {
+        // 比较两个给定的report里age哪个大
+        var atmp = a.age.split('/')
+        var btmp = b.age.split('/')
+        if (atmp[0] !== btmp[0]) {
+          return atmp[0] > btmp[0] ? 1 : -1
+        }
+        if (atmp[1] !== btmp[1]) {
+          return atmp[1] > btmp[1] ? 1 : -1
+        }
+        if (atmp[2] !== btmp[2]) {
+          return atmp[2] > btmp[2] ? 1 : -1
+        }
       }
     }
   }

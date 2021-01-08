@@ -529,7 +529,7 @@ function firstTimeRun () {
 app.on('ready', function () {
   var win = createWindow()
   win.maximize() // 启动后最大化
-  firstTimeRun()
+  // firstTimeRun()
   createMenu(win)
 })
 

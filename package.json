@@ -3,7 +3,7 @@
   "version": "1.2.5",
   "author": "symant233 <symant233@gmail.com>",
   "description": "A child health care system writen in electron.",
-  "license": "GNU General Public License v3.0",
+  "license": "GPL-3.0-or-later",
   "main": "./dist/electron/main.js",
   "scripts": {
     "build": "node .electron-vue/build.js && electron-builder",
