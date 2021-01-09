@@ -34,9 +34,9 @@ deploy:
   provider: GitHub
   draft: true
   prerelease: false
-  artifacts: /child_health_electron Setup .*\.exe/
+  artifacts: build/*.exe
   auth_token:
     secure: oUQp5QByqF9WrGmoL/YHsCw03mBs8coDAWAeqe+PDCnYnWzbLABVhq+agItQK+t+
   on:
-    branch: master                 # release from master branch only
-    APPVEYOR_REPO_TAG: true        # deploy on tag push only
+    branch: master # release from master branch only
+    APPVEYOR_REPO_TAG: true # deploy on tag push only
