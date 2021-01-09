@@ -307,10 +307,12 @@ export default {
 #button-search:hover {
   background-color: #209cee;
 }
+
 #nav-selector {
   background: #00d1b2;
   border-color: #00d1b2;
 }
+
 tbody tr td {
   text-overflow: ellipsis;
   -moz-text-overflow: ellipsis;
@@ -318,25 +320,32 @@ tbody tr td {
   white-space: nowrap;
   text-align: left;
 }
+
 th,
 td {
   max-width: 260px;
 }
+
 nav.tabs {
   background: #f5f5f5;
 }
+
 .hero {
   padding-bottom: 41px;
 }
+
 .navbar {
   min-height: 41px;
 }
+
 .navbar > .container {
   min-height: 41px;
 }
+
 #hero-body {
   padding: 0px;
 }
+
 #status {
   margin-bottom: 0px;
 }

@@ -251,9 +251,10 @@ export default {
     },
     getTele() {
       const users = db.get('users').value()
-      const pre = db.get('pre').value()
+      const pre = db.get('pre').value() // 记录在数据库中的提前多少天
       var usersNew = []
       const checkList = [
+        // 普通高危儿
         '0/1/0',
         '0/3/0',
         '0/6/0',
@@ -298,8 +299,10 @@ export default {
         var user = users[index]
         var age = this.getAge(user.birth).parse
         var cn = this.getAge(user.birth, true).parse
-        for (var index in checkList) {
-          var item = checkList[index]
+        // 如果是二类高危儿则使用另一套匹配列表
+        var list = users[index].level === '2' ? checkList2 : checkList
+        for (var index in list) {
+          var item = list[index]
           user.age = cn
           if (age === item) {
             usersNew.push(user)
@@ -320,10 +323,12 @@ export default {
 #button-search:hover {
   background-color: #209cee;
 }
+
 #nav-selector {
   background: #f14668;
   border-color: #f14668;
 }
+
 tbody tr td {
   text-overflow: ellipsis;
   -moz-text-overflow: ellipsis;
@@ -331,25 +336,32 @@ tbody tr td {
   white-space: nowrap;
   text-align: left;
 }
+
 th,
 td {
   max-width: 260px;
 }
+
 nav.tabs {
   background: #f5f5f5;
 }
+
 .hero {
   padding-bottom: 41px;
 }
+
 .navbar {
   min-height: 41px;
 }
+
 .navbar > .container {
   min-height: 41px;
 }
+
 #hero-body {
   padding: 0px;
 }
+
 #status {
   margin-bottom: 0px;
 }
