@@ -1,15 +1,28 @@
 {
   "users": [
     {
+      "uid": 10028,
+      "name": "aa",
+      "baby": "aa3️⃣Ⅲ②",
+      "male": "true",
+      "birth": "2222-02-02",
+      "fixed": "",
+      "tele": "aa",
+      "note": "",
+      "danger": true,
+      "level": "3"
+    },
+    {
       "uid": 10027,
       "name": "a",
-      "baby": "w",
+      "baby": "c",
       "male": "null",
       "birth": "2020-04-03",
       "fixed": "",
       "tele": "a",
       "note": "",
-      "danger": false
+      "danger": true,
+      "level": "1"
     },
     {
       "uid": 10026,
@@ -21,7 +34,8 @@
       "tele": "w",
       "note": "",
       "danger": true,
-      "age": "0岁9月"
+      "age": "0岁9月",
+      "level": "2"
     },
     {
       "uid": 10025,
@@ -226,7 +240,7 @@
   "stored": "C:\\Users\\symant\\Documents\\GitHub\\Child_Health_Electron\\src\\datastore\\data.json",
   "author": "symant233 <symant233@gmail.com>",
   "version": "1.2.5",
-  "increase": 10027,
+  "increase": 10028,
   "language": "Chinese",
   "pre": 3,
   "search": "danger",
@@ -404,6 +418,18 @@
     },
     {
       "uid": 10004,
+      "mother": {},
+      "father": {},
+      "reports": []
+    },
+    {
+      "uid": 10027,
+      "mother": {},
+      "father": {},
+      "reports": []
+    },
+    {
+      "uid": 10028,
       "mother": {},
       "father": {},
       "reports": []

@@ -5,7 +5,7 @@
       <div class="hero-body" id="hero-body">
         <div class="columns">
           <div class="column is-half">
-            <label class="label">更新操作</label>
+            <label class="label">更新操作:</label>
             <div class="field has-addons">
               <div class="control">
                 <input class="input" type="number" placeholder="⚡Uid" v-model="uid">
@@ -16,13 +16,13 @@
             </div>
 
             <div class="field">
-              <label class="label">宝宝姓名</label>
+              <label class="label">宝宝姓名:</label>
               <div class="control">
                 <input class="input" type="text" name="baby" id="baby" placeholder="👶Baby" v-model="baby">
               </div>
             </div>
             <div class="field">
-              <label class="label">产妇姓名</label>
+              <label class="label">产妇姓名:</label>
               <div class="control">
                 <input class="input is-info" type="text" name="name" id="name" placeholder="👩Name" v-model="name">
               </div>
@@ -78,12 +78,20 @@
               <div class="control">
                 <span><b>高危儿:&nbsp;&nbsp;</b></span>
                 <label class="radio">
-                  <input type="radio" name="danger" value="true" id="danger" v-model="danger">
-                  Yes
+                  <input type="radio" name="level" value="false" checked v-model="danger">
+                  否
                 </label>
                 <label class="radio">
-                  <input type="radio" name="danger" value="false" checked v-model="danger">
-                  No
+                  <input type="radio" name="level" value="1" id="level" v-model="level">
+                  Ⅰ类
+                </label>
+                <label class="radio">
+                  <input type="radio" name="level" value="2" id="level" v-model="level">
+                  Ⅱ类
+                </label>
+                <label class="radio">
+                  <input type="radio" name="level" value="3" id="level" v-model="level">
+                  Ⅲ类
                 </label>
               </div>
             </div>
@@ -138,7 +146,8 @@
         tele: '',
         note: '',
         danger: 'false',
-        male: 'null'
+        male: 'null',
+        level: '0'
       }
     },
     methods: {
@@ -165,6 +174,7 @@
         this.note = ''
         this.danger = 'false'
         this.male = 'null'
+        this.level = '0'
         this.inputRequired(false)
       },
       statusBar (bool) {
@@ -235,7 +245,8 @@
             fixed: this.fixed,
             tele: this.tele,
             note: this.note,
-            danger: (this.danger === 'true') ? true : false
+            danger: (this.level === '0') ? false : true,
+            level: this.level
           }).write()
           db.update('increase', n => n + 1).write()
           console.log('DB@ inserted new data')
@@ -255,6 +266,7 @@
           this.tele = res.tele
           this.note = res.note
           this.danger = res.danger
+          this.level = res.level
           if (typeof this.male === 'boolean') {
             this.male = 'null'
           } // 防止之前的bug导致的数据库放布尔值
@@ -275,7 +287,8 @@
             fixed: this.fixed,
             tele: this.tele,
             note: this.note,
-            male: this.male
+            male: this.male,
+            level: this.level
           }
           switch (typeof this.danger) {
             case 'string':
@@ -307,6 +320,19 @@
         return this.statusBar(false)
       }
 
+    },
+    watch: {
+      // 监听`level`的改变
+      level: function (newLevel, oldLevel) {
+        if (newLevel !== '0') {
+          this.danger = 'true'
+        }
+      },
+      danger: function (newDanger, oldDanger) {
+        if (newDanger === 'false') {
+          this.level = '0'
+        }
+      }
     }
   }
 </script>

@@ -42,7 +42,7 @@
             <th><editable :obj="{ uid: user.uid, key: 'tele', value: user.tele }"></editable></th>
             <td><abbr :title="user.note">{{ user.note }}</abbr></td>
             <td><div v-if="user.male !== undefined">{{ (user.male === 'true') ? '男' : (user.male === 'false') ? '女' : '' }}</div></td>
-            <td>{{ user.danger ? '⭕' : ' ' }}</td>
+            <td><danger-level :user=user ></danger-level></td>
             <td>{{ getAge(user.birth).parse }}</td>
             <td>
               <span @click="questionDelete(user.uid)" class="del">删</span>
@@ -99,9 +99,10 @@
 <script>
   import db from '../../datastore/index'
   import Editable from './Common/Editable.vue'
+  import DangerLevel from './Common/DangerLevel.vue'
   export default {
     name: 'select-page',
-    components: { Editable },
+    components: { Editable, DangerLevel },
     data () {
       return {
         questionDeleteBoolean: false, // show model

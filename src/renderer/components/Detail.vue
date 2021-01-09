@@ -65,7 +65,7 @@
                     <editable :obj="{ uid: user.uid, key: 'fixed', value: user.fixed }"></editable>
                   </td>
                   <td>高危</td>
-                  <td>{{ user.danger ? '⭕' : '否' }}</td>
+                  <td><danger-level :user=user ></danger-level></td>
                 </tr>
                 <tr>
                   <td>出生体重</td>
@@ -251,12 +251,13 @@
   import db from '../../datastore/'
   import Editable from './Common/Editable.vue'
   import EditParent from './Common/EditParent.vue'
+  import DangerLevel from './Common/DangerLevel.vue'
   import echarts from 'echarts'
   import fs from 'fs'
   import path from 'path'
   export default {
     name: 'enrty-detail',
-    components: { Editable, EditParent },
+    components: { Editable, EditParent, DangerLevel },
     data () {
       return {
         questionDeleteBoolean: false, // show model
