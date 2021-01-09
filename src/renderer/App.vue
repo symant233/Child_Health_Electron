@@ -5,10 +5,9 @@
 </template>
 
 <script>
-  export default {
-    name: 'child_health_electron'
-  }
+export default {
+  name: 'child_health_electron'
+}
 </script>
 
-<style>
-</style>
+<style></style>

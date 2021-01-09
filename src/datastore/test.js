@@ -28,6 +28,9 @@ var change = {
 }
 // var test = db.get('users').find().assign(change).write()
 
-var test = db.get('users').find({uid: 10002}).value()
+var test = db
+  .get('users')
+  .find({ uid: 10002 })
+  .value()
 
 console.log(test)

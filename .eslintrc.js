@@ -12,10 +12,8 @@ module.exports = {
   globals: {
     __static: true
   },
-  plugins: [
-    'html'
-  ],
-  'rules': {
+  plugins: ['html'],
+  rules: {
     // allow paren-less arrow functions
     'arrow-parens': 0,
     // allow async-await
@@ -26,6 +24,14 @@ module.exports = {
     'no-unused-vars': 'off',
     'no-unneeded-ternary': 'off',
     'no-trailing-spaces': 'off',
-    'no-redeclare': 'off'
+    'no-redeclare': 'off',
+    'space-before-function-paren': [
+      'error',
+      {
+        anonymous: 'never',
+        named: 'never',
+        asyncArrow: 'always'
+      }
+    ]
   }
 }

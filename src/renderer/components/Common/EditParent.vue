@@ -1,16 +1,22 @@
 <template>
   <div>
     <div v-show="!editing">
-      <label @dblclick="editing=true;">
+      <label @dblclick="editing = true">
         {{ message ? message : 'undefined' }}
       </label>
     </div>
     <input
       v-show="editing"
       v-model="message"
-      v-on:blur="editing=false; doUpdate();"
-      @keyup.enter="editing=false;"
-      @keyup.esc="esc=true; editing=false;"
+      v-on:blur="
+        editing = false
+        doUpdate()
+      "
+      @keyup.enter="editing = false"
+      @keyup.esc="
+        esc = true
+        editing = false
+      "
     />
   </div>
 </template>
@@ -20,7 +26,7 @@ import db from '../../../datastore/'
 export default {
   name: 'editable-parent',
   props: ['obj'], // obj: { uid: Int, key: String, value: String, mother: Boolen }
-  data () {
+  data() {
     return {
       message: this.obj.value,
       last: this.obj.value, // 记忆上一次更改
@@ -29,17 +35,15 @@ export default {
     }
   },
   methods: {
-    doUpdate () {
+    doUpdate() {
       if (!this.esc && this.obj.uid) {
         if (this.last === this.message) return
         this.last = this.message
         // db update
         var uid = parseInt(this.obj.uid)
-        var prefix = this.obj.mother 
-          ? 'mother.'
-          : 'father.'
+        var prefix = this.obj.mother ? 'mother.' : 'father.'
         db.get('details')
-          .find({uid: uid})
+          .find({ uid: uid })
           .set(prefix + this.obj.key, this.message)
           .write()
         console.log('DB@ detail parents updated uid: ' + uid)

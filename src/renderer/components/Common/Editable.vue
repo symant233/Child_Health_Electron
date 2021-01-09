@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-show="!editing">
-      <label @dblclick="editing=true;">
+      <label @dblclick="editing = true">
         {{ message ? message : 'null' }}
       </label>
     </div>
@@ -9,9 +9,15 @@
       class="editable-input"
       v-show="editing"
       v-model="message"
-      v-on:blur="editing=false; doUpdate();"
-      @keyup.enter="editing=false;"
-      @keyup.esc="esc=true; editing=false;"
+      v-on:blur="
+        editing = false
+        doUpdate()
+      "
+      @keyup.enter="editing = false"
+      @keyup.esc="
+        esc = true
+        editing = false
+      "
     />
   </div>
 </template>
@@ -21,7 +27,7 @@ import db from '../../../datastore/'
 export default {
   name: 'editable',
   props: ['obj'], // obj: { uid: Int, key: String, value: String }
-  data () {
+  data() {
     return {
       message: this.obj.value,
       last: this.obj.value, // 记忆上一次更改
@@ -30,14 +36,17 @@ export default {
     }
   },
   methods: {
-    doUpdate () {
+    doUpdate() {
       if (!this.esc && this.obj.uid) {
         if (this.last === this.message) return
         this.last = this.message
         // db update
         var uid = parseInt(this.obj.uid)
         var changed = { [this.obj.key]: this.message }
-        db.get('users').find({uid: uid}).assign(changed).write()
+        db.get('users')
+          .find({ uid: uid })
+          .assign(changed)
+          .write()
         console.log('DB@ updated uid: ' + uid)
       } else {
         this.message = this.last
@@ -51,5 +60,4 @@ export default {
 .editable-input {
   width: 90px;
 }
-
 </style>

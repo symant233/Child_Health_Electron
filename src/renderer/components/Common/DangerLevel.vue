@@ -22,5 +22,4 @@ export default {
 #danger-level {
   color: red;
 }
-
 </style>
