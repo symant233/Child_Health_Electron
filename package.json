@@ -1,6 +1,6 @@
 {
   "name": "child_health_electron",
-  "version": "1.2.5",
+  "version": "1.2.6-rc1",
   "author": "symant233 <symant233@gmail.com>",
   "description": "A child health care system writen in electron.",
   "license": "GPL-3.0-or-later",
@@ -50,7 +50,9 @@
       "target": [
         {
           "target": "nsis",
-          "arch": ["x64"]
+          "arch": [
+            "x64"
+          ]
         }
       ]
     },

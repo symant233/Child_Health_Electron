@@ -30,11 +30,13 @@ build_script:
 test: off
 
 deploy:
-  description: 'Release description'
+  release: '$(APPVEYOR_REPO_TAG_NAME) Update Release'
+  description: '> AppVeyor Build Version: v$(APPVEYOR_BUILD_VERSION)'
   provider: GitHub
   draft: true
   prerelease: false
-  artifacts: build/*.exe
+  force_update: true
+  artifact: build/*.exe
   auth_token:
     secure: oUQp5QByqF9WrGmoL/YHsCw03mBs8coDAWAeqe+PDCnYnWzbLABVhq+agItQK+t+
   on:
