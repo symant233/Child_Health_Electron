@@ -9,6 +9,9 @@ import process from 'process'
 if (!process.env.IS_WEB) Vue.use(require('vue-electron'))
 Vue.http = Vue.prototype.$http = axios
 Vue.config.productionTip = false
+if (process.env.NODE_ENV === 'development') {
+  Vue.config.devtools = true
+}
 Vue.db = Vue.prototype.$db = db
 
 new Vue({

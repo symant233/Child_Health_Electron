@@ -185,7 +185,6 @@ export default {
     return {
       questionDeleteBoolean: false, // show model
       deleteUid: 0,
-      test: 'Test message from src/renderer/components/Selector.vue',
       today: new Date().toISOString().slice(0, 10),
       users: db
         .get('users')
@@ -270,7 +269,17 @@ export default {
           break
         case 'danger':
           this.users = this.users.filter(function(user) {
-            return user.danger === true
+            if (input === '') {
+              return user.danger === true
+            }
+            switch (input) {
+              case '1':
+                return user.level === '1'
+              case '2':
+                return user.level === '2'
+              case '3':
+                return user.level === '3'
+            }
           })
           break
         case 'name':
