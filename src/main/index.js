@@ -12,26 +12,37 @@ import db from '../datastore/index'
  * https://simulatedgreg.gitbooks.io/electron-vue/content/en/using-static-assets.html
  */
 if (process.env.NODE_ENV !== 'development') {
-  global.__static = require('path').join(__dirname, '/static').replace(/\\/g, '\\\\')
+  global.__static = require('path')
+    .join(__dirname, '/static')
+    .replace(/\\/g, '\\\\')
 }
 
 let mainWindow
-const winURL = process.env.NODE_ENV === 'development'
-  ? `http://localhost:9080`
-  : `file://${__dirname}/index.html`
+const winURL =
+  process.env.NODE_ENV === 'development'
+    ? `http://localhost:9080`
+    : `file://${__dirname}/index.html`
 // const winURL = `file://${__dirname}/index.ejs`
 
-function backupnow (bool) {
-  var stored = db.read().get('stored').value()
-  var backup = db.read().get('backup').value()
+function backupnow(bool) {
+  var stored = db
+    .read()
+    .get('stored')
+    .value()
+  var backup = db
+    .read()
+    .get('backup')
+    .value()
   if (!backup) {
-    if (!bool) { // 如果没提供bool或bool为false
+    if (!bool) {
+      // 如果没提供bool或bool为false
       backupNotFound()
     }
   } else {
     fs.copyFileSync(stored, backup)
     console.log('Run backup... @ ' + backup)
-    if (!bool) { // 如果没提供bool或bool为false
+    if (!bool) {
+      // 如果没提供bool或bool为false
       dialog.showMessageBox({
         type: 'none',
         title: 'Backup',
@@ -42,7 +53,7 @@ function backupnow (bool) {
   }
 }
 
-function backupNotFound () {
+function backupNotFound() {
   dialog.showMessageBox({
     type: 'info',
     // title: 'Warning',
@@ -51,7 +62,7 @@ function backupNotFound () {
   })
 }
 
-function createWindow () {
+function createWindow() {
   /**
    * Initial window options
    */
@@ -75,7 +86,7 @@ function createWindow () {
   return mainWindow
 }
 
-function createMenu (mainWindow) {
+function createMenu(mainWindow) {
   if (db.get('language').value() === 'English') {
     var template = [
       {
@@ -86,13 +97,25 @@ function createMenu (mainWindow) {
             submenu: [
               {
                 label: 'Open Data Folder',
-                click () { shell.showItemInFolder(db.read().get('stored').value()) }
+                click() {
+                  shell.showItemInFolder(
+                    db
+                      .read()
+                      .get('stored')
+                      .value()
+                  )
+                }
               },
               {
                 label: 'Open Backup Folder',
-                click () {
-                  var bp = db.read().get('backup').value()
-                  if (bp) { shell.showItemInFolder(bp) } else {
+                click() {
+                  var bp = db
+                    .read()
+                    .get('backup')
+                    .value()
+                  if (bp) {
+                    shell.showItemInFolder(bp)
+                  } else {
                     backupNotFound()
                   }
                 }
@@ -105,34 +128,41 @@ function createMenu (mainWindow) {
               {
                 label: 'Run Backup',
                 accelerator: 'Ctrl+O',
-                click () { backupnow() }
+                click() {
+                  backupnow()
+                }
               },
               { type: 'separator' },
               {
                 label: 'Set Backup Path',
-                click () {
-                  dialog.showOpenDialog(mainWindow, {
-                    properties: ['openDirectory']
-                  }).then(result => {
-                    if (!result.canceled) {
-                      var bpdir = result.filePaths[0]
-                      bpdir = path.join(bpdir, 'data.json')
-                      db.read().set('backup', bpdir).write()
-                      console.log('Backup Dir Set @ ' + bpdir)
-                    }
-                  }).catch(err => {
-                    console.log(err)
-                  })
+                click() {
+                  dialog
+                    .showOpenDialog(mainWindow, {
+                      properties: ['openDirectory']
+                    })
+                    .then(result => {
+                      if (!result.canceled) {
+                        var bpdir = result.filePaths[0]
+                        bpdir = path.join(bpdir, 'data.json')
+                        db.read()
+                          .set('backup', bpdir)
+                          .write()
+                        console.log('Backup Dir Set @ ' + bpdir)
+                      }
+                    })
+                    .catch(err => {
+                      console.log(err)
+                    })
                 }
               },
               {
                 label: 'Set Backup Series',
-                click () {
+                click() {
                   dialog.showMessageBox({
                     type: 'info',
                     message: 'Coming soon...',
                     accelerator: 'Ctrl+P',
-                    click () {}
+                    click() {}
                   })
                 }
               }
@@ -144,9 +174,17 @@ function createMenu (mainWindow) {
               {
                 label: 'English',
                 type: 'radio',
-                checked: (db.read().get('language').value() === 'English') ? true : false,
-                click () {
-                  db.read().set('language', 'English').write()
+                checked:
+                  db
+                    .read()
+                    .get('language')
+                    .value() === 'English'
+                    ? true
+                    : false,
+                click() {
+                  db.read()
+                    .set('language', 'English')
+                    .write()
                   dialog.showMessageBox({
                     type: 'none',
                     title: '',
@@ -158,9 +196,17 @@ function createMenu (mainWindow) {
               {
                 label: 'Chinese',
                 type: 'radio',
-                checked: (db.read().get('language').value() === 'Chinese') ? true : false,
-                click () {
-                  db.read().set('language', 'Chinese').write()
+                checked:
+                  db
+                    .read()
+                    .get('language')
+                    .value() === 'Chinese'
+                    ? true
+                    : false,
+                click() {
+                  db.read()
+                    .set('language', 'Chinese')
+                    .write()
                   dialog.showMessageBox({
                     type: 'none',
                     title: '',
@@ -194,14 +240,14 @@ function createMenu (mainWindow) {
           {
             label: 'Go Back',
             accelerator: 'Alt+Left',
-            click () {
+            click() {
               mainWindow.webContents.goBack()
             }
           },
           {
             label: 'Go Forward',
             accelerator: 'Alt+Right',
-            click () {
+            click() {
               mainWindow.webContents.goForward()
             }
           },
@@ -210,7 +256,7 @@ function createMenu (mainWindow) {
           {
             label: 'Default Size',
             accelerator: 'Ctrl+9',
-            click () {
+            click() {
               mainWindow.setSize(1076, 650)
               // plus titlebar and menubar
             }
@@ -222,7 +268,7 @@ function createMenu (mainWindow) {
         submenu: [
           {
             label: 'About',
-            click () {
+            click() {
               dialog.showMessageBox({
                 type: 'none',
                 title: 'About',
@@ -235,48 +281,59 @@ function createMenu (mainWindow) {
             label: 'Releses [Link]',
             click: async () => {
               const { shell } = require('electron')
-              await shell.openExternal('https://github.com/symant233/Child_Health_Electron/releases')
+              await shell.openExternal(
+                'https://github.com/symant233/Child_Health_Electron/releases'
+              )
             }
           },
           { type: 'separator' },
           {
             label: 'Printer',
             accelerator: 'Ctrl+P',
-            click () {
+            click() {
               mainWindow.webContents.print({ landscape: true })
             }
           },
           {
             label: 'Print To PDF',
             accelerator: 'Ctrl+Shift+P',
-            click () {
-              dialog.showOpenDialog(mainWindow, {
-                properties: ['openDirectory']
-              }).then(result => {
-                if (!result.canceled) {
-                  var printDir = result.filePaths[0]
-                  var name = 'WebContent@' + new Date().toISOString().slice(0, 10) + '.pdf'
-                  printDir = path.join(printDir, name)
-                  // https://electronjs.org/docs/api/web-contents#contentsprinttopdfoptions
-                  mainWindow.webContents.printToPDF({ landscape: true }).then(data => {
-                    fs.writeFileSync(printDir, data, (error) => {
-                      if (error) throw error
-                      console.log('Write PDF successfully.')
-                    })
-                  }).catch(error => {
-                    console.log(error)
-                  })
-                }
-              }).catch(err => {
-                console.log(err)
-              })
+            click() {
+              dialog
+                .showOpenDialog(mainWindow, {
+                  properties: ['openDirectory']
+                })
+                .then(result => {
+                  if (!result.canceled) {
+                    var printDir = result.filePaths[0]
+                    var name =
+                      'WebContent@' +
+                      new Date().toISOString().slice(0, 10) +
+                      '.pdf'
+                    printDir = path.join(printDir, name)
+                    // https://electronjs.org/docs/api/web-contents#contentsprinttopdfoptions
+                    mainWindow.webContents
+                      .printToPDF({ landscape: true })
+                      .then(data => {
+                        fs.writeFileSync(printDir, data, error => {
+                          if (error) throw error
+                          console.log('Write PDF successfully.')
+                        })
+                      })
+                      .catch(error => {
+                        console.log(error)
+                      })
+                  }
+                })
+                .catch(err => {
+                  console.log(err)
+                })
             }
           },
           { type: 'separator' },
           {
             label: 'DevTools',
             accelerator: 'F12',
-            click () {
+            click() {
               if (process.env.NODE_ENV !== 'development') {
                 mainWindow.webContents.isDevToolsOpened()
                   ? mainWindow.webContents.closeDevTools()
@@ -300,13 +357,25 @@ function createMenu (mainWindow) {
             submenu: [
               {
                 label: '当前数据库文件夹',
-                click () { shell.showItemInFolder(db.read().get('stored').value()) }
+                click() {
+                  shell.showItemInFolder(
+                    db
+                      .read()
+                      .get('stored')
+                      .value()
+                  )
+                }
               },
               {
                 label: '备份数据库文件夹',
-                click () {
-                  var bp = db.read().get('backup').value()
-                  if (bp) { shell.showItemInFolder(bp) } else {
+                click() {
+                  var bp = db
+                    .read()
+                    .get('backup')
+                    .value()
+                  if (bp) {
+                    shell.showItemInFolder(bp)
+                  } else {
                     backupNotFound()
                   }
                 }
@@ -319,35 +388,42 @@ function createMenu (mainWindow) {
               {
                 label: '立即备份',
                 accelerator: 'Ctrl+O',
-                click () { backupnow() }
+                click() {
+                  backupnow()
+                }
               },
               { type: 'separator' },
               {
                 label: '设置备份路径',
-                click () {
-                  dialog.showOpenDialog(mainWindow, {
-                    properties: ['openDirectory']
-                  }).then(result => {
-                    if (!result.canceled) {
-                      var bpdir = result.filePaths[0]
-                      bpdir = path.join(bpdir, 'data.json')
-                      db.read().set('backup', bpdir).write()
-                      console.log('Backup Dir Set @ ' + bpdir)
-                    }
-                  }).catch(err => {
-                    console.log(err)
-                  })
+                click() {
+                  dialog
+                    .showOpenDialog(mainWindow, {
+                      properties: ['openDirectory']
+                    })
+                    .then(result => {
+                      if (!result.canceled) {
+                        var bpdir = result.filePaths[0]
+                        bpdir = path.join(bpdir, 'data.json')
+                        db.read()
+                          .set('backup', bpdir)
+                          .write()
+                        console.log('Backup Dir Set @ ' + bpdir)
+                      }
+                    })
+                    .catch(err => {
+                      console.log(err)
+                    })
                 }
               },
               {
                 label: '设置备份序列',
                 enabled: false,
-                click () {
+                click() {
                   dialog.showMessageBox({
                     type: 'info',
                     message: 'Coming soon...',
                     accelerator: 'Ctrl+P',
-                    click () {}
+                    click() {}
                   })
                 }
               }
@@ -359,9 +435,17 @@ function createMenu (mainWindow) {
               {
                 label: 'English',
                 type: 'radio',
-                checked: (db.read().get('language').value() === 'English') ? true : false,
-                click () {
-                  db.read().set('language', 'English').write()
+                checked:
+                  db
+                    .read()
+                    .get('language')
+                    .value() === 'English'
+                    ? true
+                    : false,
+                click() {
+                  db.read()
+                    .set('language', 'English')
+                    .write()
                   dialog.showMessageBox({
                     type: 'none',
                     title: '',
@@ -373,9 +457,17 @@ function createMenu (mainWindow) {
               {
                 label: 'Chinese',
                 type: 'radio',
-                checked: (db.read().get('language').value() === 'Chinese') ? true : false,
-                click () {
-                  db.read().set('language', 'Chinese').write()
+                checked:
+                  db
+                    .read()
+                    .get('language')
+                    .value() === 'Chinese'
+                    ? true
+                    : false,
+                click() {
+                  db.read()
+                    .set('language', 'Chinese')
+                    .write()
                   dialog.showMessageBox({
                     type: 'none',
                     title: '',
@@ -390,7 +482,7 @@ function createMenu (mainWindow) {
           { role: 'Quit', label: '退出' }
         ]
       },
-      { 
+      {
         role: 'editMenu',
         label: '编辑'
       },
@@ -412,14 +504,14 @@ function createMenu (mainWindow) {
           {
             label: '返回',
             accelerator: 'Alt+Left',
-            click () {
+            click() {
               mainWindow.webContents.goBack()
             }
           },
           {
             label: '前进',
             accelerator: 'Alt+Right',
-            click () {
+            click() {
               mainWindow.webContents.goForward()
             }
           },
@@ -428,7 +520,7 @@ function createMenu (mainWindow) {
           {
             label: '还原默认窗口大小',
             accelerator: 'Ctrl+9',
-            click () {
+            click() {
               mainWindow.setSize(1076, 650)
               // plus titlebar and menubar
             }
@@ -440,7 +532,7 @@ function createMenu (mainWindow) {
         submenu: [
           {
             label: '关于',
-            click () {
+            click() {
               dialog.showMessageBox({
                 type: 'none',
                 title: 'About',
@@ -453,48 +545,59 @@ function createMenu (mainWindow) {
             label: '新版本 [Link]',
             click: async () => {
               const { shell } = require('electron')
-              await shell.openExternal('https://github.com/symant233/Child_Health_Electron/releases')
+              await shell.openExternal(
+                'https://github.com/symant233/Child_Health_Electron/releases'
+              )
             }
           },
           { type: 'separator' },
           {
             label: '打印机',
             accelerator: 'Ctrl+P',
-            click () {
+            click() {
               mainWindow.webContents.print({ landscape: true })
             }
           },
           {
             label: '导出PDF',
             accelerator: 'Ctrl+Shift+P',
-            click () {
-              dialog.showOpenDialog(mainWindow, {
-                properties: ['openDirectory']
-              }).then(result => {
-                if (!result.canceled) {
-                  var printDir = result.filePaths[0]
-                  var name = 'WebContent@' + new Date().toISOString().slice(0, 10) + '.pdf'
-                  printDir = path.join(printDir, name)
-                  // https://electronjs.org/docs/api/web-contents#contentsprinttopdfoptions
-                  mainWindow.webContents.printToPDF({ landscape: true }).then(data => {
-                    fs.writeFileSync(printDir, data, (error) => {
-                      if (error) throw error
-                      console.log('Write PDF successfully.')
-                    })
-                  }).catch(error => {
-                    console.log(error)
-                  })
-                }
-              }).catch(err => {
-                console.log(err)
-              })
+            click() {
+              dialog
+                .showOpenDialog(mainWindow, {
+                  properties: ['openDirectory']
+                })
+                .then(result => {
+                  if (!result.canceled) {
+                    var printDir = result.filePaths[0]
+                    var name =
+                      'WebContent@' +
+                      new Date().toISOString().slice(0, 10) +
+                      '.pdf'
+                    printDir = path.join(printDir, name)
+                    // https://electronjs.org/docs/api/web-contents#contentsprinttopdfoptions
+                    mainWindow.webContents
+                      .printToPDF({ landscape: true })
+                      .then(data => {
+                        fs.writeFileSync(printDir, data, error => {
+                          if (error) throw error
+                          console.log('Write PDF successfully.')
+                        })
+                      })
+                      .catch(error => {
+                        console.log(error)
+                      })
+                  }
+                })
+                .catch(err => {
+                  console.log(err)
+                })
             }
           },
           { type: 'separator' },
           {
             label: '开发者工具',
             accelerator: 'F12',
-            click () {
+            click() {
               if (process.env.NODE_ENV !== 'development') {
                 mainWindow.webContents.isDevToolsOpened()
                   ? mainWindow.webContents.closeDevTools()
@@ -514,22 +617,23 @@ function createMenu (mainWindow) {
   mainWindow.setMenu(menu)
 }
 
-function firstTimeRun () {
+function firstTimeRun() {
   if (!db.get('backup').value()) {
     dialog.showMessageBox({
       type: 'info',
       message: '未设置备份路径',
-      detail: '立即设置 ==> 菜单栏: 数据库->备份选项->设置备份路径\n打开后选择一个安全的文件夹, 以后退出程序会自动备份数据库.'
+      detail:
+        '立即设置 ==> 菜单栏: 数据库->备份选项->设置备份路径\n打开后选择一个安全的文件夹, 以后退出程序会自动备份数据库.'
     })
     return true
   }
   return false
 }
 
-app.on('ready', function () {
+app.on('ready', function() {
   var win = createWindow()
   win.maximize() // 启动后最大化
-  firstTimeRun()
+  // firstTimeRun()
   createMenu(win)
 })
 

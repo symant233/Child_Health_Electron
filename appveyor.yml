@@ -30,13 +30,15 @@ build_script:
 test: off
 
 deploy:
-  description: 'Release description'
+  release: '$(APPVEYOR_REPO_TAG_NAME)'
+  description: '> $(APPVEYOR_REPO_TAG_NAME) => AppVeyor Build Version: $(APPVEYOR_BUILD_VERSION)'
   provider: GitHub
   draft: true
   prerelease: false
-  artifacts: /child_health_electron Setup .*\.exe/
+  force_update: true
+  artifacts: build/
   auth_token:
     secure: oUQp5QByqF9WrGmoL/YHsCw03mBs8coDAWAeqe+PDCnYnWzbLABVhq+agItQK+t+
   on:
-    branch: master                 # release from master branch only
-    APPVEYOR_REPO_TAG: true        # deploy on tag push only
+    branch: master # release from master branch only
+    APPVEYOR_REPO_TAG: true # deploy on tag push only

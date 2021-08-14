@@ -10,11 +10,6 @@ export default new Router({
       redirect: '/inserter'
     },
     {
-      path: '/landing',
-      name: 'landing-page',
-      component: require('@/components/LandingPage').default
-    },
-    {
       path: '/inserter',
       name: 'insert-page',
       component: require('@/components/Inserter').default

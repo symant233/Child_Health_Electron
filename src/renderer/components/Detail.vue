@@ -2,17 +2,29 @@
   <div id="wrapper">
     <section class="hero is-white is-fullheight">
       <div class="modal is-active" id="about" v-if="questionDeleteBoolean">
-        <div class="modal-background" @click="this.questionDeleteBoolean = false"></div>
+        <div
+          class="modal-background"
+          @click="this.questionDeleteBoolean = false"
+        ></div>
         <div class="modal-content">
-            <article class="message is-danger" style="max-width: 300px; margin: auto;">
-                <div class="message-body">
-                    <h2 class="title">⚠是否删除?</h2>
-                    <a class="button is-warning" @click="deleteComfirm(true)">确认删除</a>
-                    <a class="button" @click="deleteComfirm(false)">取消</a>
-                </div>
-            </article>
+          <article
+            class="message is-danger"
+            style="max-width: 300px; margin: auto;"
+          >
+            <div class="message-body">
+              <h2 class="title">⚠是否删除?</h2>
+              <a class="button is-warning" @click="deleteComfirm(true)"
+                >确认删除</a
+              >
+              <a class="button" @click="deleteComfirm(false)">取消</a>
+            </div>
+          </article>
         </div>
-        <button class="modal-close is-large delete" aria-label="close" onclick="close_setting()"></button>
+        <button
+          class="modal-close is-large delete"
+          aria-label="close"
+          onclick="close_setting()"
+        ></button>
       </div>
       <div class="hero-head" id="hero-head-detail">
         <div class="columns content is-medium">
@@ -29,13 +41,14 @@
           </div>
           <div class="column has-text-right">{{ today }}</div>
         </div>
-        
       </div>
       <div class="hero-body" id="hero-body-detail">
         <!-- head table columns start-->
         <div class="columns">
           <div class="column is-half">
-            <table class="table is-striped is-fullwidth is-hoverable is-bordered">
+            <table
+              class="table is-striped is-fullwidth is-hoverable is-bordered"
+            >
               <thead>
                 <tr>
                   <th style="width: 90px; min-width: 89px;"></th>
@@ -46,15 +59,30 @@
                 <tr>
                   <td>姓名</td>
                   <td width="50%">
-                    <editable :obj="{ uid: user.uid, key: 'baby', value: user.baby }"></editable>
+                    <editable
+                      :obj="{ uid: user.uid, key: 'baby', value: user.baby }"
+                    ></editable>
                   </td>
                   <td style="width: 57px; min-width: 57px;">性别</td>
-                  <td width="50%"><div v-if="user.male !== undefined">{{ (user.male === 'true') ? '男' : (user.male === 'false') ? '女' : '' }}</div></td> <!-- gender -->
+                  <td width="50%">
+                    <div v-if="user.male !== undefined">
+                      {{
+                        user.male === 'true'
+                          ? '男'
+                          : user.male === 'false'
+                          ? '女'
+                          : ''
+                      }}
+                    </div>
+                  </td>
+                  <!-- gender -->
                 </tr>
                 <tr>
                   <td>出生日期</td>
                   <td style="min-width: 108px;">
-                    <editable :obj="{ uid: user.uid, key: 'birth', value: user.birth }"></editable>
+                    <editable
+                      :obj="{ uid: user.uid, key: 'birth', value: user.birth }"
+                    ></editable>
                   </td>
                   <td>年龄</td>
                   <td>{{ getAge(user.birth).parse }}</td>
@@ -62,29 +90,43 @@
                 <tr>
                   <td>纠正胎龄</td>
                   <td>
-                    <editable :obj="{ uid: user.uid, key: 'fixed', value: user.fixed }"></editable>
+                    <editable
+                      :obj="{ uid: user.uid, key: 'fixed', value: user.fixed }"
+                    ></editable>
                   </td>
                   <td>高危</td>
-                  <td>{{ user.danger ? '⭕' : '否' }}</td>
+                  <td><danger-level :user="user"></danger-level></td>
                 </tr>
                 <tr>
                   <td>出生体重</td>
                   <td>
-                    <editable :obj="{ uid: user.uid, key: 'weight', value: user.weight }"></editable>
+                    <editable
+                      :obj="{
+                        uid: user.uid,
+                        key: 'weight',
+                        value: user.weight
+                      }"
+                    ></editable>
                   </td>
                   <td>G</td>
                   <td>
-                    <editable :obj="{ uid: user.uid, key: 'G', value: user.G }"></editable>
+                    <editable
+                      :obj="{ uid: user.uid, key: 'G', value: user.G }"
+                    ></editable>
                   </td>
                 </tr>
                 <tr>
                   <td>孕周</td>
                   <td>
-                    <editable :obj="{ uid: user.uid, key: 'week', value: user.week }"></editable>
+                    <editable
+                      :obj="{ uid: user.uid, key: 'week', value: user.week }"
+                    ></editable>
                   </td>
                   <td>P</td>
                   <td>
-                    <editable :obj="{ uid: user.uid, key: 'P', value: user.P }"></editable>
+                    <editable
+                      :obj="{ uid: user.uid, key: 'P', value: user.P }"
+                    ></editable>
                   </td>
                 </tr>
               </tbody>
@@ -92,7 +134,9 @@
           </div>
 
           <div class="column">
-            <table class="table is-striped is-fullwidth is-hoverable is-bordered">
+            <table
+              class="table is-striped is-fullwidth is-hoverable is-bordered"
+            >
               <thead>
                 <tr>
                   <th style="width: 57px; min-width: 57px;"></th>
@@ -104,42 +148,106 @@
                 <tr>
                   <td>姓名</td>
                   <td>
-                    <editable :obj="{ uid: user.uid, key: 'name', value: user.name }"></editable>
+                    <editable
+                      :obj="{ uid: user.uid, key: 'name', value: user.name }"
+                    ></editable>
                   </td>
                   <td>
-                    <edit-parent :obj="{ uid: uid, key: 'name', value: detail.father.name, mother: false }"></edit-parent>
+                    <edit-parent
+                      :obj="{
+                        uid: uid,
+                        key: 'name',
+                        value: detail.father.name,
+                        mother: false
+                      }"
+                    ></edit-parent>
                   </td>
                 </tr>
                 <tr>
                   <td>年龄</td>
-                  <td><edit-parent :obj="{ uid: uid, key: 'age', value: detail.mother.age, mother: true }"></edit-parent></td>
-                  <td><edit-parent :obj="{ uid: uid, key: 'age', value: detail.father.age, mother: false }"></edit-parent></td>
+                  <td>
+                    <edit-parent
+                      :obj="{
+                        uid: uid,
+                        key: 'age',
+                        value: detail.mother.age,
+                        mother: true
+                      }"
+                    ></edit-parent>
+                  </td>
+                  <td>
+                    <edit-parent
+                      :obj="{
+                        uid: uid,
+                        key: 'age',
+                        value: detail.father.age,
+                        mother: false
+                      }"
+                    ></edit-parent>
+                  </td>
                 </tr>
                 <tr>
                   <td>职业</td>
                   <td>
-                    <edit-parent :obj="{ uid: uid, key: 'job', value: detail.mother.job, mother: true }"></edit-parent>
+                    <edit-parent
+                      :obj="{
+                        uid: uid,
+                        key: 'job',
+                        value: detail.mother.job,
+                        mother: true
+                      }"
+                    ></edit-parent>
                   </td>
                   <td>
-                    <edit-parent :obj="{ uid: uid, key: 'job', value: detail.father.job, mother: false }"></edit-parent>
+                    <edit-parent
+                      :obj="{
+                        uid: uid,
+                        key: 'job',
+                        value: detail.father.job,
+                        mother: false
+                      }"
+                    ></edit-parent>
                   </td>
                 </tr>
                 <tr>
                   <td>电话</td>
                   <td>
-                    <editable :obj="{ uid: user.uid, key: 'tele', value: user.tele }"></editable>
+                    <editable
+                      :obj="{ uid: user.uid, key: 'tele', value: user.tele }"
+                    ></editable>
                   </td>
                   <td>
-                    <edit-parent :obj="{ uid: uid, key: 'tele', value: detail.father.tele, mother: false }"></edit-parent>
+                    <edit-parent
+                      :obj="{
+                        uid: uid,
+                        key: 'tele',
+                        value: detail.father.tele,
+                        mother: false
+                      }"
+                    ></edit-parent>
                   </td>
                 </tr>
                 <tr>
                   <td>住址</td>
                   <td>
-                    <edit-parent :obj="{ uid: uid, key: 'home', value: detail.mother.home, mother: true }"></edit-parent>
+                    <edit-parent
+                      :obj="{
+                        uid: uid,
+                        key: 'home',
+                        value: detail.mother.home,
+                        mother: true
+                      }"
+                    ></edit-parent>
                   </td>
                   <td>
-                    <edit-parent :obj="{ uid: uid, key: 'home', value: detail.father.home, mother: false }"></edit-parent>
+                    <edit-parent
+                      :obj="{
+                        uid: uid,
+                        key: 'home',
+                        value: detail.father.home,
+                        mother: false
+                      }"
+                    ></edit-parent>
                   </td>
                 </tr>
               </tbody>
@@ -147,7 +255,7 @@
           </div>
         </div>
         <!-- head table columns end -->
-        
+
         <article class="message">
           <div class="message-body">
             <strong>备注:&nbsp;</strong>{{ user.note }}
@@ -155,26 +263,69 @@
         </article>
 
         <div class="add">
-          <input class="num-input" type="number" v-model="addDetail.weight" name="weight" value="" placeholder="体重(公斤)" />
+          <input
+            class="num-input"
+            type="number"
+            v-model="addDetail.weight"
+            name="weight"
+            value=""
+            placeholder="体重(公斤)"
+          />
           <select v-model="addDetail.signalW">
-            <option v-for="(option, index) in optionList" :key="index" :value="option">{{ option }}</option>
+            <option
+              v-for="(option, index) in optionList"
+              :key="index"
+              :value="option"
+              >{{ option }}</option
+            >
           </select>
-          <input class="num-input" type="number" v-model="addDetail.height" name="height" value="" placeholder="身高(厘米)" />
+          <input
+            class="num-input"
+            type="number"
+            v-model="addDetail.height"
+            name="height"
+            value=""
+            placeholder="身高(厘米)"
+          />
           <select v-model="addDetail.signalH">
-            <option v-for="(option, index) in optionList" :key="index" :value="option">{{ option }}</option>
+            <option
+              v-for="(option, index) in optionList"
+              :key="index"
+              :value="option"
+              >{{ option }}</option
+            >
           </select>
-          <input class="num-input" type="number" v-model="addDetail.head" name="head" value="" placeholder="头围(厘米)" />
+          <input
+            class="num-input"
+            type="number"
+            v-model="addDetail.head"
+            name="head"
+            value=""
+            placeholder="头围(厘米)"
+          />
           <select v-model="addDetail.signalC">
-            <option v-for="(option, index) in optionList" :key="index" :value="option">{{ option }}</option>
+            <option
+              v-for="(option, index) in optionList"
+              :key="index"
+              :value="option"
+              >{{ option }}</option
+            >
           </select>
-          <input style="width: 400px;" type="text" v-model="addDetail.result" name="result" value="" placeholder="检查结果" />
+          <input
+            style="width: 400px;"
+            type="text"
+            v-model="addDetail.result"
+            name="result"
+            value=""
+            placeholder="检查结果"
+          />
           <button @click="newDetail">+</button>
         </div>
         <!-- detail table start -->
         <table class="table is-striped is-fullwidth is-hoverable is-bordered">
           <thead>
             <tr>
-              <th style="min-width: 57px; width: 57px;">序号</th>
+              <!-- <th style="min-width: 57px; width: 57px;">序号</th> -->
               <th style="min-width: 57px; width: 57px;">年龄</th>
               <th style="min-width: 57px; width: 57px;">体重</th>
               <th style="min-width: 57px; width: 57px;">身高</th>
@@ -182,11 +333,11 @@
               <th class="has-text-centered">检查结果</th>
               <th style="min-width: 108px; width: 108px;">时间</th>
               <th style="min-width: 63px; width: 63px;">操作</th>
-          </tr>
+            </tr>
           </thead>
           <tbody>
             <tr v-for="(report, index) in detail.reports" :key="index">
-              <td class="has-text-centered">{{ index+1 }}</td>
+              <!-- <td class="has-text-centered">{{ index+1 }}</td> -->
               <td>{{ report.age }}</td>
               <td>{{ report.weight }}&nbsp;{{ report.signalW }}</td>
               <td>{{ report.height }}&nbsp;{{ report.signalH }}</td>
@@ -194,7 +345,9 @@
               <td class="result">{{ report.result }}</td>
               <td>{{ report.time }}</td>
               <td>
-                <span @click="deleteDetail(report.id, index)" class="del">删</span>
+                <span @click="deleteDetail(report.id, index)" class="del"
+                  >删</span
+                >
                 <span @click="edit(report)" class="edit">改</span>
               </td>
             </tr>
@@ -202,42 +355,103 @@
         </table>
         <!-- detail table end -->
         <div class="modal is-active" id="about" v-if="editing">
-            <div class="modal-background" @click="editing=false"></div>
-            <div class="modal-content">
-                <article class="message is-info" style="max-width: 600px; margin: auto;">
-                    <div class="message-body">
-                        <div class="title">
-                          编辑
-                          <span @click="editing=false">
-                            X
-                          </span>
-                        </div>
-                        <div class="content">
-                          年龄:&nbsp;<input class="num-input" type="text" v-model="editDetail.age" name="age" value="" placeholder="年龄" />
-                          体重:&nbsp;<input class="num-input" type="number" v-model="editDetail.weight" name="weight" value="" placeholder="体重" />
-                          <select v-model="editDetail.signalW">
-                            <option v-for="(option, index) in optionList" :key="index" :value="option">{{ option }}</option>
-                          </select>
-                          <br />身高:&nbsp;<input class="num-input" type="number" v-model="editDetail.height" name="height" value="" placeholder="身高" />
-                          <select v-model="editDetail.signalH">
-                            <option v-for="(option, index) in optionList" :key="index" :value="option">{{ option }}</option>
-                          </select>
-                          头围:&nbsp;<input class="num-input" type="number" v-model="editDetail.head" name="head" value="" placeholder="头围" />
-                          <select v-model="editDetail.signalC">
-                            <option v-for="(option, index) in optionList" :key="index" :value="option">{{ option }}</option>
-                          </select>
-                          结果:&nbsp;
-                          <textarea class="textarea" v-model="editDetail.result" name="result" value="" placeholder="检查结果" />
-                          <br />
-                          <button @click="update" class="button is-primary">更新</button>
-                          <button @click="editing=false; editDetail={};" class="button">取消</button>
-                        </div>
-                    </div>
-                </article>
-            </div>
+          <div class="modal-background" @click="editing = false"></div>
+          <div class="modal-content">
+            <article
+              class="message is-info"
+              style="max-width: 600px; margin: auto;"
+            >
+              <div class="message-body">
+                <div class="title">
+                  编辑
+                  <span @click="editing = false">
+                    X
+                  </span>
+                </div>
+                <div class="content">
+                  年龄:&nbsp;<input
+                    class="num-input"
+                    type="text"
+                    v-model="editDetail.age"
+                    name="age"
+                    value=""
+                    placeholder="年龄"
+                  />
+                  体重:&nbsp;<input
+                    class="num-input"
+                    type="number"
+                    v-model="editDetail.weight"
+                    name="weight"
+                    value=""
+                    placeholder="体重"
+                  />
+                  <select v-model="editDetail.signalW">
+                    <option
+                      v-for="(option, index) in optionList"
+                      :key="index"
+                      :value="option"
+                      >{{ option }}</option
+                    >
+                  </select>
+                  <br />身高:&nbsp;<input
+                    class="num-input"
+                    type="number"
+                    v-model="editDetail.height"
+                    name="height"
+                    value=""
+                    placeholder="身高"
+                  />
+                  <select v-model="editDetail.signalH">
+                    <option
+                      v-for="(option, index) in optionList"
+                      :key="index"
+                      :value="option"
+                      >{{ option }}</option
+                    >
+                  </select>
+                  头围:&nbsp;<input
+                    class="num-input"
+                    type="number"
+                    v-model="editDetail.head"
+                    name="head"
+                    value=""
+                    placeholder="头围"
+                  />
+                  <select v-model="editDetail.signalC">
+                    <option
+                      v-for="(option, index) in optionList"
+                      :key="index"
+                      :value="option"
+                      >{{ option }}</option
+                    >
+                  </select>
+                  结果:&nbsp;
+                  <textarea
+                    class="textarea"
+                    v-model="editDetail.result"
+                    name="result"
+                    value=""
+                    placeholder="检查结果"
+                  />
+                  <br />
+                  <button @click="update" class="button is-primary">
+                    更新
+                  </button>
+                  <button
+                    @click="
+                      editing = false
+                      editDetail = {}
+                    "
+                    class="button"
+                  >
+                    取消
+                  </button>
+                </div>
+              </div>
+            </article>
+          </div>
         </div>
       </div>
-      
     </section>
 
     <div class="charts">
@@ -248,303 +462,344 @@
 </template>
 
 <script>
-  import db from '../../datastore/'
-  import Editable from './Common/Editable.vue'
-  import EditParent from './Common/EditParent.vue'
-  import echarts from 'echarts'
-  import fs from 'fs'
-  import path from 'path'
-  export default {
-    name: 'enrty-detail',
-    components: { Editable, EditParent },
-    data () {
-      return {
-        questionDeleteBoolean: false, // show model
-        deleteInfo: {},
-        today: new Date().toISOString().slice(0, 10),
-        uid: parseInt(this.$route.params.uid),
-        user: db.get('users').find({uid: parseInt(this.$route.params.uid)}).value(),
-        detail: db.get('details').find({uid: parseInt(this.$route.params.uid)}).value(),
-        addDetail: {},
-        editDetail: {},
-        editing: false,
-        optionList: ['⊥', '╧', '↑', '⇑', '⤊', '⊤', '╤', '↓', '⇓', '⤋']
+import db from '../../datastore/'
+import Editable from './Common/Editable.vue'
+import EditParent from './Common/EditParent.vue'
+import DangerLevel from './Common/DangerLevel.vue'
+import echarts from 'echarts'
+import fs from 'fs'
+import path from 'path'
+export default {
+  name: 'enrty-detail',
+  components: { Editable, EditParent, DangerLevel },
+  data() {
+    return {
+      questionDeleteBoolean: false, // show model
+      deleteInfo: {},
+      today: new Date().toISOString().slice(0, 10),
+      uid: parseInt(this.$route.params.uid),
+      user: db
+        .get('users')
+        .find({ uid: parseInt(this.$route.params.uid) })
+        .value(),
+      detail: db
+        .get('details')
+        .find({ uid: parseInt(this.$route.params.uid) })
+        .value(),
+      addDetail: {},
+      editDetail: {},
+      editing: false,
+      optionList: ['⊥', '╧', '↑', '⇑', '⤊', '⊤', '╤', '↓', '⇓', '⤋']
+    }
+  },
+  beforeCreate: function() {
+    // initialize database
+    var uid = parseInt(this.$route.params.uid)
+    var res = db
+      .get('details')
+      .find({ uid: uid })
+      .value()
+    // 无详情则进行初始化
+    if (!res) {
+      var data = {
+        uid: uid,
+        mother: {},
+        father: {},
+        reports: []
       }
-    },
-    beforeCreate: function () {
-      // initialize database
-      var uid = parseInt(this.$route.params.uid)
-      var res = db.get('details').find({uid: uid}).value()
-      if (!res) {
-        var data = {
-          uid: uid,
-          mother: {},
-          father: {},
-          reports: []
-        }
-        db.get('details').push(data).write()
-      }
-    },
-    mounted: function () {
-      // render line chart
-      var myChart = echarts.init(document.getElementById('chart'))
-      var myChart2 = echarts.init(document.getElementById('chart2'))
-      var boy = JSON.parse(fs.readFileSync(path.join(__static, 'boy.json')))
-      var girl = JSON.parse(fs.readFileSync(path.join(__static, 'girl.json')))
-      const seq = ['+2', '+1', '0', '-1', '-2']
-      var data = [{
+      db.get('details')
+        .push(data)
+        .write()
+    }
+  },
+  mounted: function() {
+    // sort reports by age
+    this.detail.reports.sort(this.sortFilter)
+    // render line chart
+    var myChart = echarts.init(document.getElementById('chart'))
+    var myChart2 = echarts.init(document.getElementById('chart2'))
+    var boy = JSON.parse(fs.readFileSync(path.join(__static, 'boy.json')))
+    var girl = JSON.parse(fs.readFileSync(path.join(__static, 'girl.json')))
+    const seq = ['+2', '+1', '0', '-1', '-2']
+    var data = [
+      {
         name: '宝宝',
         type: 'line',
         color: '#fbb8a1',
         data: Array(49).fill(null),
         connectNulls: true,
         smooth: true
-      }]
-      var data2 = [{
+      }
+    ]
+    var data2 = [
+      {
         name: '宝宝',
         type: 'line',
         color: '#fbb8a1',
         data: Array(49).fill(null),
         connectNulls: true,
         smooth: true
-      }]
-      let y, m, d, month
-      var reports = this.detail.reports
-      reports.forEach(r => {
-        var tmp = r.age.split('/')
-        y = parseInt(tmp[0])
-        m = parseInt(tmp[1])
-        d = parseInt(tmp[2])
-        month = y * 12 + m
-        if (d > 15) month = month + 1
-        data[0].data[month] = r.weight
-        data2[0].data[month] = r.height
+      }
+    ]
+    let y, m, d, month
+    var reports = this.detail.reports
+    reports.forEach(r => {
+      var tmp = r.age.split('/')
+      y = parseInt(tmp[0])
+      m = parseInt(tmp[1])
+      d = parseInt(tmp[2])
+      month = y * 12 + m
+      if (d > 15) month = month + 1
+      data[0].data[month] = r.weight
+      data2[0].data[month] = r.height
+    })
+
+    if (this.user.male === 'true') {
+      seq.forEach(i => {
+        data.push({
+          name: `男孩${i}SD`,
+          type: 'line',
+          color: '#6fbae1',
+          data: boy[`weight${i}`],
+          connectNulls: true,
+          smooth: true
+        })
       })
-
-      if (this.user.male === 'true') {
-        seq.forEach(i => {
-          data.push({
-            name: `男孩${i}SD`,
-            type: 'line',
-            color: '#6fbae1',
-            data: boy[`weight${i}`],
-            connectNulls: true,
-            smooth: true
-          })
-        })
-      } else if (this.user.male === 'false') {
-        seq.forEach(i => {
-          data.push({
-            name: `女孩${i}SD`,
-            type: 'line',
-            color: '#e58dc2',
-            data: girl[`weight${i}`],
-            connectNulls: true,
-            smooth: true
-          })
-        })
-      } else {
+    } else if (this.user.male === 'false') {
+      seq.forEach(i => {
         data.push({
-          name: `男孩0SD`,
-          type: 'line',
-          color: '#6fbae1',
-          data: boy[`weight0`],
-          connectNulls: true,
-          smooth: true
-        })
-        data.push({
-          name: `女孩0SD`,
+          name: `女孩${i}SD`,
           type: 'line',
           color: '#e58dc2',
-          data: girl[`weight0`],
+          data: girl[`weight${i}`],
           connectNulls: true,
           smooth: true
         })
-      }
-      
-      const option = {
-        title: {
-          text: '体重(kg)-月龄'
-        },
-        tooltip: {
-          trigger: 'axis'
-        },
-        legend: {
-          data: ['男孩0SD', '女孩0SD', '宝宝']
-        },
-        color: ['#e58dc2', '#fbb8a1', '#90e5e7', '#6fbae1'],
-        grid: {
-          left: '3%',
-          right: '4%',
-          bottom: '3%',
-          containLabel: true
-        },
-        toolbox: {
-          feature: {
-            dataZoom: {},
-            restore: {},
-            dataView: {},
-            saveAsImage: {}
-          }
-        },
-        xAxis: {
-          type: 'category',
-          boundaryGap: false,
-          data: [...Array(49).keys()]
-        },
-        yAxis: {
-          type: 'value'
-        },
-        series: data
-      }
-      myChart.setOption(option)
+      })
+    } else {
+      data.push({
+        name: `男孩0SD`,
+        type: 'line',
+        color: '#6fbae1',
+        data: boy[`weight0`],
+        connectNulls: true,
+        smooth: true
+      })
+      data.push({
+        name: `女孩0SD`,
+        type: 'line',
+        color: '#e58dc2',
+        data: girl[`weight0`],
+        connectNulls: true,
+        smooth: true
+      })
+    }
 
-      if (this.user.male === 'true') {
-        seq.forEach(i => {
-          data2.push({
-            name: `男孩${i}SD`,
-            type: 'line',
-            color: '#6fbae1',
-            data: boy[`height${i}`],
-            connectNulls: true,
-            smooth: true
-          })
-        })
-      } else if (this.user.male === 'false') {
-        seq.forEach(i => {
-          data2.push({
-            name: `女孩${i}SD`,
-            type: 'line',
-            color: '#e58dc2',
-            data: girl[`height${i}`],
-            connectNulls: true,
-            smooth: true
-          })
-        })
-      } else {
+    const option = {
+      title: {
+        text: '体重(kg)-月龄'
+      },
+      tooltip: {
+        trigger: 'axis'
+      },
+      legend: {
+        data: ['男孩0SD', '女孩0SD', '宝宝']
+      },
+      color: ['#e58dc2', '#fbb8a1', '#90e5e7', '#6fbae1'],
+      grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+      },
+      toolbox: {
+        feature: {
+          dataZoom: {},
+          restore: {},
+          dataView: {},
+          saveAsImage: {}
+        }
+      },
+      xAxis: {
+        type: 'category',
+        boundaryGap: false,
+        data: [...Array(49).keys()]
+      },
+      yAxis: {
+        type: 'value'
+      },
+      series: data
+    }
+    myChart.setOption(option)
+
+    if (this.user.male === 'true') {
+      seq.forEach(i => {
         data2.push({
-          name: `男孩0SD`,
+          name: `男孩${i}SD`,
           type: 'line',
           color: '#6fbae1',
-          data: boy[`height0`],
+          data: boy[`height${i}`],
           connectNulls: true,
           smooth: true
         })
+      })
+    } else if (this.user.male === 'false') {
+      seq.forEach(i => {
         data2.push({
-          name: `女孩0SD`,
+          name: `女孩${i}SD`,
           type: 'line',
           color: '#e58dc2',
-          data: girl[`height0`],
+          data: girl[`height${i}`],
           connectNulls: true,
           smooth: true
         })
-      }
-      const option2 = {
-        title: {
-          text: '身高(cm)-月龄'
-        },
-        tooltip: {
-          trigger: 'axis'
-        },
-        legend: {
-          data: ['男孩0SD', '女孩0SD', '宝宝']
-        },
-        color: ['#e58dc2', '#fbb8a1', '#90e5e7', '#6fbae1'],
-        grid: {
-          left: '3%',
-          right: '4%',
-          bottom: '3%',
-          containLabel: true
-        },
-        toolbox: {
-          feature: {
-            dataZoom: {},
-            restore: {},
-            dataView: {},
-            saveAsImage: {}
-          }
-        },
-        xAxis: {
-          type: 'category',
-          boundaryGap: false,
-          data: [...Array(49).keys()]
-        },
-        yAxis: {
-          type: 'value'
-        },
-        series: data2
-      }
-      myChart2.setOption(option2)
+      })
+    } else {
+      data2.push({
+        name: `男孩0SD`,
+        type: 'line',
+        color: '#6fbae1',
+        data: boy[`height0`],
+        connectNulls: true,
+        smooth: true
+      })
+      data2.push({
+        name: `女孩0SD`,
+        type: 'line',
+        color: '#e58dc2',
+        data: girl[`height0`],
+        connectNulls: true,
+        smooth: true
+      })
+    }
+    const option2 = {
+      title: {
+        text: '身高(cm)-月龄'
+      },
+      tooltip: {
+        trigger: 'axis'
+      },
+      legend: {
+        data: ['男孩0SD', '女孩0SD', '宝宝']
+      },
+      color: ['#e58dc2', '#fbb8a1', '#90e5e7', '#6fbae1'],
+      grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+      },
+      toolbox: {
+        feature: {
+          dataZoom: {},
+          restore: {},
+          dataView: {},
+          saveAsImage: {}
+        }
+      },
+      xAxis: {
+        type: 'category',
+        boundaryGap: false,
+        data: [...Array(49).keys()]
+      },
+      yAxis: {
+        type: 'value'
+      },
+      series: data2
+    }
+    myChart2.setOption(option2)
+  },
+  methods: {
+    goBack() {
+      window.history.go(-1)
     },
-    methods: {
-      goBack () {
-        window.history.go(-1)
-      },
-      getAge (birth) {
-        birth = Date.parse(birth.replace('/-/g', '/'))
-        if (birth) {
-          var day = 0
-          var month = 0
-          var year = 0
-          var oneDay = 1000 * 60 * 60 * 24
-          var now = new Date()
-          var birthday = new Date(birth)
-          var age = parseInt((now - birthday) / oneDay)
+    getAge(birth) {
+      birth = Date.parse(birth.replace('/-/g', '/'))
+      if (birth) {
+        var day = 0
+        var month = 0
+        var year = 0
+        var oneDay = 1000 * 60 * 60 * 24
+        var now = new Date()
+        var birthday = new Date(birth)
+        var age = parseInt((now - birthday) / oneDay)
 
-          year = parseInt(age / 365.25)
-          age = age - year * 365.25
-          if (age > 0) {
-            month = parseInt(age / 30.4375)
-            age = age - month * 30.4375
-            day = parseInt(age)
-          }
+        year = parseInt(age / 365.25)
+        age = age - year * 365.25
+        if (age > 0) {
+          month = parseInt(age / 30.4375)
+          age = age - month * 30.4375
+          day = parseInt(age)
+        }
 
-          var parse = year + '/' + month + '/' + day
-          return { year: year, month: month, day: day, parse: parse }
-        }
-      },
-      newDetail () {
-        var newData = {
-          id: Date.now(),
-          age: this.getAge(this.user.birth).parse,
-          ...this.addDetail,
-          time: this.today
-        }
-        if (!this.addDetail.weight || !this.addDetail.height) return
-        db.get('details').find({uid: this.uid}).get('reports').push(newData).write()
-        this.addDetail = {}
-      },
-      deleteDetail (id, i) {
-        this.deleteInfo = { id: id, index: i }
-        this.questionDeleteBoolean = true
-      },
-      edit (report) {
-        this.editDetail = report
-        this.editing = true
-      },
-      update () {
-        var id = this.editDetail.id
-        if (id) {
-          db.get('details').get('reports').find({id: id}).assign(this.editDetail).write()
-        }
-        this.editing = false
-      },
-      deleteComfirm (e) {
-        var id = this.deleteInfo.id
-        var i = this.deleteInfo.index
-        if (e === true) {
-          this.detail.reports.splice(i, 1)
-          db.get('details')
-            .find({uid: this.uid})
-            .get('reports')
-            .remove({id: id})
-            .write()
-          console.log('DB@ uid: ' + this.uid + ' id: ' + id + ' removed!')
-        }
-        this.questionDeleteBoolean = false
+        var parse = year + '/' + month + '/' + day
+        return { year: year, month: month, day: day, parse: parse }
+      }
+    },
+    newDetail() {
+      var newData = {
+        id: Date.now(),
+        age: this.getAge(this.user.birth).parse,
+        ...this.addDetail,
+        time: this.today
+      }
+      if (!this.addDetail.weight || !this.addDetail.height) return
+      db.get('details')
+        .find({ uid: this.uid })
+        .get('reports')
+        .push(newData)
+        .write()
+      this.addDetail = {}
+    },
+    deleteDetail(id, i) {
+      this.deleteInfo = { id: id, index: i }
+      this.questionDeleteBoolean = true
+    },
+    edit(report) {
+      this.editDetail = report
+      this.editing = true
+    },
+    update() {
+      var id = this.editDetail.id
+      if (id) {
+        db.get('details')
+          .get('reports')
+          .find({ id: id })
+          .assign(this.editDetail)
+          .write()
+      }
+      this.editing = false
+    },
+    deleteComfirm(e) {
+      var id = this.deleteInfo.id
+      var i = this.deleteInfo.index
+      if (e === true) {
+        this.detail.reports.splice(i, 1)
+        db.get('details')
+          .find({ uid: this.uid })
+          .get('reports')
+          .remove({ id: id })
+          .write()
+        console.log('DB@ uid: ' + this.uid + ' id: ' + id + ' removed!')
+      }
+      this.questionDeleteBoolean = false
+    },
+    sortFilter(a, b) {
+      // 比较两个给定的report里age哪个大
+      var atmp = a.age.split('/')
+      var btmp = b.age.split('/')
+      if (atmp[0] !== btmp[0]) {
+        return atmp[0] > btmp[0] ? 1 : -1
+      }
+      if (atmp[1] !== btmp[1]) {
+        return atmp[1] > btmp[1] ? 1 : -1
+      }
+      if (atmp[2] !== btmp[2]) {
+        return atmp[2] > btmp[2] ? 1 : -1
       }
     }
   }
+}
 </script>
 
 <style scoped>
@@ -558,7 +813,7 @@
 }
 
 .tabs.is-boxed a {
-    border-radius: 0px;
+  border-radius: 0px;
 }
 
 .num-input {
@@ -599,7 +854,7 @@ select {
 }
 
 #mask {
-  background: rgba(0, 0, 0, .5);
+  background: rgba(0, 0, 0, 0.5);
   width: 100%;
   height: 100%;
   position: fixed;
@@ -641,7 +896,8 @@ select {
 }
 
 @media print {
-  section {page-break-after: auto;}
+  section {
+    page-break-after: auto;
+  }
 }
-
 </style>
