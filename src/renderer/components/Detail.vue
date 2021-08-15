@@ -157,7 +157,7 @@
                       :obj="{
                         uid: uid,
                         key: 'name',
-                        value: detail.father.name,
+                        value: detail.fname,
                         mother: false
                       }"
                     ></edit-parent>
@@ -170,7 +170,7 @@
                       :obj="{
                         uid: uid,
                         key: 'age',
-                        value: detail.mother.age,
+                        value: detail.mage,
                         mother: true
                       }"
                     ></edit-parent>
@@ -180,7 +180,7 @@
                       :obj="{
                         uid: uid,
                         key: 'age',
-                        value: detail.father.age,
+                        value: detail.fage,
                         mother: false
                       }"
                     ></edit-parent>
@@ -193,7 +193,7 @@
                       :obj="{
                         uid: uid,
                         key: 'job',
-                        value: detail.mother.job,
+                        value: detail.mjob,
                         mother: true
                       }"
                     ></edit-parent>
@@ -203,7 +203,7 @@
                       :obj="{
                         uid: uid,
                         key: 'job',
-                        value: detail.father.job,
+                        value: detail.fjob,
                         mother: false
                       }"
                     ></edit-parent>
@@ -221,7 +221,7 @@
                       :obj="{
                         uid: uid,
                         key: 'tele',
-                        value: detail.father.tele,
+                        value: detail.ftele,
                         mother: false
                       }"
                     ></edit-parent>
@@ -234,7 +234,7 @@
                       :obj="{
                         uid: uid,
                         key: 'home',
-                        value: detail.mother.home,
+                        value: detail.mhome,
                         mother: true
                       }"
                     ></edit-parent>
@@ -244,7 +244,7 @@
                       :obj="{
                         uid: uid,
                         key: 'home',
-                        value: detail.father.home,
+                        value: detail.fhome,
                         mother: false
                       }"
                     ></edit-parent>
@@ -266,12 +266,12 @@
           <input
             class="num-input"
             type="number"
-            v-model="addDetail.weight"
+            v-model="addReport.weight"
             name="weight"
             value=""
             placeholder="体重(公斤)"
           />
-          <select v-model="addDetail.signalW">
+          <select v-model="addReport.signalW">
             <option
               v-for="(option, index) in optionList"
               :key="index"
@@ -282,12 +282,12 @@
           <input
             class="num-input"
             type="number"
-            v-model="addDetail.height"
+            v-model="addReport.height"
             name="height"
             value=""
             placeholder="身高(厘米)"
           />
-          <select v-model="addDetail.signalH">
+          <select v-model="addReport.signalH">
             <option
               v-for="(option, index) in optionList"
               :key="index"
@@ -298,12 +298,12 @@
           <input
             class="num-input"
             type="number"
-            v-model="addDetail.head"
+            v-model="addReport.head"
             name="head"
             value=""
             placeholder="头围(厘米)"
           />
-          <select v-model="addDetail.signalC">
+          <select v-model="addReport.signalC">
             <option
               v-for="(option, index) in optionList"
               :key="index"
@@ -314,7 +314,7 @@
           <input
             style="width: 400px;"
             type="text"
-            v-model="addDetail.result"
+            v-model="addReport.result"
             name="result"
             value=""
             placeholder="检查结果"
@@ -336,7 +336,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(report, index) in detail.reports" :key="index">
+            <tr v-for="(report, index) in reports" :key="index">
               <!-- <td class="has-text-centered">{{ index+1 }}</td> -->
               <td>{{ report.age }}</td>
               <td>{{ report.weight }}&nbsp;{{ report.signalW }}</td>
@@ -345,7 +345,7 @@
               <td class="result">{{ report.result }}</td>
               <td>{{ report.time }}</td>
               <td>
-                <span @click="deleteDetail(report.id, index)" class="del"
+                <span @click="deleteReport(report.id, index)" class="del"
                   >删</span
                 >
                 <span @click="edit(report)" class="edit">改</span>
@@ -372,7 +372,7 @@
                   年龄:&nbsp;<input
                     class="num-input"
                     type="text"
-                    v-model="editDetail.age"
+                    v-model="editReport.age"
                     name="age"
                     value=""
                     placeholder="年龄"
@@ -380,12 +380,12 @@
                   体重:&nbsp;<input
                     class="num-input"
                     type="number"
-                    v-model="editDetail.weight"
+                    v-model="editReport.weight"
                     name="weight"
                     value=""
                     placeholder="体重"
                   />
-                  <select v-model="editDetail.signalW">
+                  <select v-model="editReport.signalW">
                     <option
                       v-for="(option, index) in optionList"
                       :key="index"
@@ -396,12 +396,12 @@
                   <br />身高:&nbsp;<input
                     class="num-input"
                     type="number"
-                    v-model="editDetail.height"
+                    v-model="editReport.height"
                     name="height"
                     value=""
                     placeholder="身高"
                   />
-                  <select v-model="editDetail.signalH">
+                  <select v-model="editReport.signalH">
                     <option
                       v-for="(option, index) in optionList"
                       :key="index"
@@ -412,12 +412,12 @@
                   头围:&nbsp;<input
                     class="num-input"
                     type="number"
-                    v-model="editDetail.head"
+                    v-model="editReport.head"
                     name="head"
                     value=""
                     placeholder="头围"
                   />
-                  <select v-model="editDetail.signalC">
+                  <select v-model="editReport.signalC">
                     <option
                       v-for="(option, index) in optionList"
                       :key="index"
@@ -428,7 +428,7 @@
                   结果:&nbsp;
                   <textarea
                     class="textarea"
-                    v-model="editDetail.result"
+                    v-model="editReport.result"
                     name="result"
                     value=""
                     placeholder="检查结果"
@@ -440,7 +440,7 @@
                   <button
                     @click="
                       editing = false
-                      editDetail = {}
+                      editReport = {}
                     "
                     class="button"
                   >
@@ -462,7 +462,7 @@
 </template>
 
 <script>
-import db from '../../datastore/'
+import base from '../../datastore/base'
 import Editable from './Common/Editable.vue'
 import EditParent from './Common/EditParent.vue'
 import DangerLevel from './Common/DangerLevel.vue'
@@ -472,248 +472,245 @@ import path from 'path'
 export default {
   name: 'enrty-detail',
   components: { Editable, EditParent, DangerLevel },
+  computed: {
+    uid: function() {
+      return parseInt(this.$route.params.uid)
+    }
+  },
   data() {
     return {
       questionDeleteBoolean: false, // show model
       deleteInfo: {},
       today: new Date().toISOString().slice(0, 10),
-      uid: parseInt(this.$route.params.uid),
-      user: db
-        .get('users')
-        .find({ uid: parseInt(this.$route.params.uid) })
-        .value(),
-      detail: db
-        .get('details')
-        .find({ uid: parseInt(this.$route.params.uid) })
-        .value(),
-      addDetail: {},
-      editDetail: {},
+      user: {}, // need init
+      detail: {}, // need init
+      reports: [], // need init
+      addReport: {},
+      editReport: {},
       editing: false,
-      optionList: ['⊥', '╧', '↑', '⇑', '⤊', '⊤', '╤', '↓', '⇓', '⤋']
+      optionList: ['', '⊥', '╧', '↑', '⇑', '⤊', '⊤', '╤', '↓', '⇓', '⤋']
     }
   },
-  beforeCreate: function() {
+  beforeCreate: async function() {
     // initialize database
     var uid = parseInt(this.$route.params.uid)
-    var res = db
-      .get('details')
-      .find({ uid: uid })
-      .value()
+    var res = await base.getDetailByUid(uid)
     // 无详情则进行初始化
     if (!res) {
-      var data = {
-        uid: uid,
-        mother: {},
-        father: {},
-        reports: []
-      }
-      db.get('details')
-        .push(data)
-        .write()
+      await base.initDetailByUid(uid)
+      this.detail = await base.getDetailByUid(uid)
+    } else {
+      this.detail = res
     }
   },
-  mounted: function() {
+  mounted: async function() {
+    this.user = await base.getUserByUid(this.uid)
+    this.reports = await base.getReportsByUid(this.uid)
     // sort reports by age
-    this.detail.reports.sort(this.sortFilter)
+    this.reports.sort(this.sortFilter)
     // render line chart
-    var myChart = echarts.init(document.getElementById('chart'))
-    var myChart2 = echarts.init(document.getElementById('chart2'))
-    var boy = JSON.parse(fs.readFileSync(path.join(__static, 'boy.json')))
-    var girl = JSON.parse(fs.readFileSync(path.join(__static, 'girl.json')))
-    const seq = ['+2', '+1', '0', '-1', '-2']
-    var data = [
-      {
-        name: '宝宝',
-        type: 'line',
-        color: '#fbb8a1',
-        data: Array(49).fill(null),
-        connectNulls: true,
-        smooth: true
-      }
-    ]
-    var data2 = [
-      {
-        name: '宝宝',
-        type: 'line',
-        color: '#fbb8a1',
-        data: Array(49).fill(null),
-        connectNulls: true,
-        smooth: true
-      }
-    ]
-    let y, m, d, month
-    var reports = this.detail.reports
-    reports.forEach(r => {
-      var tmp = r.age.split('/')
-      y = parseInt(tmp[0])
-      m = parseInt(tmp[1])
-      d = parseInt(tmp[2])
-      month = y * 12 + m
-      if (d > 15) month = month + 1
-      data[0].data[month] = r.weight
-      data2[0].data[month] = r.height
-    })
-
-    if (this.user.male === 'true') {
-      seq.forEach(i => {
-        data.push({
-          name: `男孩${i}SD`,
-          type: 'line',
-          color: '#6fbae1',
-          data: boy[`weight${i}`],
-          connectNulls: true,
-          smooth: true
-        })
-      })
-    } else if (this.user.male === 'false') {
-      seq.forEach(i => {
-        data.push({
-          name: `女孩${i}SD`,
-          type: 'line',
-          color: '#e58dc2',
-          data: girl[`weight${i}`],
-          connectNulls: true,
-          smooth: true
-        })
-      })
-    } else {
-      data.push({
-        name: `男孩0SD`,
-        type: 'line',
-        color: '#6fbae1',
-        data: boy[`weight0`],
-        connectNulls: true,
-        smooth: true
-      })
-      data.push({
-        name: `女孩0SD`,
-        type: 'line',
-        color: '#e58dc2',
-        data: girl[`weight0`],
-        connectNulls: true,
-        smooth: true
-      })
-    }
-
-    const option = {
-      title: {
-        text: '体重(kg)-月龄'
-      },
-      tooltip: {
-        trigger: 'axis'
-      },
-      legend: {
-        data: ['男孩0SD', '女孩0SD', '宝宝']
-      },
-      color: ['#e58dc2', '#fbb8a1', '#90e5e7', '#6fbae1'],
-      grid: {
-        left: '3%',
-        right: '4%',
-        bottom: '3%',
-        containLabel: true
-      },
-      toolbox: {
-        feature: {
-          dataZoom: {},
-          restore: {},
-          dataView: {},
-          saveAsImage: {}
-        }
-      },
-      xAxis: {
-        type: 'category',
-        boundaryGap: false,
-        data: [...Array(49).keys()]
-      },
-      yAxis: {
-        type: 'value'
-      },
-      series: data
-    }
-    myChart.setOption(option)
-
-    if (this.user.male === 'true') {
-      seq.forEach(i => {
-        data2.push({
-          name: `男孩${i}SD`,
-          type: 'line',
-          color: '#6fbae1',
-          data: boy[`height${i}`],
-          connectNulls: true,
-          smooth: true
-        })
-      })
-    } else if (this.user.male === 'false') {
-      seq.forEach(i => {
-        data2.push({
-          name: `女孩${i}SD`,
-          type: 'line',
-          color: '#e58dc2',
-          data: girl[`height${i}`],
-          connectNulls: true,
-          smooth: true
-        })
-      })
-    } else {
-      data2.push({
-        name: `男孩0SD`,
-        type: 'line',
-        color: '#6fbae1',
-        data: boy[`height0`],
-        connectNulls: true,
-        smooth: true
-      })
-      data2.push({
-        name: `女孩0SD`,
-        type: 'line',
-        color: '#e58dc2',
-        data: girl[`height0`],
-        connectNulls: true,
-        smooth: true
-      })
-    }
-    const option2 = {
-      title: {
-        text: '身高(cm)-月龄'
-      },
-      tooltip: {
-        trigger: 'axis'
-      },
-      legend: {
-        data: ['男孩0SD', '女孩0SD', '宝宝']
-      },
-      color: ['#e58dc2', '#fbb8a1', '#90e5e7', '#6fbae1'],
-      grid: {
-        left: '3%',
-        right: '4%',
-        bottom: '3%',
-        containLabel: true
-      },
-      toolbox: {
-        feature: {
-          dataZoom: {},
-          restore: {},
-          dataView: {},
-          saveAsImage: {}
-        }
-      },
-      xAxis: {
-        type: 'category',
-        boundaryGap: false,
-        data: [...Array(49).keys()]
-      },
-      yAxis: {
-        type: 'value'
-      },
-      series: data2
-    }
-    myChart2.setOption(option2)
+    this.renderChart()
   },
   methods: {
+    renderChart() {
+      var myChart = echarts.init(document.getElementById('chart'))
+      var myChart2 = echarts.init(document.getElementById('chart2'))
+      var boy = JSON.parse(fs.readFileSync(path.join(__static, 'boy.json')))
+      var girl = JSON.parse(fs.readFileSync(path.join(__static, 'girl.json')))
+      const seq = ['+2', '+1', '0', '-1', '-2']
+      var data = [
+        {
+          name: '宝宝',
+          type: 'line',
+          color: '#fbb8a1',
+          data: Array(49).fill(null),
+          connectNulls: true,
+          smooth: true
+        }
+      ]
+      var data2 = [
+        {
+          name: '宝宝',
+          type: 'line',
+          color: '#fbb8a1',
+          data: Array(49).fill(null),
+          connectNulls: true,
+          smooth: true
+        }
+      ]
+      let y, m, d, month
+      var reports = this.reports
+      reports.forEach(r => {
+        var tmp = r.age.split('/')
+        y = parseInt(tmp[0])
+        m = parseInt(tmp[1])
+        d = parseInt(tmp[2])
+        month = y * 12 + m
+        if (d > 15) month = month + 1
+        data[0].data[month] = r.weight
+        data2[0].data[month] = r.height
+      })
+
+      if (this.user.male === 'true') {
+        seq.forEach(i => {
+          data.push({
+            name: `男孩${i}SD`,
+            type: 'line',
+            color: '#6fbae1',
+            data: boy[`weight${i}`],
+            connectNulls: true,
+            smooth: true
+          })
+        })
+      } else if (this.user.male === 'false') {
+        seq.forEach(i => {
+          data.push({
+            name: `女孩${i}SD`,
+            type: 'line',
+            color: '#e58dc2',
+            data: girl[`weight${i}`],
+            connectNulls: true,
+            smooth: true
+          })
+        })
+      } else {
+        data.push({
+          name: `男孩0SD`,
+          type: 'line',
+          color: '#6fbae1',
+          data: boy[`weight0`],
+          connectNulls: true,
+          smooth: true
+        })
+        data.push({
+          name: `女孩0SD`,
+          type: 'line',
+          color: '#e58dc2',
+          data: girl[`weight0`],
+          connectNulls: true,
+          smooth: true
+        })
+      }
+
+      const option = {
+        title: {
+          text: '体重(kg)-月龄'
+        },
+        tooltip: {
+          trigger: 'axis'
+        },
+        legend: {
+          data: ['男孩0SD', '女孩0SD', '宝宝']
+        },
+        color: ['#e58dc2', '#fbb8a1', '#90e5e7', '#6fbae1'],
+        grid: {
+          left: '3%',
+          right: '4%',
+          bottom: '3%',
+          containLabel: true
+        },
+        toolbox: {
+          feature: {
+            dataZoom: {},
+            restore: {},
+            dataView: {},
+            saveAsImage: {}
+          }
+        },
+        xAxis: {
+          type: 'category',
+          boundaryGap: false,
+          data: [...Array(49).keys()]
+        },
+        yAxis: {
+          type: 'value'
+        },
+        series: data
+      }
+      myChart.setOption(option)
+
+      if (this.user.male === 'true') {
+        seq.forEach(i => {
+          data2.push({
+            name: `男孩${i}SD`,
+            type: 'line',
+            color: '#6fbae1',
+            data: boy[`height${i}`],
+            connectNulls: true,
+            smooth: true
+          })
+        })
+      } else if (this.user.male === 'false') {
+        seq.forEach(i => {
+          data2.push({
+            name: `女孩${i}SD`,
+            type: 'line',
+            color: '#e58dc2',
+            data: girl[`height${i}`],
+            connectNulls: true,
+            smooth: true
+          })
+        })
+      } else {
+        data2.push({
+          name: `男孩0SD`,
+          type: 'line',
+          color: '#6fbae1',
+          data: boy[`height0`],
+          connectNulls: true,
+          smooth: true
+        })
+        data2.push({
+          name: `女孩0SD`,
+          type: 'line',
+          color: '#e58dc2',
+          data: girl[`height0`],
+          connectNulls: true,
+          smooth: true
+        })
+      }
+      const option2 = {
+        title: {
+          text: '身高(cm)-月龄'
+        },
+        tooltip: {
+          trigger: 'axis'
+        },
+        legend: {
+          data: ['男孩0SD', '女孩0SD', '宝宝']
+        },
+        color: ['#e58dc2', '#fbb8a1', '#90e5e7', '#6fbae1'],
+        grid: {
+          left: '3%',
+          right: '4%',
+          bottom: '3%',
+          containLabel: true
+        },
+        toolbox: {
+          feature: {
+            dataZoom: {},
+            restore: {},
+            dataView: {},
+            saveAsImage: {}
+          }
+        },
+        xAxis: {
+          type: 'category',
+          boundaryGap: false,
+          data: [...Array(49).keys()]
+        },
+        yAxis: {
+          type: 'value'
+        },
+        series: data2
+      }
+      myChart2.setOption(option2)
+    },
     goBack() {
       window.history.go(-1)
     },
     getAge(birth) {
+      if (!birth) return { parse: '' }
       birth = Date.parse(birth.replace('/-/g', '/'))
       if (birth) {
         var day = 0
@@ -739,34 +736,28 @@ export default {
     newDetail() {
       var newData = {
         id: Date.now(),
+        uid: this.uid,
         age: this.getAge(this.user.birth).parse,
-        ...this.addDetail,
+        ...this.addReport,
         time: this.today
       }
-      if (!this.addDetail.weight || !this.addDetail.height) return
-      db.get('details')
-        .find({ uid: this.uid })
-        .get('reports')
-        .push(newData)
-        .write()
-      this.addDetail = {}
+      if (!this.addReport.weight || !this.addReport.height) return
+      base.insertReport(newData)
+      this.reports.push(newData)
+      this.addReport = {}
     },
-    deleteDetail(id, i) {
+    deleteReport(id, i) {
       this.deleteInfo = { id: id, index: i }
       this.questionDeleteBoolean = true
     },
     edit(report) {
-      this.editDetail = report
+      this.editReport = report
       this.editing = true
     },
     update() {
-      var id = this.editDetail.id
+      var id = this.editReport.id
       if (id) {
-        db.get('details')
-          .get('reports')
-          .find({ id: id })
-          .assign(this.editDetail)
-          .write()
+        base.updateReportById(this.editReport)
       }
       this.editing = false
     },
@@ -774,12 +765,8 @@ export default {
       var id = this.deleteInfo.id
       var i = this.deleteInfo.index
       if (e === true) {
-        this.detail.reports.splice(i, 1)
-        db.get('details')
-          .find({ uid: this.uid })
-          .get('reports')
-          .remove({ id: id })
-          .write()
+        this.reports.splice(i, 1)
+        base.deleteReportById(id)
         console.log('DB@ uid: ' + this.uid + ' id: ' + id + ' removed!')
       }
       this.questionDeleteBoolean = false

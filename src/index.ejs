@@ -14,17 +14,37 @@
     </script>
     <% } %>
     <style>
-      ::-webkit-scrollbar {
-        width: 10px;
+      body {
+        overflow-y: overlay;
       }
-      ::-webkit-scrollbar-track {
-        background: #f1f1f1;
+      ::-webkit-scrollbar {
+        height: 12px;
+        width: 12px;
+        background-color: initial;
+      }
+      ::-webkit-scrollbar-button {
+        height: 0;
       }
       ::-webkit-scrollbar-thumb {
-        background: #aaa;
+        background-color: rgb(127 127 127 / 40%);
+        background-clip: padding-box;
+        border: solid transparent;
+        border-width: 1px 1px 1px 1px;
+        box-shadow: inset 1px 1px 0 rgb(0 0 0 / 10%),
+          inset 0 -1px 0 rgb(0 0 0 / 7%);
       }
       ::-webkit-scrollbar-thumb:hover {
-        background: #777;
+        background: rgb(127 127 127 / 60%);
+        background-clip: padding-box;
+      }
+      ::-webkit-scrollbar-thumb:active {
+        background: rgb(127 127 127 / 85%);
+        background-clip: padding-box;
+      }
+      ::-webkit-scrollbar-track {
+        background-clip: padding-box;
+        border: solid transparent;
+        border-width: 0 0 0 4px;
       }
     </style>
   </head>

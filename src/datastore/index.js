@@ -1,3 +1,4 @@
+// lowdb database manager
 import Datastore from 'lowdb'
 import FileSync from 'lowdb/adapters/FileSync'
 import path from 'path'
@@ -30,7 +31,6 @@ db.defaults({
   author: pkg.author,
   version: pkg.version,
   increase: 10000,
-  language: 'Chinese',
   search: 'baby'
 }).write() // 一定要显式调用write方法将数据存入JSON
 // count: db.get('users').size().value()

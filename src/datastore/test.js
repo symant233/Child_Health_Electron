@@ -26,7 +26,11 @@ var change = {
   note: 'changed',
   danger: false
 }
-// var test = db.get('users').find().assign(change).write()
+var test = db
+  .get('users')
+  .find()
+  .assign(change)
+  .write()
 
 var test = db
   .get('users')

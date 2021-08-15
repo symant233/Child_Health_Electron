@@ -202,7 +202,7 @@
       </div>
       <!-- Hero footer: will stick at the bottom -->
       <div class="hero-foot">
-        <nav class="tabs is-boxed is-right">
+        <nav class="tabs is-boxed is-right is-fixed-bottom">
           <div class="container is-left">
             <!-- left side navbar -->
             <div class="buttons" id="status">
@@ -228,7 +228,7 @@
 </template>
 
 <script>
-import db from '../../datastore/index'
+import base from '../../datastore/base'
 const { dialog } = require('electron').remote
 export default {
   name: 'insert-page',
@@ -247,14 +247,14 @@ export default {
     }
   },
   methods: {
-    submitButton() {
+    async submitButton() {
       if (!this.uid) {
-        if (this.insert()) {
+        if (await this.insert()) {
           window.location.hash = '#/detail/' + this.uid
           this.reset()
         }
       } else {
-        if (this.update()) {
+        if (await this.update()) {
           window.location.hash = '#/detail/' + this.uid
           this.reset()
         }
@@ -320,52 +320,42 @@ export default {
         }
       }
     },
-    insert() {
-      db.read()
+    async insert() {
       if (this.checkReq(this.name, this.birth, this.tele)) {
         // 必要属性已输入
-        const tmp = db
-          .get('users')
-          .find({ baby: this.baby, birth: this.birth })
-          .value()
+        const tmp = await base.checkUsersExists(this.baby, this.birth)
         if (tmp) {
           // 相同的出生日期同名宝宝
           dialog.showMessageBox({
             type: 'error',
             message: '插入失败',
-            detail:
-              this.birth + '出生日期已有宝宝' + this.baby + '\nUID:' + tmp.uid
+            detail: `${this.birth} 出生日期已有宝宝 ${this.baby}\n`
           })
           return this.statusBar(false)
         }
-        var increase = db.get('increase').value() + 1
+        const increase = await base.useBasicIncrease()
         this.uid = increase
-        db.get('users')
-          .push({
-            uid: increase,
-            name: this.name,
-            baby: this.baby,
-            male: this.male,
-            birth: this.birth,
-            fixed: this.fixed,
-            tele: this.tele,
-            note: this.note,
-            danger: this.level === '0' ? false : true,
-            level: this.level
-          })
-          .write()
-        db.update('increase', n => n + 1).write()
+        const obj = {
+          uid: increase,
+          name: this.name,
+          baby: this.baby,
+          male: this.male,
+          birth: this.birth,
+          fixed: this.fixed,
+          tele: this.tele,
+          note: this.note,
+          danger: this.level === '0' ? false : true,
+          level: this.level
+        }
+        await base.insertUser(obj)
         console.log('DB@ inserted new data')
         return this.statusBar(true)
       }
       return this.statusBar(false)
     },
-    load() {
+    async load() {
       var uid = parseInt(this.uid)
-      var res = db
-        .get('users')
-        .find({ uid: uid })
-        .value()
+      var res = await base.getUserByUid(uid)
       if (res) {
         this.name = res.name
         this.baby = res.baby
@@ -384,7 +374,7 @@ export default {
         this.statusBar(false)
       }
     },
-    update() {
+    async update() {
       if (this.uid) {
         if (!this.checkReq(this.name, this.birth, this.tele)) return false
         var uid = parseInt(this.uid)
@@ -412,12 +402,7 @@ export default {
             changed.danger = null
             break
         }
-        if (
-          !db
-            .get('users')
-            .find({ uid: uid })
-            .value()
-        ) {
+        if (!(await base.getUserByUid(uid))) {
           dialog.showMessageBox({
             type: 'error',
             message: '未找到对应UID',
@@ -426,10 +411,7 @@ export default {
           })
           return this.statusBar(false)
         }
-        db.get('users')
-          .find({ uid: uid })
-          .assign(changed)
-          .write()
+        await base.updateUser(changed)
         console.log('DB@ updated uid: ' + this.uid)
         return this.statusBar(true)
       }
