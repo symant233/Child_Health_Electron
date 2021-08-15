@@ -105,7 +105,7 @@
           <button
             class="button is-light"
             style="width: 100px; padding-top: 6px;"
-            onclick="window.location.reload()"
+            @click="init()"
           >
             <abbr title="点击刷新">Counts: {{ count }}</abbr>
           </button>
@@ -170,7 +170,7 @@
 </template>
 
 <script>
-import db from '../../datastore/index'
+import base from '../../datastore/base'
 import Editable from './Common/Editable.vue'
 import DangerLevel from './Common/DangerLevel.vue'
 export default {
@@ -181,16 +181,8 @@ export default {
       questionDeleteBoolean: false, // show model
       deleteUid: 0,
       today: new Date().toISOString().slice(0, 10),
-      users: db
-        .get('users')
-        .value()
-        .sort((a, b) => {
-          return b.uid - a.uid
-        }),
-      count: db
-        .get('users')
-        .size()
-        .value(),
+      users: [],
+      count: 0,
       selectForm: { options: 'baby', input: '' },
       optionList: [
         { id: 'uid', value: '序号' },
@@ -202,7 +194,15 @@ export default {
       ]
     }
   },
+  async mounted() {
+    this.init()
+  },
   methods: {
+    async init() {
+      this.users = await base.getUsersLimited()
+      this.count = await base.getUsersCount()
+      this.selectForm.options = await base.getBasicSearch()
+    },
     detail(uid) {
       window.location.hash = '#/detail/' + uid
     },
@@ -211,17 +211,10 @@ export default {
       this.deleteUid = uid
     },
     deleteComfirm(e) {
-      var uid = this.deleteUid
+      const uid = parseInt(this.deleteUid)
       if (e === true) {
-        var r = db
-          .get('users')
-          .remove({ uid: parseInt(uid) })
-          .write()
-        var d = db
-          .get('details')
-          .remove({ uid: parseInt(uid) })
-          .write()
-        console.log('DB@ ' + r[0] + ' removed!')
+        base.deleteUser(uid)
+        console.log('DB@ ' + uid + ' removed!')
         this.questionDeleteBoolean = false
       } else {
         console.log('DB@ remove uid: ' + uid + ' canceled!')
@@ -252,56 +245,38 @@ export default {
       }
       return { parse: 'error' }
     },
-    search() {
+    async search() {
       var id = this.selectForm.options
-      var input = this.selectForm.input
+      var input = `%${this.selectForm.input}%`
       console.log('Search: ' + id + ': ' + input)
       switch (id) {
         case 'uid':
-          this.users = this.users.filter(function(user) {
-            return user.uid === parseInt(input)
-          })
+          this.users = await base.searchUsers(id, input)
           break
         case 'danger':
-          this.users = this.users.filter(function(user) {
-            if (input === '') {
-              return user.danger === true
-            }
-            switch (input) {
-              case '1':
-                return user.level === '1'
-              case '2':
-                return user.level === '2'
-              case '3':
-                return user.level === '3'
-            }
-          })
+          if (input === '%%') {
+            this.users = await base.searchUsers('danger', '%1%')
+          } else {
+            this.users = await base.searchUsers('level', input)
+          }
           break
         case 'name':
-          this.users = this.users.filter(function(user) {
-            return user.name.match(input)
-          })
+          this.users = await base.searchUsers(id, input)
           break
         case 'baby':
-          this.users = this.users.filter(function(user) {
-            return user.baby.match(input)
-          })
+          this.users = await base.searchUsers(id, input)
           break
         case 'birth':
-          this.users = this.users.filter(function(user) {
-            return user.birth.match(input)
-          })
+          this.users = await base.searchUsers(id, input)
           break
         case 'tele':
-          this.users = this.users.filter(function(user) {
-            return user.tele.match(input)
-          })
+          this.users = await base.searchUsers(id, input)
           break
         default:
           break
       }
       this.count = this.users.length
-      db.set('search', id).write()
+      await base.setBasicSearch(id)
     }
   }
 }

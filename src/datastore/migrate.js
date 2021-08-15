@@ -49,6 +49,7 @@ sdb.serialize(() => {
         $tele: u.tele || null,
         $note: u.note || null,
         $danger: u.danger || false,
+        $level: u.level || null,
         $weight: u.weight || null,
         $week: u.week || null,
         $G: u.G || null,
@@ -104,31 +105,89 @@ sdb.serialize(() => {
   sdb.run(
     `CREATE TABLE details(
       uid     INTEGER PRIMARY KEY,
-      mother  TEXT,
-      father  TEXT,
-      reports TEXT
+      mage    VARCHAR(3),
+      mjob    VARCHAR(63),
+      mhome   VARCHAR(127),
+      fname   VARCHAR(9),
+      fage    VARCHAR(3),
+      fjob    VARCHAR(63),
+      ftele   VARCHAR(29),
+      fhome   VARCHAR(127)
   )`,
     function(err) {
       if (err) console.log(err.message)
     }
   )
-  let stmt = sdb.prepare(
-    'INSERT INTO details VALUES ($uid,$mother,$father,$reports)'
+  let stmt1 = sdb.prepare(
+    'INSERT INTO details VALUES ($uid,$mage,$mjob,$mhome,$fname,$fage,$fjob,$ftele,$fhome)'
   )
   details.forEach(d => {
-    stmt.run(
+    stmt1.run(
       {
         $uid: d.uid,
-        $mother: JSON.stringify(d.mother) || null,
-        $father: JSON.stringify(d.father) || null,
-        $reports: JSON.stringify(d.$reports) || null
+        $mage: d.mother.age || null,
+        $mjob: d.mother.job || null,
+        $mhome: d.mother.home || null,
+        $fname: d.father.name || null,
+        $fage: d.father.age || null,
+        $fjob: d.father.job || null,
+        $ftele: d.father.tele || null,
+        $fhome: d.father.home || null
       },
       err => {
         if (err) console.log(err.message)
       }
     )
   })
-  stmt.finalize()
+  stmt1.finalize()
+
+  sdb.run(
+    `CREATE TABLE reports(
+      id      INTEGER PRIMARY KEY,
+      uid     INTEGER,
+      age     VARCHAR(9),
+      weight  VARCHAR(6),
+      signalW VARCHAR(1),
+      height  VARCHAR(6),
+      signalH VARCHAR(1),
+      head    VARCHAR(6),
+      signalC VARCHAR(1),
+      result  TEXT,
+      time    VARCHAR(9)
+  )`,
+    function(err) {
+      if (err) console.log(err.message)
+    }
+  )
+  sdb.run('CREATE INDEX ruid ON reports (uid)', function(err) {
+    if (err) console.log(err.message)
+  })
+  let stmt2 = sdb.prepare(
+    'INSERT INTO reports VALUES ($id,$uid,$age,$weight,$signalW,$height,$signalH,$head,$signalC,$result,$time)'
+  )
+  details.forEach(d => {
+    d.reports.forEach(r => {
+      stmt2.run(
+        {
+          $id: r.id || null,
+          $uid: d.uid || null,
+          $age: r.age || null,
+          $weight: r.weight || null,
+          $signalW: r.signalW || null,
+          $height: r.height || null,
+          $signalH: r.signalH || null,
+          $head: r.head || null,
+          $signalC: r.sianglC || null,
+          $result: r.$result || null,
+          $time: r.time || null
+        },
+        err => {
+          if (err) console.log(err.message)
+        }
+      )
+    })
+  })
+  stmt2.finalize()
 })
 
 sdb.close()

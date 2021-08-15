@@ -1,3 +1,4 @@
+// lowdb database manager
 import Datastore from 'lowdb'
 import FileSync from 'lowdb/adapters/FileSync'
 import path from 'path'

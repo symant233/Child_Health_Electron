@@ -6,6 +6,7 @@ import router from './router'
 import db from '../datastore/index'
 import process from 'process'
 
+process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true'
 if (!process.env.IS_WEB) Vue.use(require('vue-electron'))
 Vue.http = Vue.prototype.$http = axios
 Vue.config.productionTip = false
