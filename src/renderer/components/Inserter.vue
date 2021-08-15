@@ -249,7 +249,7 @@ export default {
   methods: {
     async submitButton() {
       if (!this.uid) {
-        if (this.insert()) {
+        if (await this.insert()) {
           window.location.hash = '#/detail/' + this.uid
           this.reset()
         }
@@ -329,8 +329,7 @@ export default {
           dialog.showMessageBox({
             type: 'error',
             message: '插入失败',
-            detail:
-              this.birth + '出生日期已有宝宝' + this.baby + '\nUID:' + tmp.uid
+            detail: `${this.birth} 出生日期已有宝宝 ${this.baby}\n`
           })
           return this.statusBar(false)
         }

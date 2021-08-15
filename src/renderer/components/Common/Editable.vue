@@ -43,6 +43,11 @@ export default {
         this.message = this.last
       }
     }
+  },
+  watch: {
+    obj: function(newLevel, oldLevel) {
+      this.message = this.obj.value
+    }
   }
 }
 </script>

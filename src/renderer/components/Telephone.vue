@@ -338,6 +338,12 @@ tbody tr td {
   text-align: left;
 }
 
+thead > tr th {
+  position: sticky;
+  top: 0px;
+  background-color: antiquewhite;
+}
+
 th,
 td {
   max-width: 260px;

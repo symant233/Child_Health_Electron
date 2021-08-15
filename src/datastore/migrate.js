@@ -177,8 +177,8 @@ sdb.serialize(() => {
           $height: r.height || null,
           $signalH: r.signalH || null,
           $head: r.head || null,
-          $signalC: r.sianglC || null,
-          $result: r.$result || null,
+          $signalC: r.signalC || null,
+          $result: r.result || null,
           $time: r.time || null
         },
         err => {

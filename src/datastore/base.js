@@ -162,6 +162,62 @@ class Base {
       $value: value
     })
   }
+  getDetailByUid = async uid => {
+    const data = await db.get('select * from details where uid=?', uid)
+    return data
+  }
+  initDetailByUid = async uid => {
+    await db.run(
+      'insert into details values (?,null,null,null,null,null,null,null,null)',
+      uid
+    )
+  }
+  getReportsByUid = async uid => {
+    const data = await db.all('select * from reports where uid=?', uid)
+    return data
+  }
+  deleteReportById = async id => {
+    await db.run('delete from reports where id=?', id)
+  }
+  updateReportById = async obj => {
+    await db.run(
+      `update reports set age=$age,weight=$weight,signalW=$signalW,
+      height=$height,signalH=$signalH,head=$head,signalC=$signalC,
+      result=$result,time=$time where id=$id`,
+      {
+        $id: obj.id,
+        $age: obj.age || null,
+        $weight: obj.weight || null,
+        $signalW: obj.signalW || null,
+        $height: obj.height || null,
+        $signalH: obj.signalH || null,
+        $head: obj.head || null,
+        $signalC: obj.signalC || null,
+        $result: obj.result || null,
+        $time: obj.time || null
+      }
+    )
+  }
+  insertReport = async obj => {
+    await db.run(
+      `insert into reports values (
+        $id,$uid,$age,$weight,$signalW,$height,$signalH,$head,$signalC,$result,$time
+      )`,
+      {
+        $id: obj.id,
+        $uid: obj.uid,
+        $age: obj.age || null,
+        $weight: obj.weight || null,
+        $signalW: obj.signalW || null,
+        $height: obj.height || null,
+        $signalH: obj.signalH || null,
+        $head: obj.head || null,
+        $signalC: obj.signalC || null,
+        $result: obj.result || null,
+        $time: obj.time || null
+      }
+    )
+  }
 }
 
 export default new Base()
