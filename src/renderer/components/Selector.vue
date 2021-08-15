@@ -201,7 +201,7 @@ export default {
     async init() {
       this.users = await base.getUsersLimited()
       this.count = await base.getUsersCount()
-      this.selectForm.options = await base.getBasicSearch()
+      this.selectForm.options = await base.getBasicItem('search')
     },
     detail(uid) {
       window.location.hash = '#/detail/' + uid
@@ -276,7 +276,7 @@ export default {
           break
       }
       this.count = this.users.length
-      await base.setBasicSearch(id)
+      await base.setBasicItem('search', id)
     }
   }
 }

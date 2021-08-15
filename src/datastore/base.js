@@ -71,19 +71,12 @@ class Base {
     await db.run('delete from details where uid=?', uid)
     await db.run('delete from reports where uid=?', uid)
   }
-  setBasicSearch = async searchName => {
-    return db.run('update basic set search=? where id=1', searchName)
+  setBasicItem = async (name, value) => {
+    return db.run(`update basic set ${name}=? where id=1`, value)
   }
-  getBasicSearch = async () => {
-    const data = await db.get('select search from basic where id=1')
-    return data.search
-  }
-  setBasicPrefix = async pre => {
-    return db.run('update basic set pre=? where id=1', pre)
-  }
-  getBasicPrefix = async () => {
-    const data = await db.get('select pre from basic where id=1')
-    return data.pre
+  getBasicItem = async name => {
+    const data = await db.get(`select ${name} from basic where id=1`)
+    return data[name]
   }
   checkUsersExists = async (baby, birth) => {
     const user = await db.get(

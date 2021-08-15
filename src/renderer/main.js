@@ -3,7 +3,7 @@ import axios from 'axios'
 
 import App from './App'
 import router from './router'
-import db from '../datastore/index'
+// import base from '../datastore/base'
 import process from 'process'
 
 process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true'
@@ -13,7 +13,7 @@ Vue.config.productionTip = false
 if (process.env.NODE_ENV === 'development') {
   Vue.config.devtools = true
 }
-Vue.db = Vue.prototype.$db = db
+// Vue.base = Vue.prototype.$base = base
 
 new Vue({
   components: { App },

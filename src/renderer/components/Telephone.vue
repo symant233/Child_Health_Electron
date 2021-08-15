@@ -196,7 +196,7 @@ export default {
   },
   async mounted() {
     this.staticUsers = await base.getUsersAll()
-    this.prefix = await base.getBasicPrefix()
+    this.prefix = await base.getBasicItem('pre')
     this.init()
   },
   methods: {
@@ -312,7 +312,7 @@ export default {
       return usersNew
     },
     async setPrefix(pre) {
-      await base.setBasicPrefix(pre)
+      await base.setBasicItem('pre', pre)
       this.prefix = pre
       this.init()
     }

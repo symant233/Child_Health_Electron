@@ -5,7 +5,7 @@ import { app, BrowserWindow, Menu, dialog, shell } from 'electron'
 import fs from 'fs'
 import path from 'path'
 import pkg from '../../package.json'
-import db from '../datastore/index'
+import base from '../datastore/base'
 
 /**
  * Set `__static` path to static files in production
@@ -24,15 +24,9 @@ const winURL =
     : `file://${__dirname}/index.html`
 // const winURL = `file://${__dirname}/index.ejs`
 
-function backupnow(bool) {
-  var stored = db
-    .read()
-    .get('stored')
-    .value()
-  var backup = db
-    .read()
-    .get('backup')
-    .value()
+async function backupnow(bool) {
+  var stored = await base.getBasicItem('stored')
+  var backup = await base.getBasicItem('backup')
   if (!backup) {
     if (!bool) {
       // 如果没提供bool或bool为false
@@ -86,7 +80,39 @@ function createWindow() {
   return mainWindow
 }
 
-function createMenu(mainWindow) {
+async function openCurrentFolder() {
+  var p = await base.getBasicItem('stored')
+  shell.showItemInFolder(p)
+}
+
+async function openBackupFolder() {
+  var bp = await base.getBasicItem('backup')
+  if (bp) {
+    shell.showItemInFolder(bp)
+  } else {
+    backupNotFound()
+  }
+}
+
+async function setBackupFolder() {
+  dialog
+    .showOpenDialog(mainWindow, {
+      properties: ['openDirectory']
+    })
+    .then(result => {
+      if (!result.canceled && result.filePaths[0]) {
+        var bpdir = result.filePaths[0]
+        bpdir = path.join(bpdir, 'data.db')
+        base.setBasicItem('backup', bpdir)
+        console.log('Backup Dir Set @ ' + bpdir)
+      }
+    })
+    .catch(err => {
+      console.log(err)
+    })
+}
+
+async function createMenu(mainWindow) {
   var template = [
     {
       label: '数据库',
@@ -97,26 +123,13 @@ function createMenu(mainWindow) {
             {
               label: '当前数据库文件夹',
               click() {
-                shell.showItemInFolder(
-                  db
-                    .read()
-                    .get('stored')
-                    .value()
-                )
+                openCurrentFolder()
               }
             },
             {
               label: '备份数据库文件夹',
               click() {
-                var bp = db
-                  .read()
-                  .get('backup')
-                  .value()
-                if (bp) {
-                  shell.showItemInFolder(bp)
-                } else {
-                  backupNotFound()
-                }
+                openBackupFolder()
               }
             }
           ]
@@ -135,23 +148,7 @@ function createMenu(mainWindow) {
             {
               label: '设置备份路径',
               click() {
-                dialog
-                  .showOpenDialog(mainWindow, {
-                    properties: ['openDirectory']
-                  })
-                  .then(result => {
-                    if (!result.canceled) {
-                      var bpdir = result.filePaths[0]
-                      bpdir = path.join(bpdir, 'data.json')
-                      db.read()
-                        .set('backup', bpdir)
-                        .write()
-                      console.log('Backup Dir Set @ ' + bpdir)
-                    }
-                  })
-                  .catch(err => {
-                    console.log(err)
-                  })
+                setBackupFolder()
               }
             },
             {
@@ -161,7 +158,7 @@ function createMenu(mainWindow) {
                 dialog.showMessageBox({
                   type: 'info',
                   message: 'Coming soon...',
-                  accelerator: 'Ctrl+P',
+                  accelerator: 'Ctrl+Q',
                   click() {}
                 })
               }
@@ -306,8 +303,8 @@ function createMenu(mainWindow) {
   mainWindow.setMenu(menu)
 }
 
-function firstTimeRun() {
-  if (!db.get('backup').value()) {
+async function firstTimeRun() {
+  if (!(await base.getBasicItem('backup'))) {
     dialog.showMessageBox({
       type: 'info',
       message: '未设置备份路径',
