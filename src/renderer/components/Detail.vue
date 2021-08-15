@@ -516,200 +516,203 @@ export default {
     // sort reports by age
     this.detail.reports.sort(this.sortFilter)
     // render line chart
-    var myChart = echarts.init(document.getElementById('chart'))
-    var myChart2 = echarts.init(document.getElementById('chart2'))
-    var boy = JSON.parse(fs.readFileSync(path.join(__static, 'boy.json')))
-    var girl = JSON.parse(fs.readFileSync(path.join(__static, 'girl.json')))
-    const seq = ['+2', '+1', '0', '-1', '-2']
-    var data = [
-      {
-        name: '宝宝',
-        type: 'line',
-        color: '#fbb8a1',
-        data: Array(49).fill(null),
-        connectNulls: true,
-        smooth: true
-      }
-    ]
-    var data2 = [
-      {
-        name: '宝宝',
-        type: 'line',
-        color: '#fbb8a1',
-        data: Array(49).fill(null),
-        connectNulls: true,
-        smooth: true
-      }
-    ]
-    let y, m, d, month
-    var reports = this.detail.reports
-    reports.forEach(r => {
-      var tmp = r.age.split('/')
-      y = parseInt(tmp[0])
-      m = parseInt(tmp[1])
-      d = parseInt(tmp[2])
-      month = y * 12 + m
-      if (d > 15) month = month + 1
-      data[0].data[month] = r.weight
-      data2[0].data[month] = r.height
-    })
-
-    if (this.user.male === 'true') {
-      seq.forEach(i => {
-        data.push({
-          name: `男孩${i}SD`,
-          type: 'line',
-          color: '#6fbae1',
-          data: boy[`weight${i}`],
-          connectNulls: true,
-          smooth: true
-        })
-      })
-    } else if (this.user.male === 'false') {
-      seq.forEach(i => {
-        data.push({
-          name: `女孩${i}SD`,
-          type: 'line',
-          color: '#e58dc2',
-          data: girl[`weight${i}`],
-          connectNulls: true,
-          smooth: true
-        })
-      })
-    } else {
-      data.push({
-        name: `男孩0SD`,
-        type: 'line',
-        color: '#6fbae1',
-        data: boy[`weight0`],
-        connectNulls: true,
-        smooth: true
-      })
-      data.push({
-        name: `女孩0SD`,
-        type: 'line',
-        color: '#e58dc2',
-        data: girl[`weight0`],
-        connectNulls: true,
-        smooth: true
-      })
-    }
-
-    const option = {
-      title: {
-        text: '体重(kg)-月龄'
-      },
-      tooltip: {
-        trigger: 'axis'
-      },
-      legend: {
-        data: ['男孩0SD', '女孩0SD', '宝宝']
-      },
-      color: ['#e58dc2', '#fbb8a1', '#90e5e7', '#6fbae1'],
-      grid: {
-        left: '3%',
-        right: '4%',
-        bottom: '3%',
-        containLabel: true
-      },
-      toolbox: {
-        feature: {
-          dataZoom: {},
-          restore: {},
-          dataView: {},
-          saveAsImage: {}
-        }
-      },
-      xAxis: {
-        type: 'category',
-        boundaryGap: false,
-        data: [...Array(49).keys()]
-      },
-      yAxis: {
-        type: 'value'
-      },
-      series: data
-    }
-    myChart.setOption(option)
-
-    if (this.user.male === 'true') {
-      seq.forEach(i => {
-        data2.push({
-          name: `男孩${i}SD`,
-          type: 'line',
-          color: '#6fbae1',
-          data: boy[`height${i}`],
-          connectNulls: true,
-          smooth: true
-        })
-      })
-    } else if (this.user.male === 'false') {
-      seq.forEach(i => {
-        data2.push({
-          name: `女孩${i}SD`,
-          type: 'line',
-          color: '#e58dc2',
-          data: girl[`height${i}`],
-          connectNulls: true,
-          smooth: true
-        })
-      })
-    } else {
-      data2.push({
-        name: `男孩0SD`,
-        type: 'line',
-        color: '#6fbae1',
-        data: boy[`height0`],
-        connectNulls: true,
-        smooth: true
-      })
-      data2.push({
-        name: `女孩0SD`,
-        type: 'line',
-        color: '#e58dc2',
-        data: girl[`height0`],
-        connectNulls: true,
-        smooth: true
-      })
-    }
-    const option2 = {
-      title: {
-        text: '身高(cm)-月龄'
-      },
-      tooltip: {
-        trigger: 'axis'
-      },
-      legend: {
-        data: ['男孩0SD', '女孩0SD', '宝宝']
-      },
-      color: ['#e58dc2', '#fbb8a1', '#90e5e7', '#6fbae1'],
-      grid: {
-        left: '3%',
-        right: '4%',
-        bottom: '3%',
-        containLabel: true
-      },
-      toolbox: {
-        feature: {
-          dataZoom: {},
-          restore: {},
-          dataView: {},
-          saveAsImage: {}
-        }
-      },
-      xAxis: {
-        type: 'category',
-        boundaryGap: false,
-        data: [...Array(49).keys()]
-      },
-      yAxis: {
-        type: 'value'
-      },
-      series: data2
-    }
-    myChart2.setOption(option2)
+    this.renderChart()
   },
   methods: {
+    renderChart() {
+      var myChart = echarts.init(document.getElementById('chart'))
+      var myChart2 = echarts.init(document.getElementById('chart2'))
+      var boy = JSON.parse(fs.readFileSync(path.join(__static, 'boy.json')))
+      var girl = JSON.parse(fs.readFileSync(path.join(__static, 'girl.json')))
+      const seq = ['+2', '+1', '0', '-1', '-2']
+      var data = [
+        {
+          name: '宝宝',
+          type: 'line',
+          color: '#fbb8a1',
+          data: Array(49).fill(null),
+          connectNulls: true,
+          smooth: true
+        }
+      ]
+      var data2 = [
+        {
+          name: '宝宝',
+          type: 'line',
+          color: '#fbb8a1',
+          data: Array(49).fill(null),
+          connectNulls: true,
+          smooth: true
+        }
+      ]
+      let y, m, d, month
+      var reports = this.detail.reports
+      reports.forEach(r => {
+        var tmp = r.age.split('/')
+        y = parseInt(tmp[0])
+        m = parseInt(tmp[1])
+        d = parseInt(tmp[2])
+        month = y * 12 + m
+        if (d > 15) month = month + 1
+        data[0].data[month] = r.weight
+        data2[0].data[month] = r.height
+      })
+
+      if (this.user.male === 'true') {
+        seq.forEach(i => {
+          data.push({
+            name: `男孩${i}SD`,
+            type: 'line',
+            color: '#6fbae1',
+            data: boy[`weight${i}`],
+            connectNulls: true,
+            smooth: true
+          })
+        })
+      } else if (this.user.male === 'false') {
+        seq.forEach(i => {
+          data.push({
+            name: `女孩${i}SD`,
+            type: 'line',
+            color: '#e58dc2',
+            data: girl[`weight${i}`],
+            connectNulls: true,
+            smooth: true
+          })
+        })
+      } else {
+        data.push({
+          name: `男孩0SD`,
+          type: 'line',
+          color: '#6fbae1',
+          data: boy[`weight0`],
+          connectNulls: true,
+          smooth: true
+        })
+        data.push({
+          name: `女孩0SD`,
+          type: 'line',
+          color: '#e58dc2',
+          data: girl[`weight0`],
+          connectNulls: true,
+          smooth: true
+        })
+      }
+
+      const option = {
+        title: {
+          text: '体重(kg)-月龄'
+        },
+        tooltip: {
+          trigger: 'axis'
+        },
+        legend: {
+          data: ['男孩0SD', '女孩0SD', '宝宝']
+        },
+        color: ['#e58dc2', '#fbb8a1', '#90e5e7', '#6fbae1'],
+        grid: {
+          left: '3%',
+          right: '4%',
+          bottom: '3%',
+          containLabel: true
+        },
+        toolbox: {
+          feature: {
+            dataZoom: {},
+            restore: {},
+            dataView: {},
+            saveAsImage: {}
+          }
+        },
+        xAxis: {
+          type: 'category',
+          boundaryGap: false,
+          data: [...Array(49).keys()]
+        },
+        yAxis: {
+          type: 'value'
+        },
+        series: data
+      }
+      myChart.setOption(option)
+
+      if (this.user.male === 'true') {
+        seq.forEach(i => {
+          data2.push({
+            name: `男孩${i}SD`,
+            type: 'line',
+            color: '#6fbae1',
+            data: boy[`height${i}`],
+            connectNulls: true,
+            smooth: true
+          })
+        })
+      } else if (this.user.male === 'false') {
+        seq.forEach(i => {
+          data2.push({
+            name: `女孩${i}SD`,
+            type: 'line',
+            color: '#e58dc2',
+            data: girl[`height${i}`],
+            connectNulls: true,
+            smooth: true
+          })
+        })
+      } else {
+        data2.push({
+          name: `男孩0SD`,
+          type: 'line',
+          color: '#6fbae1',
+          data: boy[`height0`],
+          connectNulls: true,
+          smooth: true
+        })
+        data2.push({
+          name: `女孩0SD`,
+          type: 'line',
+          color: '#e58dc2',
+          data: girl[`height0`],
+          connectNulls: true,
+          smooth: true
+        })
+      }
+      const option2 = {
+        title: {
+          text: '身高(cm)-月龄'
+        },
+        tooltip: {
+          trigger: 'axis'
+        },
+        legend: {
+          data: ['男孩0SD', '女孩0SD', '宝宝']
+        },
+        color: ['#e58dc2', '#fbb8a1', '#90e5e7', '#6fbae1'],
+        grid: {
+          left: '3%',
+          right: '4%',
+          bottom: '3%',
+          containLabel: true
+        },
+        toolbox: {
+          feature: {
+            dataZoom: {},
+            restore: {},
+            dataView: {},
+            saveAsImage: {}
+          }
+        },
+        xAxis: {
+          type: 'category',
+          boundaryGap: false,
+          data: [...Array(49).keys()]
+        },
+        yAxis: {
+          type: 'value'
+        },
+        series: data2
+      }
+      myChart2.setOption(option2)
+    },
     goBack() {
       window.history.go(-1)
     },

@@ -202,7 +202,7 @@
       </div>
       <!-- Hero footer: will stick at the bottom -->
       <div class="hero-foot">
-        <nav class="tabs is-boxed is-right">
+        <nav class="tabs is-boxed is-right is-fixed-bottom">
           <div class="container is-left">
             <!-- left side navbar -->
             <div class="buttons" id="status">

@@ -28,12 +28,7 @@
       <table class="table is-striped is-fullwidth is-hoverable is-bordered">
         <thead>
           <tr>
-            <th>
-              <abbr
-                title="自动递增唯一标识(删除序号不会再新增), 点击序号删除该行"
-                >序号</abbr
-              >
-            </th>
+            <th>序号</th>
             <th style="min-width: 78px;">产妇名</th>
             <th style="min-width: 78px;">宝宝名</th>
             <th style="width: 116px; min-width: 116px;">出生日期</th>

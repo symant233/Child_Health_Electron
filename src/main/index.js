@@ -87,531 +87,220 @@ function createWindow() {
 }
 
 function createMenu(mainWindow) {
-  if (db.get('language').value() === 'English') {
-    var template = [
-      {
-        label: 'Data',
-        submenu: [
-          {
-            label: 'Folder',
-            submenu: [
-              {
-                label: 'Open Data Folder',
-                click() {
-                  shell.showItemInFolder(
-                    db
-                      .read()
-                      .get('stored')
-                      .value()
-                  )
-                }
-              },
-              {
-                label: 'Open Backup Folder',
-                click() {
-                  var bp = db
+  var template = [
+    {
+      label: '数据库',
+      submenu: [
+        {
+          label: '数据库位置',
+          submenu: [
+            {
+              label: '当前数据库文件夹',
+              click() {
+                shell.showItemInFolder(
+                  db
                     .read()
-                    .get('backup')
+                    .get('stored')
                     .value()
-                  if (bp) {
-                    shell.showItemInFolder(bp)
-                  } else {
-                    backupNotFound()
-                  }
+                )
+              }
+            },
+            {
+              label: '备份数据库文件夹',
+              click() {
+                var bp = db
+                  .read()
+                  .get('backup')
+                  .value()
+                if (bp) {
+                  shell.showItemInFolder(bp)
+                } else {
+                  backupNotFound()
                 }
               }
-            ]
-          },
-          {
-            label: 'Backups',
-            submenu: [
-              {
-                label: 'Run Backup',
-                accelerator: 'Ctrl+O',
-                click() {
-                  backupnow()
-                }
-              },
-              { type: 'separator' },
-              {
-                label: 'Set Backup Path',
-                click() {
-                  dialog
-                    .showOpenDialog(mainWindow, {
-                      properties: ['openDirectory']
-                    })
-                    .then(result => {
-                      if (!result.canceled) {
-                        var bpdir = result.filePaths[0]
-                        bpdir = path.join(bpdir, 'data.json')
-                        db.read()
-                          .set('backup', bpdir)
-                          .write()
-                        console.log('Backup Dir Set @ ' + bpdir)
-                      }
-                    })
-                    .catch(err => {
-                      console.log(err)
-                    })
-                }
-              },
-              {
-                label: 'Set Backup Series',
-                click() {
-                  dialog.showMessageBox({
-                    type: 'info',
-                    message: 'Coming soon...',
-                    accelerator: 'Ctrl+P',
-                    click() {}
-                  })
-                }
+            }
+          ]
+        },
+        {
+          label: '备份选项',
+          submenu: [
+            {
+              label: '立即备份',
+              accelerator: 'Ctrl+O',
+              click() {
+                backupnow()
               }
-            ]
-          },
-          {
-            label: 'Languages',
-            submenu: [
-              {
-                label: 'English',
-                type: 'radio',
-                checked:
-                  db
-                    .read()
-                    .get('language')
-                    .value() === 'English'
-                    ? true
-                    : false,
-                click() {
-                  db.read()
-                    .set('language', 'English')
-                    .write()
-                  dialog.showMessageBox({
-                    type: 'none',
-                    title: '',
-                    message: '注意',
-                    detail: '应用程序需要重新启动来应用更改.'
+            },
+            { type: 'separator' },
+            {
+              label: '设置备份路径',
+              click() {
+                dialog
+                  .showOpenDialog(mainWindow, {
+                    properties: ['openDirectory']
                   })
-                }
-              },
-              {
-                label: 'Chinese',
-                type: 'radio',
-                checked:
-                  db
-                    .read()
-                    .get('language')
-                    .value() === 'Chinese'
-                    ? true
-                    : false,
-                click() {
-                  db.read()
-                    .set('language', 'Chinese')
-                    .write()
-                  dialog.showMessageBox({
-                    type: 'none',
-                    title: '',
-                    message: 'Attention',
-                    detail: 'Application needs restart to apply changes.'
+                  .then(result => {
+                    if (!result.canceled) {
+                      var bpdir = result.filePaths[0]
+                      bpdir = path.join(bpdir, 'data.json')
+                      db.read()
+                        .set('backup', bpdir)
+                        .write()
+                      console.log('Backup Dir Set @ ' + bpdir)
+                    }
                   })
-                }
+                  .catch(err => {
+                    console.log(err)
+                  })
               }
-            ]
-          },
-          { type: 'separator' },
-          { role: 'Quit' }
-        ]
-      },
-      { role: 'editMenu' },
-      {
-        label: 'View',
-        submenu: [
-          { role: 'reload' },
-          // { role: 'forcereload' },
-          // { role: 'toggledevtools' },
-          { type: 'separator' },
-          { role: 'resetzoom' },
-          { role: 'zoomin', accelerator: 'Ctrl+=' },
-          { role: 'zoomout' }
-        ]
-      },
-      {
-        label: 'Window',
-        submenu: [
-          {
-            label: 'Go Back',
-            accelerator: 'Alt+Left',
-            click() {
-              mainWindow.webContents.goBack()
+            },
+            {
+              label: '设置备份序列',
+              enabled: false,
+              click() {
+                dialog.showMessageBox({
+                  type: 'info',
+                  message: 'Coming soon...',
+                  accelerator: 'Ctrl+P',
+                  click() {}
+                })
+              }
             }
-          },
-          {
-            label: 'Go Forward',
-            accelerator: 'Alt+Right',
-            click() {
-              mainWindow.webContents.goForward()
-            }
-          },
-          { type: 'separator' },
-          { role: 'minimize' },
-          {
-            label: 'Default Size',
-            accelerator: 'Ctrl+9',
-            click() {
-              mainWindow.setSize(1076, 650)
-              // plus titlebar and menubar
-            }
+          ]
+        },
+        { type: 'separator' },
+        { role: 'Quit', label: '退出' }
+      ]
+    },
+    {
+      role: 'editMenu',
+      label: '编辑'
+    },
+    {
+      label: '视图',
+      submenu: [
+        { role: 'reload', label: '刷新' },
+        // { role: 'forcereload' },
+        // { role: 'toggledevtools' },
+        { type: 'separator' },
+        { role: 'resetzoom' },
+        { role: 'zoomin', accelerator: 'Ctrl+=' },
+        { role: 'zoomout' }
+      ]
+    },
+    {
+      label: '窗口',
+      submenu: [
+        {
+          label: '返回',
+          accelerator: 'Alt+Left',
+          click() {
+            mainWindow.webContents.goBack()
           }
-        ]
-      },
-      {
-        label: 'Help',
-        submenu: [
-          {
-            label: 'About',
-            click() {
-              dialog.showMessageBox({
-                type: 'none',
-                title: 'About',
-                message: 'Child Health Care [Electron]',
-                detail: `Version: ${pkg.version}\nAuthor: ${pkg.author}\nGithub: https://github.com/symant233`
+        },
+        {
+          label: '前进',
+          accelerator: 'Alt+Right',
+          click() {
+            mainWindow.webContents.goForward()
+          }
+        },
+        { type: 'separator' },
+        { role: 'minimize', label: '最小化' },
+        {
+          label: '还原默认窗口大小',
+          accelerator: 'Ctrl+9',
+          click() {
+            mainWindow.setSize(1076, 650)
+            // plus titlebar and menubar
+          }
+        }
+      ]
+    },
+    {
+      label: '帮助',
+      submenu: [
+        {
+          label: '关于',
+          click() {
+            dialog.showMessageBox({
+              type: 'none',
+              title: 'About',
+              message: 'Child Health Care [Electron]',
+              detail: `Version: ${pkg.version}\nAuthor: ${pkg.author}\nGithub: https://github.com/symant233`
+            })
+          }
+        },
+        {
+          label: '新版本 [Link]',
+          click: async () => {
+            const { shell } = require('electron')
+            await shell.openExternal(
+              'https://github.com/symant233/Child_Health_Electron/releases'
+            )
+          }
+        },
+        { type: 'separator' },
+        {
+          label: '打印机',
+          accelerator: 'Ctrl+P',
+          click() {
+            mainWindow.webContents.print({ landscape: true })
+          }
+        },
+        {
+          label: '导出PDF',
+          accelerator: 'Ctrl+Shift+P',
+          click() {
+            dialog
+              .showOpenDialog(mainWindow, {
+                properties: ['openDirectory']
               })
-            }
-          },
-          {
-            label: 'Releses [Link]',
-            click: async () => {
-              const { shell } = require('electron')
-              await shell.openExternal(
-                'https://github.com/symant233/Child_Health_Electron/releases'
-              )
-            }
-          },
-          { type: 'separator' },
-          {
-            label: 'Printer',
-            accelerator: 'Ctrl+P',
-            click() {
-              mainWindow.webContents.print({ landscape: true })
-            }
-          },
-          {
-            label: 'Print To PDF',
-            accelerator: 'Ctrl+Shift+P',
-            click() {
-              dialog
-                .showOpenDialog(mainWindow, {
-                  properties: ['openDirectory']
-                })
-                .then(result => {
-                  if (!result.canceled) {
-                    var printDir = result.filePaths[0]
-                    var name =
-                      'WebContent@' +
-                      new Date().toISOString().slice(0, 10) +
-                      '.pdf'
-                    printDir = path.join(printDir, name)
-                    // https://electronjs.org/docs/api/web-contents#contentsprinttopdfoptions
-                    mainWindow.webContents
-                      .printToPDF({ landscape: true })
-                      .then(data => {
-                        fs.writeFileSync(printDir, data, error => {
-                          if (error) throw error
-                          console.log('Write PDF successfully.')
-                        })
+              .then(result => {
+                if (!result.canceled) {
+                  var printDir = result.filePaths[0]
+                  var name =
+                    'WebContent@' +
+                    new Date().toISOString().slice(0, 10) +
+                    '.pdf'
+                  printDir = path.join(printDir, name)
+                  // https://electronjs.org/docs/api/web-contents#contentsprinttopdfoptions
+                  mainWindow.webContents
+                    .printToPDF({ landscape: true })
+                    .then(data => {
+                      fs.writeFileSync(printDir, data, error => {
+                        if (error) throw error
+                        console.log('Write PDF successfully.')
                       })
-                      .catch(error => {
-                        console.log(error)
-                      })
-                  }
-                })
-                .catch(err => {
-                  console.log(err)
-                })
-            }
-          },
-          { type: 'separator' },
-          {
-            label: 'DevTools',
-            accelerator: 'F12',
-            click() {
-              if (process.env.NODE_ENV !== 'development') {
-                mainWindow.webContents.isDevToolsOpened()
-                  ? mainWindow.webContents.closeDevTools()
-                  : mainWindow.webContents.openDevTools()
-              } else {
-                mainWindow.webContents.openDevTools()
-              }
-            }
-          }
-        ]
-      },
-      { type: 'separator' }
-    ]
-  } else if (db.get('language').value() === 'Chinese') {
-    var template = [
-      {
-        label: '数据库',
-        submenu: [
-          {
-            label: '数据库位置',
-            submenu: [
-              {
-                label: '当前数据库文件夹',
-                click() {
-                  shell.showItemInFolder(
-                    db
-                      .read()
-                      .get('stored')
-                      .value()
-                  )
-                }
-              },
-              {
-                label: '备份数据库文件夹',
-                click() {
-                  var bp = db
-                    .read()
-                    .get('backup')
-                    .value()
-                  if (bp) {
-                    shell.showItemInFolder(bp)
-                  } else {
-                    backupNotFound()
-                  }
-                }
-              }
-            ]
-          },
-          {
-            label: '备份选项',
-            submenu: [
-              {
-                label: '立即备份',
-                accelerator: 'Ctrl+O',
-                click() {
-                  backupnow()
-                }
-              },
-              { type: 'separator' },
-              {
-                label: '设置备份路径',
-                click() {
-                  dialog
-                    .showOpenDialog(mainWindow, {
-                      properties: ['openDirectory']
                     })
-                    .then(result => {
-                      if (!result.canceled) {
-                        var bpdir = result.filePaths[0]
-                        bpdir = path.join(bpdir, 'data.json')
-                        db.read()
-                          .set('backup', bpdir)
-                          .write()
-                        console.log('Backup Dir Set @ ' + bpdir)
-                      }
-                    })
-                    .catch(err => {
-                      console.log(err)
+                    .catch(error => {
+                      console.log(error)
                     })
                 }
-              },
-              {
-                label: '设置备份序列',
-                enabled: false,
-                click() {
-                  dialog.showMessageBox({
-                    type: 'info',
-                    message: 'Coming soon...',
-                    accelerator: 'Ctrl+P',
-                    click() {}
-                  })
-                }
-              }
-            ]
-          },
-          {
-            label: '语言',
-            submenu: [
-              {
-                label: 'English',
-                type: 'radio',
-                checked:
-                  db
-                    .read()
-                    .get('language')
-                    .value() === 'English'
-                    ? true
-                    : false,
-                click() {
-                  db.read()
-                    .set('language', 'English')
-                    .write()
-                  dialog.showMessageBox({
-                    type: 'none',
-                    title: '',
-                    message: '注意',
-                    detail: '应用程序需要重新启动来应用更改.'
-                  })
-                }
-              },
-              {
-                label: 'Chinese',
-                type: 'radio',
-                checked:
-                  db
-                    .read()
-                    .get('language')
-                    .value() === 'Chinese'
-                    ? true
-                    : false,
-                click() {
-                  db.read()
-                    .set('language', 'Chinese')
-                    .write()
-                  dialog.showMessageBox({
-                    type: 'none',
-                    title: '',
-                    message: 'Attention',
-                    detail: 'Application needs restart to apply changes.'
-                  })
-                }
-              }
-            ]
-          },
-          { type: 'separator' },
-          { role: 'Quit', label: '退出' }
-        ]
-      },
-      {
-        role: 'editMenu',
-        label: '编辑'
-      },
-      {
-        label: '视图',
-        submenu: [
-          { role: 'reload', label: '刷新' },
-          // { role: 'forcereload' },
-          // { role: 'toggledevtools' },
-          { type: 'separator' },
-          { role: 'resetzoom' },
-          { role: 'zoomin', accelerator: 'Ctrl+=' },
-          { role: 'zoomout' }
-        ]
-      },
-      {
-        label: '窗口',
-        submenu: [
-          {
-            label: '返回',
-            accelerator: 'Alt+Left',
-            click() {
-              mainWindow.webContents.goBack()
-            }
-          },
-          {
-            label: '前进',
-            accelerator: 'Alt+Right',
-            click() {
-              mainWindow.webContents.goForward()
-            }
-          },
-          { type: 'separator' },
-          { role: 'minimize', label: '最小化' },
-          {
-            label: '还原默认窗口大小',
-            accelerator: 'Ctrl+9',
-            click() {
-              mainWindow.setSize(1076, 650)
-              // plus titlebar and menubar
-            }
-          }
-        ]
-      },
-      {
-        label: '帮助',
-        submenu: [
-          {
-            label: '关于',
-            click() {
-              dialog.showMessageBox({
-                type: 'none',
-                title: 'About',
-                message: 'Child Health Care [Electron]',
-                detail: `Version: ${pkg.version}\nAuthor: ${pkg.author}\nGithub: https://github.com/symant233`
               })
-            }
-          },
-          {
-            label: '新版本 [Link]',
-            click: async () => {
-              const { shell } = require('electron')
-              await shell.openExternal(
-                'https://github.com/symant233/Child_Health_Electron/releases'
-              )
-            }
-          },
-          { type: 'separator' },
-          {
-            label: '打印机',
-            accelerator: 'Ctrl+P',
-            click() {
-              mainWindow.webContents.print({ landscape: true })
-            }
-          },
-          {
-            label: '导出PDF',
-            accelerator: 'Ctrl+Shift+P',
-            click() {
-              dialog
-                .showOpenDialog(mainWindow, {
-                  properties: ['openDirectory']
-                })
-                .then(result => {
-                  if (!result.canceled) {
-                    var printDir = result.filePaths[0]
-                    var name =
-                      'WebContent@' +
-                      new Date().toISOString().slice(0, 10) +
-                      '.pdf'
-                    printDir = path.join(printDir, name)
-                    // https://electronjs.org/docs/api/web-contents#contentsprinttopdfoptions
-                    mainWindow.webContents
-                      .printToPDF({ landscape: true })
-                      .then(data => {
-                        fs.writeFileSync(printDir, data, error => {
-                          if (error) throw error
-                          console.log('Write PDF successfully.')
-                        })
-                      })
-                      .catch(error => {
-                        console.log(error)
-                      })
-                  }
-                })
-                .catch(err => {
-                  console.log(err)
-                })
-            }
-          },
-          { type: 'separator' },
-          {
-            label: '开发者工具',
-            accelerator: 'F12',
-            click() {
-              if (process.env.NODE_ENV !== 'development') {
-                mainWindow.webContents.isDevToolsOpened()
-                  ? mainWindow.webContents.closeDevTools()
-                  : mainWindow.webContents.openDevTools()
-              } else {
-                mainWindow.webContents.openDevTools()
-              }
+              .catch(err => {
+                console.log(err)
+              })
+          }
+        },
+        { type: 'separator' },
+        {
+          label: '开发者工具',
+          accelerator: 'F12',
+          click() {
+            if (process.env.NODE_ENV !== 'development') {
+              mainWindow.webContents.isDevToolsOpened()
+                ? mainWindow.webContents.closeDevTools()
+                : mainWindow.webContents.openDevTools()
+            } else {
+              mainWindow.webContents.openDevTools()
             }
           }
-        ]
-      },
-      { type: 'separator' }
-    ]
-  }
+        }
+      ]
+    },
+    { type: 'separator' }
+  ]
   var menu = Menu.buildFromTemplate(template)
   Menu.setApplicationMenu(menu)
   mainWindow.setMenu(menu)

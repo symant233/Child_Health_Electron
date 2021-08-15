@@ -16,21 +16,28 @@ const db = Datastore(adapter)
 
 // count: db.get('users').size().value()
 
-var change = {
-  uid: 10007,
-  name: 'border',
-  baby: 'radius',
-  birth: '2020-01-19',
-  fixed: '',
-  tele: '123',
-  note: 'changed',
-  danger: false
-}
+// var change = {
+//   uid: 10007,
+//   name: 'border',
+//   baby: 'radius',
+//   birth: '2020-01-19',
+//   fixed: '',
+//   tele: '123',
+//   note: 'changed',
+//   danger: false
+// }
 // var test = db.get('users').find().assign(change).write()
 
-var test = db
-  .get('users')
-  .find({ uid: 10002 })
-  .value()
+// var test = db
+//   .get('users')
+//   .find({ uid: 10002 })
+//   .value()
 
-console.log(test)
+// console.log(test)
+
+const sqlite3 = require('sqlite3').verbose()
+const sdb = new sqlite3.Database('data.db')
+
+sdb.get('select pre from basic', (_err, row) => {
+  console.log(row)
+})
