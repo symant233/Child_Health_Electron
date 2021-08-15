@@ -5,25 +5,20 @@
         {{ message ? message : 'null' }}
       </label>
     </div>
+    <!-- prettier-ignore -->
     <input
       class="editable-input"
       v-show="editing"
       v-model="message"
-      v-on:blur="
-        editing = false
-        doUpdate()
-      "
+      v-on:blur="editing = false; doUpdate()"
       @keyup.enter="editing = false"
-      @keyup.esc="
-        esc = true
-        editing = false
-      "
+      @keyup.esc="esc = true; editing = false"
     />
   </div>
 </template>
 
 <script>
-import db from '../../../datastore/'
+import base from '../../../datastore/base'
 export default {
   name: 'editable',
   props: ['obj'], // obj: { uid: Int, key: String, value: String }
@@ -36,17 +31,13 @@ export default {
     }
   },
   methods: {
-    doUpdate() {
+    async doUpdate() {
       if (!this.esc && this.obj.uid) {
         if (this.last === this.message) return
         this.last = this.message
-        // db update
+        // database update
         var uid = parseInt(this.obj.uid)
-        var changed = { [this.obj.key]: this.message }
-        db.get('users')
-          .find({ uid: uid })
-          .assign(changed)
-          .write()
+        await base.updateUserProperty(uid, this.obj.key, this.message)
         console.log('DB@ updated uid: ' + uid)
       } else {
         this.message = this.last

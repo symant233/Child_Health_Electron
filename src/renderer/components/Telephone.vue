@@ -105,7 +105,7 @@
           <button
             class="button is-light"
             style="width: 100px; padding-top: 6px;"
-            onclick="window.location.reload()"
+            @click="init()"
           >
             <abbr title="点击刷新">Counts: {{ this.users.length }}</abbr>
           </button>
@@ -178,7 +178,7 @@
 </template>
 
 <script>
-import db from '../../datastore/index'
+import base from '../../datastore/base'
 import Editable from './Common/Editable'
 import DangerLevel from './Common/DangerLevel.vue'
 export default {
@@ -189,11 +189,20 @@ export default {
       questionDeleteBoolean: false, // show model
       deleteUid: 0,
       today: new Date().toISOString().slice(0, 10),
-      prefix: db.get('pre').value(),
-      users: this.getTele().reverse()
+      prefix: 2,
+      users: [],
+      staticUsers: []
     }
   },
+  async mounted() {
+    this.staticUsers = await base.getUsersAll()
+    this.prefix = await base.getBasicPrefix()
+    this.init()
+  },
   methods: {
+    async init() {
+      this.users = await this.getTele()
+    },
     detail(uid) {
       window.location.hash = '#/detail/' + uid
     },
@@ -205,11 +214,8 @@ export default {
     deleteComfirm(e) {
       var uid = this.deleteUid
       if (e === true) {
-        var r = db
-          .get('users')
-          .remove({ uid: parseInt(uid) })
-          .write()
-        console.log('DB@ ' + r[0] + ' removed!')
+        base.deleteUser(parseInt(uid))
+        console.log('DB@ ' + uid + ' removed!')
         this.questionDeleteBoolean = false
       } else {
         console.log('DB@ remove uid: ' + uid + ' canceled!')
@@ -218,7 +224,7 @@ export default {
     },
     getAge(birth, cn) {
       birth = Date.parse(birth.replace('/-/g', '/'))
-      var pre = db.get('pre').value()
+      var pre = this.prefix
       if (birth) {
         var day = 0
         var month = 0
@@ -244,10 +250,8 @@ export default {
         return { year: year, month: month, day: day, parse: parse }
       }
     },
-    getTele() {
-      const users = db.get('users').value()
-      const pre = db.get('pre').value() // 记录在数据库中的提前多少天
-      var usersNew = []
+    async getTele() {
+      const usersNew = []
       const checkList = [
         // 普通高危儿
         '0/1/0',
@@ -290,12 +294,13 @@ export default {
         '5/6/0',
         '6/0/0'
       ]
-      for (var index in users) {
-        var user = users[index]
+      for (var index in this.staticUsers) {
+        var user = this.staticUsers[index]
         var age = this.getAge(user.birth).parse
         var cn = this.getAge(user.birth, true).parse
         // 如果是二类高危儿则使用另一套匹配列表
-        var list = users[index].level === '2' ? checkList2 : checkList
+        var list =
+          this.staticUsers[index].level === '2' ? checkList2 : checkList
         for (var index in list) {
           var item = list[index]
           user.age = cn
@@ -306,9 +311,10 @@ export default {
       }
       return usersNew
     },
-    setPrefix(pre) {
-      db.set('pre', pre).write()
-      window.location.reload()
+    async setPrefix(pre) {
+      await base.setBasicPrefix(pre)
+      this.prefix = pre
+      this.init()
     }
   }
 }

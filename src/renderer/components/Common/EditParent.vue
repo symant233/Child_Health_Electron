@@ -5,24 +5,19 @@
         {{ message ? message : 'undefined' }}
       </label>
     </div>
+    <!-- prettier-ignore -->
     <input
       v-show="editing"
       v-model="message"
-      v-on:blur="
-        editing = false
-        doUpdate()
-      "
+      v-on:blur="editing = false; doUpdate()"
       @keyup.enter="editing = false"
-      @keyup.esc="
-        esc = true
-        editing = false
-      "
+      @keyup.esc="esc = true; editing = false"
     />
   </div>
 </template>
 
 <script>
-import db from '../../../datastore/'
+import base from '../../../datastore/base'
 export default {
   name: 'editable-parent',
   props: ['obj'], // obj: { uid: Int, key: String, value: String, mother: Boolen }
@@ -39,13 +34,10 @@ export default {
       if (!this.esc && this.obj.uid) {
         if (this.last === this.message) return
         this.last = this.message
-        // db update
+        // database update
         var uid = parseInt(this.obj.uid)
-        var prefix = this.obj.mother ? 'mother.' : 'father.'
-        db.get('details')
-          .find({ uid: uid })
-          .set(prefix + this.obj.key, this.message)
-          .write()
+        var prefix = this.obj.mother ? 'm' : 'f'
+        await base.updateDetailProperty(uid, prefix + this.obj.key, this.message)
         console.log('DB@ detail parents updated uid: ' + uid)
       } else {
         this.message = this.last

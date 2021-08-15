@@ -191,4 +191,4 @@ sdb.serialize(() => {
 })
 
 sdb.close()
-console.log('>>> migration complete.')
+console.log('>>> migrating database...')

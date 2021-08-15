@@ -78,6 +78,13 @@ class Base {
     const data = await db.get('select search from basic where id=1')
     return data.search
   }
+  setBasicPrefix = async pre => {
+    return db.run('update basic set pre=? where id=1', pre)
+  }
+  getBasicPrefix = async () => {
+    const data = await db.get('select pre from basic where id=1')
+    return data.pre
+  }
   checkUsersExists = async (baby, birth) => {
     const user = await db.get(
       'select * from users where baby=$baby and birth=$birth',
@@ -142,6 +149,18 @@ class Base {
       `select * from users where ${name} like ? order by uid desc`,
       input
     )
+  }
+  updateUserProperty = async (uid, key, value) => {
+    await db.run(`update users set ${key}=$value where uid=$uid`, {
+      $uid: uid,
+      $value: value
+    })
+  }
+  updateDetailProperty = async (uid, key, value) => {
+    await db.run(`update details set ${key}=$value where uid=$uid`, {
+      $uid: uid,
+      $value: value
+    })
   }
 }
 

@@ -11,7 +11,6 @@
 </template>
 
 <script>
-import db from '../../../datastore/'
 export default {
   name: 'danger-level',
   props: ['user'] // { uid: Int, danger: String, level: String }
