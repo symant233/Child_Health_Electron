@@ -29,8 +29,8 @@ build_script:
 test: off
 
 artifacts:
-  # pushing all *.exe files in build directory recursively
-  - path: '**\*.exe'
+  # pushing all .exe files in build directory recursively
+  - path: 'build\*.exe'
 
 deploy:
   release: '$(APPVEYOR_REPO_TAG_NAME)'
