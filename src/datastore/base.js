@@ -50,14 +50,17 @@ async function initial() {
 initial()
 
 class Base {
-  constructor() {
-    this.db = db
-  }
   getUsersAll = async () => {
     return db.all('select * from users order by uid desc')
   }
   getUsersLimited = async () => {
     return db.all('select * from users order by uid desc limit 50')
+  }
+  getUsersPage = async page => {
+    return db.all(
+      'select * from users order by uid desc limit 50 offset ?',
+      page * 50
+    )
   }
   getUserByUid = async uid => {
     const data = await db.get('select * from users where uid=?', uid)

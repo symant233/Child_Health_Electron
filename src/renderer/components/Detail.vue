@@ -799,6 +799,10 @@ export default {
   padding: 10px 39px;
 }
 
+section.hero.is-fullheight {
+  min-height: 0;
+}
+
 .tabs.is-boxed a {
   border-radius: 0px;
 }

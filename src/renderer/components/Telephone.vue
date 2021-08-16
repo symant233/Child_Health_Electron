@@ -90,7 +90,7 @@
             <td><danger-level :user="user"></danger-level></td>
             <td>{{ getAge(user.birth).parse }}</td>
             <td>
-              <span @click="questionDelete($event)" class="del">删</span>
+              <span @click="questionDelete(user.uid)" class="del">删</span>
               <span @click="detail(user.uid)" class="edit">详</span>
             </td>
           </tr>
@@ -105,7 +105,7 @@
           <button
             class="button is-light"
             style="width: 100px; padding-top: 6px;"
-            @click="init()"
+            @click="refresh()"
           >
             <abbr title="点击刷新">Counts: {{ this.users.length }}</abbr>
           </button>
@@ -200,14 +200,18 @@ export default {
     this.init()
   },
   methods: {
+    async refresh() {
+      this.staticUsers = await base.getUsersAll()
+      this.prefix = await base.getBasicItem('pre')
+      this.init()
+    },
     async init() {
       this.users = await this.getTele()
     },
     detail(uid) {
       window.location.hash = '#/detail/' + uid
     },
-    questionDelete(e) {
-      var uid = e.currentTarget.innerText
+    questionDelete(uid) {
       this.questionDeleteBoolean = true
       this.deleteUid = uid
     },
@@ -223,6 +227,7 @@ export default {
       }
     },
     getAge(birth, cn) {
+      if (!birth) return { parse: '' }
       birth = Date.parse(birth.replace('/-/g', '/'))
       var pre = this.prefix
       if (birth) {

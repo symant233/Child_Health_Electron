@@ -96,6 +96,9 @@
           </tr>
         </tbody>
       </table>
+      <div id="load-all" @click="loadNextPage()" v-if="showLoad">
+        加载下一页
+      </div>
     </div>
     <!-- Hero footer: will stick at the bottom -->
     <div class="hero-foot">
@@ -132,6 +135,7 @@
                 type="text"
                 placeholder="Text input"
                 v-model="selectForm.input"
+                @keyup.enter="search()"
               />
             </p>
             <p class="control">
@@ -178,6 +182,8 @@ export default {
   components: { Editable, DangerLevel },
   data() {
     return {
+      page: 0,
+      showLoad: false,
       questionDeleteBoolean: false, // show model
       deleteUid: 0,
       today: new Date().toISOString().slice(0, 10),
@@ -202,6 +208,12 @@ export default {
       this.users = await base.getUsersLimited()
       this.count = await base.getUsersCount()
       this.selectForm.options = await base.getBasicItem('search')
+      this.selectForm.input = ''
+      if (this.count) this.showLoad = true
+    },
+    async loadNextPage() {
+      const tmp = await base.getUsersPage(++this.page)
+      this.users.push(...tmp)
     },
     detail(uid) {
       window.location.hash = '#/detail/' + uid
@@ -222,6 +234,7 @@ export default {
       }
     },
     getAge(birth) {
+      if (!birth) return { parse: '' }
       birth = Date.parse(birth.replace('/-/g', '/'))
       if (birth) {
         var day = 0
@@ -246,6 +259,7 @@ export default {
       return { parse: 'error' }
     },
     async search() {
+      this.showLoad = false
       var id = this.selectForm.options
       var input = `%${this.selectForm.input}%`
       console.log('Search: ' + id + ': ' + input)
@@ -290,6 +304,18 @@ export default {
 #nav-selector {
   background: #00d1b2;
   border-color: #00d1b2;
+}
+
+#load-all {
+  padding: 8px;
+  background-color: lavender;
+  cursor: pointer;
+  text-align: center;
+  color: coral;
+}
+
+table.table {
+  margin-bottom: 0;
 }
 
 tbody tr td {
