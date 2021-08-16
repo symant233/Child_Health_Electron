@@ -1,4 +1,4 @@
-version: 0.1.{build}
+version: 0.2.{build}
 
 branches:
   only:
@@ -28,6 +28,10 @@ build_script:
 
 test: off
 
+artifacts:
+  # pushing all *.exe files in build directory recursively
+  - path: '**\*.exe'
+
 deploy:
   release: '$(APPVEYOR_REPO_TAG_NAME)'
   description: '> $(APPVEYOR_REPO_TAG_NAME) => AppVeyor Build Version: $(APPVEYOR_BUILD_VERSION)'
@@ -35,7 +39,7 @@ deploy:
   draft: true
   prerelease: false
   force_update: true
-  artifacts: build/
+  artifacts: /.*\.exe/
   auth_token:
     secure: oUQp5QByqF9WrGmoL/YHsCw03mBs8coDAWAeqe+PDCnYnWzbLABVhq+agItQK+t+
   on:
