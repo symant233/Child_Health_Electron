@@ -6,6 +6,7 @@ import { remote, app } from 'electron'
 import pkg from '../../package.json'
 
 const APP = process.type === 'renderer' ? remote.app : app
+let flag = false // 是否创建表
 
 let STORE_PATH
 if (process.env.NODE_ENV !== 'development') {
@@ -17,36 +18,36 @@ if (process.env.NODE_ENV !== 'development') {
   STORE_PATH = path.join(dist, '../src/datastore/data.db')
   // development: Child_Health_Electron\src\datastore\data.db
 }
+if (!fs.existsSync(STORE_PATH)) flag = true
 
 const sqlite3 = require('sqlite3').verbose()
 const db = new sqlite3.Database(STORE_PATH)
 console.log('DataBase@ ' + STORE_PATH)
 
-if (!fs.existsSync(STORE_PATH)) {
-  // first time run initializing
-  const sql = require('./initial')
-  sql.forEach(s => {
-    db.run(s, function(err) {
-      if (err) console.log(err.message)
-    })
-  })
-  db.get('select stored from basic', (_err, row) => {
-    if (row.stored !== STORE_PATH) {
-      db.run('update basic set stored=? where id=1', STORE_PATH)
-    }
-  })
-}
-
-db.get('select version from basic', (_err, row) => {
-  if (row.version < pkg.version) {
-    db.run('update basic set version=? where id=1', pkg.version)
-  }
-})
-
 db.run = util.promisify(db.run)
 db.get = util.promisify(db.get)
 db.all = util.promisify(db.all)
 db.each = util.promisify(db.each)
+
+async function initial() {
+  if (flag) {
+    // 首次运行创建表
+    const sql = await require('./initial')
+    for (let s of sql) {
+      await db.run(s)
+    }
+    await db.run('insert into basic values (1,2,null,null,null,10000,"uid")')
+  }
+  const { stored } = await db.get('select stored from basic where id=1')
+  if (stored !== STORE_PATH) {
+    await db.run('update basic set stored=? where id=1', STORE_PATH)
+  }
+  const { version } = await db.get('select version from basic where id=1')
+  if (version < pkg.version) {
+    await db.run('update basic set version=? where id=1', pkg.version)
+  }
+}
+initial()
 
 class Base {
   constructor() {
