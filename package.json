@@ -1,6 +1,6 @@
 {
   "name": "child_health_electron",
-  "version": "2.0.3",
+  "version": "2.0.5",
   "author": "symant233 <symant233@gmail.com>",
   "description": "A child health care system writen in electron.",
   "license": "GPL-3.0-or-later",
@@ -21,6 +21,7 @@
   "build": {
     "productName": "child_health_electron",
     "appId": "child.health.electron",
+    "artifactName": "${productName}_${version}_setup.${ext}",
     "directories": {
       "output": "build"
     },

@@ -29,7 +29,7 @@ build_script:
 test: off
 
 artifacts:
-  # pushing all .exe files in build directory recursively
+  # pushing all .exe files in build directory
   - path: 'build\*.exe'
 
 deploy:
@@ -39,7 +39,7 @@ deploy:
   draft: true
   prerelease: false
   force_update: true
-  artifacts: /.*\.exe/
+  artifact: /.*\.exe/
   auth_token:
     secure: oUQp5QByqF9WrGmoL/YHsCw03mBs8coDAWAeqe+PDCnYnWzbLABVhq+agItQK+t+
   on:

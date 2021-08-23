@@ -70,6 +70,16 @@ class Base {
     const data = await db.get('select count() as count from users')
     return data.count
   }
+  getUserCountByBirth = async (start, stop) => {
+    const data = await db.get(
+      'select count() as count from users where birth > $start and birth <= $stop',
+      {
+        $start: start,
+        $stop: stop
+      }
+    )
+    return data.count
+  }
   deleteUser = async uid => {
     await db.run('delete from users where uid=?', uid)
     await db.run('delete from details where uid=?', uid)
@@ -141,11 +151,21 @@ class Base {
       }
     )
   }
-  searchUsers = async (name, input) => {
+  searchUsersPage = async (name, input, page) => {
     return db.all(
-      `select * from users where ${name} like ? order by uid desc`,
+      `select * from users where ${name} like $input order by uid desc limit 50 offset $offset`,
+      {
+        $input: input,
+        $offset: page * 50
+      }
+    )
+  }
+  searchUsersCount = async (name, input) => {
+    const data = await db.get(
+      `select count() as count from users where ${name} like ?`,
       input
     )
+    return data.count
   }
   updateUserProperty = async (uid, key, value) => {
     await db.run(`update users set ${key}=$value where uid=$uid`, {

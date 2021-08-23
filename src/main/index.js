@@ -56,6 +56,33 @@ function backupNotFound() {
   })
 }
 
+async function toolStatistic() {
+  let dateObj = new Date()
+  let month = (dateObj.getUTCMonth() + 1).toString() // months from 1-12
+  let day = dateObj.getUTCDate().toString()
+  if (month.length === 1) month = '0' + month
+  if (day.length === 1) day = '0' + day
+  let year = dateObj.getUTCFullYear() // Number
+  const s03 = await base.getUserCountByBirth(
+    `${year - 3}-${month}-${day}`,
+    `${year}-${month}-${day}`
+  )
+  const s01 = await base.getUserCountByBirth(
+    `${year - 1}-${month}-${day}`,
+    `${year}-${month}-${day}`
+  )
+  const s12 = await base.getUserCountByBirth(
+    `${year - 2}-${month}-${day}`,
+    `${year - 1}-${month}-${day}`
+  )
+  dialog.showMessageBox({
+    type: 'none',
+    title: '三岁以下新生儿统计',
+    message: `三岁以下共: ${s03} 人`,
+    detail: `0~1岁 ${s01} 人\n1~2岁 ${s12} 人\n2~3岁 ${s03 - s01 - s12} 人`
+  })
+}
+
 function createWindow() {
   /**
    * Initial window options
@@ -210,6 +237,17 @@ async function createMenu(mainWindow) {
           click() {
             mainWindow.setSize(1076, 650)
             // plus titlebar and menubar
+          }
+        }
+      ]
+    },
+    {
+      label: '工具',
+      submenu: [
+        {
+          label: '三岁以下新生儿统计',
+          click() {
+            toolStatistic()
           }
         }
       ]

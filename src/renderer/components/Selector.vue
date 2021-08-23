@@ -209,11 +209,23 @@ export default {
       this.count = await base.getUsersCount()
       this.selectForm.options = await base.getBasicItem('search')
       this.selectForm.input = ''
+      this.selectForm.text = ''
       if (this.count) this.showLoad = true
+      this.page = 0
     },
     async loadNextPage() {
-      const tmp = await base.getUsersPage(++this.page)
-      this.users.push(...tmp)
+      if (!this.selectForm.text) {
+        const tmp = await base.getUsersPage(++this.page)
+        this.users.push(...tmp)
+      } else {
+        const tmp = await base.searchUsersPage(
+          this.selectForm.id,
+          this.selectForm.text,
+          ++this.page
+        )
+        if (!tmp.length) this.showLoad = false
+        this.users.push(...tmp)
+      }
     },
     detail(uid) {
       window.location.hash = '#/detail/' + uid
@@ -259,44 +271,50 @@ export default {
       return { parse: 'error' }
     },
     async search() {
-      this.showLoad = false
-      var id = this.selectForm.options
-      var input = `%${this.selectForm.input}%`
-      console.log('Search: ' + id + ': ' + input)
-      switch (id) {
-        case 'uid':
-          this.users = await base.searchUsers(id, input)
-          break
-        case 'danger':
-          if (input === '%%') {
-            this.users = await base.searchUsers('danger', '%1%')
-          } else {
-            this.users = await base.searchUsers('level', input)
-          }
-          break
-        case 'name':
-          this.users = await base.searchUsers(id, input)
-          break
-        case 'baby':
-          this.users = await base.searchUsers(id, input)
-          break
-        case 'birth':
-          this.users = await base.searchUsers(id, input)
-          break
-        case 'tele':
-          this.users = await base.searchUsers(id, input)
-          break
-        default:
-          break
-      }
-      this.count = this.users.length
+      this.page = 0
+      this.showLoad = true
+      let id = this.selectForm.options
       await base.setBasicItem('search', id)
+      let input = this.selectForm.input
+      if (!input.startsWith('%')) {
+        input = `%${input}%`
+      }
+      console.log('Search: ' + id + ': ' + input)
+      if (id === 'danger') {
+        if (input === '%%') {
+          input = '%1%'
+        } else {
+          id = 'level'
+        }
+      }
+      this.selectForm.text = input
+      this.selectForm.id = id
+      this.users = await base.searchUsersPage(id, input, 0)
+      this.count = await base.searchUsersCount(id, input)
     }
   }
 }
 </script>
 
 <style scoped>
+@media print {
+  .hero-body {
+    overflow: hidden !important;
+  }
+  .hero {
+    padding: 0 !important;
+  }
+  .hero-foot {
+    display: none !important;
+  }
+  td {
+    padding: 1px !important;
+  }
+  th {
+    padding: 1px !important;
+  }
+}
+
 #button-search:hover {
   background-color: #209cee;
 }
@@ -347,6 +365,7 @@ nav.tabs {
 
 .navbar {
   min-height: 41px;
+  overflow-x: hidden;
 }
 
 .navbar > .container {

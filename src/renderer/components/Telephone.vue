@@ -326,6 +326,24 @@ export default {
 </script>
 
 <style scoped>
+@media print {
+  .hero-body {
+    overflow: hidden !important;
+  }
+  .hero {
+    padding: 0 !important;
+  }
+  .hero-foot {
+    display: none !important;
+  }
+  td {
+    padding: 1px !important;
+  }
+  th {
+    padding: 1px !important;
+  }
+}
+
 #button-search:hover {
   background-color: #209cee;
 }
@@ -364,6 +382,7 @@ nav.tabs {
 
 .navbar {
   min-height: 41px;
+  overflow-x: hidden;
 }
 
 .navbar > .container {

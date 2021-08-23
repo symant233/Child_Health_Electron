@@ -1,4 +1,5 @@
 // only for migrating data.json to sqlite data.db
+// remember to install lowdb and sqlite3 first
 const Datastore = require('lowdb')
 const FileSync = require('lowdb/adapters/FileSync')
 
