@@ -1,6 +1,6 @@
 {
   "name": "child_health_electron",
-  "version": "2.0.5",
+  "version": "2.0.6",
   "author": "symant233 <symant233@gmail.com>",
   "description": "A child health care system writen in electron.",
   "license": "GPL-3.0-or-later",
@@ -69,12 +69,12 @@
     "axios": "^0.18.0",
     "echarts": "^4.5.0-rc.2",
     "lowdb": "^1.0.0",
+    "sqlite3": "^5.0.2",
     "vue": "^2.5.16",
     "vue-electron": "^1.0.6",
     "vue-router": "^3.0.1",
     "vuex": "^3.0.1",
-    "vuex-electron": "^1.0.0",
-    "sqlite3": "^5.0.2"
+    "vuex-electron": "^1.0.0"
   },
   "devDependencies": {
     "ajv": "^6.5.0",

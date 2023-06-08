@@ -139,6 +139,31 @@ async function setBackupFolder() {
     })
 }
 
+async function openExternalDatabase() {
+  dialog
+    .showOpenDialog(mainWindow, {
+      properties: ['openFile'],
+      filters: [{ name: 'Database', extensions: ['db'] }]
+    })
+    .then(result => {
+      if (!result.canceled && result.filePaths[0]) {
+        var file = result.filePaths[0]
+        console.log('Stored Dir Set @ ' + file)
+        base.setExternalDatabaseFile(file)
+        dialog.showMessageBox({
+          type: 'info',
+          message: '设置成功（重启后生效），外部数据库位置：\n' + file,
+          click() {
+            mainWindow.close()
+          }
+        })
+      }
+    })
+    .catch(err => {
+      console.log(err)
+    })
+}
+
 async function createMenu(mainWindow) {
   var template = [
     {
@@ -157,6 +182,13 @@ async function createMenu(mainWindow) {
               label: '备份数据库文件夹',
               click() {
                 openBackupFolder()
+              }
+            },
+            { type: 'separator' },
+            {
+              label: '设置外部数据库文件(.db)',
+              click() {
+                openExternalDatabase()
               }
             }
           ]

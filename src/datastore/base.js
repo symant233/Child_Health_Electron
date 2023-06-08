@@ -9,8 +9,9 @@ const APP = process.type === 'renderer' ? remote.app : app
 let flag = false // 是否创建表
 
 let STORE_PATH
+var userData = APP.getPath('userData')
+
 if (process.env.NODE_ENV !== 'development') {
-  var userData = APP.getPath('userData')
   STORE_PATH = path.join(userData, 'data.db')
   // production: %APPDATA%\child_health_electron\data.db
 } else {
@@ -18,6 +19,14 @@ if (process.env.NODE_ENV !== 'development') {
   STORE_PATH = path.join(dist, '../src/datastore/data.db')
   // development: Child_Health_Electron\src\datastore\data.db
 }
+
+// external database overwrite
+if (fs.existsSync(path.join(userData, 'external'))) {
+  const data = fs.readFileSync(path.join(userData, 'external'))
+  console.log('External@ ' + data.toString())
+  STORE_PATH = data.toString()
+}
+
 if (!fs.existsSync(STORE_PATH)) flag = true
 
 const sqlite3 = require('sqlite3').verbose()
@@ -50,6 +59,10 @@ async function initial() {
 initial()
 
 class Base {
+  setExternalDatabaseFile = async filePath => {
+    // write file
+    await fs.writeFileSync(path.join(userData, 'external'), filePath)
+  }
   getUsersAll = async () => {
     return db.all('select * from users order by uid desc')
   }
